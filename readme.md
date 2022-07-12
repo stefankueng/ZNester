@@ -13,8 +13,6 @@ We want to pack all the letters into the square, using as little material as pos
 
 ZNester solves this problem with the orbital NFP approach, using a genetic algorithm for global optimization. It also works with arbitrary containers (called bins).
 
-![non-rectangular shapes](./doc/shapes.png)
-
 ## Outline of algorithm
 
 While [good heuristics](http://cgi.csc.liv.ac.uk/~epa/surveyhtml.html) exist for the rectangular bin packing problem, in the real world we are concerned with irregular shapes.
@@ -30,7 +28,7 @@ The key concept here is the "No Fit Polygon".
 
 Given polygons A and B, we want to move (or "orbit") B around A so that they always touch but do not intersect. An arbitrary point of polygon B is used as a reference point. In the following example the "J" shape is polygon B, and the generated NFP is shown in blue.
 
-![No Fit Polygon example](./doc/nfp.gif)
+![No Fit Polygon example](./doc/NFP.gif)
 
 The resulting polygon is the outer NFP. The NFP contains all possible placements of B. We can then choose a point on the NFP as the placement position. 
 
