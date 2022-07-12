@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<AutoVisualizer xmlns="http://schemas.microsoft.com/vstudio/debugger/natvis/2010">
+
+    <!-- documentation of the natvis file format and examples can be found here:
+     https://docs.microsoft.com/en-us/visualstudio/debugger/create-custom-views-of-native-objects?view=vs-2019
+  -->
+
+    <Type Name="ZPoint">
+        <DisplayString>x:{m_x,g} y:{m_y,g} marked: {m_marked}</DisplayString>
+    </Type>
+
+    <Type Name="ZPolygon">
+        <DisplayString>{_Mypair._Myval2._Mysize} points, off: {m_offset.m_x,g} {m_offset.m_y,g} r: {m_rotation,g}</DisplayString>
+        <Expand>
+            <Item Name="id">m_id</Item>
+            <Item Name="rotations">m_rotations</Item>
+            <Item Name="rotation">m_rotation*57.295779513,g</Item>
+            <Item Name="rotation">m_rotation</Item>
+            <Item Name="offset">m_offset</Item>
+            <Item Name="children">m_children</Item>
+            <IndexListItems>
+                <Size>_Mypair._Myval2._Mysize</Size>
+                <ValueNode>_Mypair._Myval2._Map[(($i + _Mypair._Myval2._Myoff) / _EEN_DS) % _Mypair._Myval2._Mapsize][($i + _Mypair._Myval2._Myoff) % _EEN_DS]</ValueNode>
+            </IndexListItems>
+        </Expand>
+    </Type>
+</AutoVisualizer>
+
