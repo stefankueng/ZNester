@@ -2,6 +2,7 @@
 
 #include "ZNester.h"
 
+#include <clipper2/clipper.h>
 #include <corecrt_math_defines.h>
 #include <intsafe.h>
 
@@ -13,7 +14,6 @@
 #include "Genetic.h"
 #include "NFP.h"
 #include "ProfileTimer.h"
-#include <clipper2/clipper.h>
 
 bool ZNester::doNest( const ZPolygon& binPoly, const std::deque<ZPolygon>& polygons, const ZNesterConfig& config )
 {
@@ -76,6 +76,11 @@ bool ZNester::doNest( const ZPolygon& binPoly, const std::deque<ZPolygon>& polyg
 					   []( const auto& p1, const auto& p2 ) -> bool
 					   { return abs( p1.bounds().area() ) > abs( p2.bounds().area() ); } );
 
+#ifdef _DEBUG
+	srand( static_cast<int>( time( nullptr ) ) );
+	m_run = true;
+	runNesting( m_bin, m_tree, m_config );
+#else
 	m_thread = std::thread(
 		[&]()
 		{
@@ -83,7 +88,7 @@ bool ZNester::doNest( const ZPolygon& binPoly, const std::deque<ZPolygon>& polyg
 			m_run = true;
 			runNesting( m_bin, m_tree, m_config );
 		} );
-
+#endif
 	return true;
 }
 
@@ -437,34 +442,41 @@ std::tuple<double, std::deque<ZPlacement>> ZNester::nestGArandomRotations(
 
 	// calculate all necessary nfps for this iteration
 	std::mutex cacheMutex;
+#ifdef _DEBUG
+	for ( const auto& pair : nfpPairs )
+#else
 	std::for_each( std::execution::par, nfpPairs.begin(), nfpPairs.end(),
 				   [&]( const auto& pair )
-				   {
-					   if ( m_run )
-					   {
-						   auto a	 = pair.partA.rotated( pair.key.aRotation );
-						   auto b	 = pair.partB.rotated( pair.key.bRotation );
-						   auto nfPs = generateNfps( a, b, pair.key, config.useHoles );
-						   if ( !nfPs.empty() )
-						   {
-							   std::deque<ZPolygon> cleanNfps;
-							   for ( size_t i = 0; i < nfPs.size(); ++i )
-							   {
-								   const auto& nfp = nfPs[i];
+#endif
+	{
+		if ( m_run )
+		{
+			auto a	  = pair.partA.rotated( pair.key.aRotation );
+			auto b	  = pair.partB.rotated( pair.key.bRotation );
+			auto nfPs = generateNfps( a, b, pair.key, config.useHoles );
+			if ( !nfPs.empty() )
+			{
+				std::deque<ZPolygon> cleanNfps;
+				for ( size_t i = 0; i < nfPs.size(); ++i )
+				{
+					const auto& nfp = nfPs[i];
 
-								   if ( !nfp.empty() )
-								   {
-									   // a null nfp means the nfp could not be generated,
-									   // either because the parts simply don't fit or an error in the nfp algo
-									   cleanNfps.push_back( nfp );
-								   }
-							   }
-							   std::lock_guard lock( cacheMutex );
-							   nfpCache[pair.key] = cleanNfps;
-						   }
-					   }
+					if ( !nfp.empty() )
+					{
+						// a null nfp means the nfp could not be generated,
+						// either because the parts simply don't fit or an error in the nfp algo
+						cleanNfps.push_back( nfp );
+					}
+				}
+				std::lock_guard lock( cacheMutex );
+				nfpCache[pair.key] = cleanNfps;
+			}
+		}
+#ifdef _DEBUG
+	};
+#else
 				   } );
-
+#endif
 	// place paths
 
 	// rotate paths by given rotation
@@ -619,7 +631,7 @@ std::tuple<double, std::deque<ZPlacement>> ZNester::nestGArandomRotations(
 					auto allPoints = placedPoints;
 					for ( const auto& pt : path )
 						allPoints.emplace_back( pt.x() + shiftVector.x, pt.y() + shiftVector.y );
-					auto hull = ZPolygon::convexHull( allPoints );
+					auto hull	  = ZPolygon::convexHull( allPoints );
 					auto hullArea = std::abs( hull.area() );
 
 					// weigh width more, to help compress in direction of gravity
