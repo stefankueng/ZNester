@@ -2,12 +2,11 @@
 
 #include "NFP.h"
 
+#include <clipper2/clipper.h>
 #include <intsafe.h>
 
 #include <algorithm>
 #include <format>
-#include <clipper2/clipper.h>
-
 
 struct TransVector
 {
@@ -213,7 +212,7 @@ std::deque<ZPolygon> noFitPolygonRectangle( const ZPolygon &a, const ZPolygon &b
 
 std::deque<ZPolygon> noFitPolygon( ZPolygon &a, ZPolygon &b, bool inside, bool searchEdges,
 								   const std::function<void( eZLogLevel, const std::string &msg )> &logCallback,
-								   const tDebugCallback											&debugDisplay )
+								   const tDebugCallback											   &debugDisplay )
 {
 	if ( a.size() < 3 || b.size() < 3 )
 	{
@@ -463,6 +462,22 @@ std::deque<ZPolygon> noFitPolygon( ZPolygon &a, ZPolygon &b, bool inside, bool s
 								   return l.dMax > r.dMax;
 							   } );
 
+			if ( feasibleVectors.empty() )
+			{
+				if ( nfpList.empty() )
+				{
+					// didn't close the loop, something went wrong here
+					// fall back using the Minkowsky difference
+					if ( logCallback )
+						logCallback( Debug, std::format( "failed to generate nfp with orbiting approach for {0}, {1} "
+														 "{2}, using minkowski difference instead.",
+														 a.id(), b.id(), inside ? "inside" : "outside" ) );
+					nfpList = noFitPolygonMinkowski( a, b, inside, logCallback, debugDisplay );
+				}
+				nfp.clear();
+				break;
+			}
+
 			auto &translate = feasibleVectors[0];
 			if ( translate.inNfp )
 				++inNfpCounter;
@@ -560,7 +575,7 @@ std::deque<ZPolygon> noFitPolygon( ZPolygon &a, ZPolygon &b, bool inside, bool s
 std::deque<ZPolygon> noFitPolygonMinkowski(
 	const ZPolygon &a, const ZPolygon &b, bool inside,
 	[[maybe_unused]] const std::function<void( eZLogLevel, const std::string &msg )> &logCallback,
-	[[maybe_unused]] const tDebugCallback											  &debugDisplay )
+	[[maybe_unused]] const tDebugCallback											 &debugDisplay )
 {
 	std::deque<ZPolygon> nfpList;
 	Clipper2Lib::PathD	 aClipper;
