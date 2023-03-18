@@ -292,14 +292,14 @@ std::deque<ZPolygon> ZNester::generateNfps( ZPolygon& a, ZPolygon& b, const NfpK
 		// generate nfps for children (holes of parts) if any exist
 		if ( useHoles && !a.children().empty() )
 		{
-			auto Bbounds = b.bounds();
+			auto bBounds = b.bounds();
 
 			for ( size_t i = 0; i < a.children().size(); ++i )
 			{
 				auto aBounds = a.children()[i].bounds();
 
 				// no need to find nfp if B's bounding box is too big
-				if ( aBounds.width() > Bbounds.width() && aBounds.height() > Bbounds.height() )
+				if ( aBounds.width() > bBounds.width() && aBounds.height() > bBounds.height() )
 				{
 					auto cnfp = noFitPolygon( a.children()[i], b, true, false, m_logCallback, m_debugDisplay );
 					// ensure all interior NFPs have the same winding direction
