@@ -16,6 +16,15 @@
     <Filter Include="Clipper2">
       <UniqueIdentifier>{7e20ee40-4239-44a0-a3e7-f3f8beb2a532}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Clipper2\include">
+      <UniqueIdentifier>{8cf6beca-6f5f-4dff-9292-cfa6621ee499}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Clipper2\src">
+      <UniqueIdentifier>{ab899bd7-bd05-42a7-bfc8-333bb35f14bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Clipper2\include\clipper2">
+      <UniqueIdentifier>{e21ae075-49f2-41b6-b2d0-c8cbf56dbed1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -51,23 +60,29 @@
     <ClInclude Include="NFP.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Clipper2Lib\clipper.engine.h">
-      <Filter>Clipper2</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Clipper2Lib\clipper.h">
-      <Filter>Clipper2</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Clipper2Lib\clipper.minkowski.h">
-      <Filter>Clipper2</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Clipper2Lib\clipper.offset.h">
-      <Filter>Clipper2</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Clipper2Lib\clipper.core.h">
-      <Filter>Clipper2</Filter>
-    </ClInclude>
     <ClInclude Include="ProfileTimer.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Clipper2Lib\include\clipper2\clipper.h">
+      <Filter>Clipper2\include\clipper2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Clipper2Lib\include\clipper2\clipper.minkowski.h">
+      <Filter>Clipper2\include\clipper2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Clipper2Lib\include\clipper2\clipper.offset.h">
+      <Filter>Clipper2\include\clipper2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Clipper2Lib\include\clipper2\clipper.rectclip.h">
+      <Filter>Clipper2\include\clipper2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Clipper2Lib\include\clipper2\clipper.core.h">
+      <Filter>Clipper2\include\clipper2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Clipper2Lib\include\clipper2\clipper.engine.h">
+      <Filter>Clipper2\include\clipper2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Clipper2Lib\include\clipper2\clipper.export.h">
+      <Filter>Clipper2\include\clipper2</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -98,14 +113,14 @@
     <ClCompile Include="NFP.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Clipper2Lib\clipper.offset.cpp">
-      <Filter>Clipper2</Filter>
+    <ClCompile Include="..\Clipper2Lib\src\clipper.offset.cpp">
+      <Filter>Clipper2\src</Filter>
     </ClCompile>
-    <ClCompile Include="..\Clipper2Lib\clipper.core.cpp">
-      <Filter>Clipper2</Filter>
+    <ClCompile Include="..\Clipper2Lib\src\clipper.rectclip.cpp">
+      <Filter>Clipper2\src</Filter>
     </ClCompile>
-    <ClCompile Include="..\Clipper2Lib\clipper.engine.cpp">
-      <Filter>Clipper2</Filter>
+    <ClCompile Include="..\Clipper2Lib\src\clipper.engine.cpp">
+      <Filter>Clipper2\src</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

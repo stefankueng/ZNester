@@ -10,10 +10,10 @@
 #include <map>
 #include <set>
 
-#include "../Clipper2Lib/clipper.h"
 #include "Genetic.h"
 #include "NFP.h"
 #include "ProfileTimer.h"
+#include <clipper2/clipper.h>
 
 bool ZNester::doNest( const ZPolygon& binPoly, const std::deque<ZPolygon>& polygons, const ZNesterConfig& config )
 {

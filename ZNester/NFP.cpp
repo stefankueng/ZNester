@@ -6,9 +6,8 @@
 
 #include <algorithm>
 #include <format>
+#include <clipper2/clipper.h>
 
-#include "../Clipper2Lib/clipper.engine.h"
-#include "../Clipper2Lib/clipper.minkowski.h"
 
 struct TransVector
 {

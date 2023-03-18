@@ -2,7 +2,7 @@
 
 #include "ZPolygon.h"
 
-#include "../Clipper2Lib/clipper.h"
+#include <clipper2/clipper.h>
 
 ZPolygon::ZPolygon()
 {
