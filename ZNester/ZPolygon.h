@@ -38,9 +38,11 @@ public:
 	void	  translate( const ZPoint& diffPt );
 	ZPolygon& operator-=( const ZPoint& pt );
 	ZPolygon& operator+=( const ZPoint& pt );
+	ZPolygon& operator*=( double scale );
 	// returns a copy of the polygon, translated accordingly
 	ZPolygon	 translated( const double& dx, const double& dy ) const;
 	ZPolygon	 translated( const ZPoint& diffPt ) const;
+	ZPolygon	 scaled( double scale ) const;
 
 	ePointInside isPointInside( const ZPoint& pt, bool useOffset ) const;
 	bool		 isRectangle() const;

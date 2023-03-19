@@ -129,6 +129,14 @@ ZPolygon ZPolygon::translated( const ZPoint& diffPt ) const
 	return retPoly;
 }
 
+ZPolygon ZPolygon::scaled( double scale ) const
+{
+	auto retPoly = *this;
+	for ( auto& pt : retPoly )
+		pt *= scale;
+	return retPoly;
+}
+
 void ZPolygon::reverse()
 {
 	std::reverse( begin(), end() );
@@ -198,6 +206,13 @@ ZPolygon& ZPolygon::operator-=( const ZPoint& pt )
 ZPolygon& ZPolygon::operator+=( const ZPoint& pt )
 {
 	translate( pt );
+	return *this;
+}
+
+ZPolygon& ZPolygon::operator*=( double scale )
+{
+	for ( auto& pt : *this )
+		pt *= scale;
 	return *this;
 }
 

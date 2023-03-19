@@ -15,6 +15,11 @@
 #include "NFP.h"
 #include "ProfileTimer.h"
 
+namespace
+{
+	constexpr double ZNESTER_POLY_SCALE = 1000.0;
+}
+
 bool ZNester::doNest( const ZPolygon& binPoly, const std::deque<ZPolygon>& polygons, const ZNesterConfig& config )
 {
 	if ( !binPoly.isValid() )
@@ -40,19 +45,23 @@ bool ZNester::doNest( const ZPolygon& binPoly, const std::deque<ZPolygon>& polyg
 
 	srand( static_cast<int>( time( nullptr ) ) );
 
-	m_bin = binPoly;
+	auto scaledPolys = polygons;
+	for ( auto& poly : scaledPolys )
+		poly *= ZNESTER_POLY_SCALE;
+
+	m_bin = binPoly.scaled( ZNESTER_POLY_SCALE );
 	m_bin.setId( SIZE_T_MAX );
-	m_tree	 = buildTree( polygons );
+	m_tree	 = buildTree( scaledPolys );
 	m_config = config;
 
-	m_bin.shrink( m_config.binDistance );
+	m_bin.shrink( m_config.binDistance * ZNESTER_POLY_SCALE );
 	// remove duplicate endpoints, ensure counterclockwise winding direction
 	if ( m_bin.area() > 0 )
 		m_bin.reverse();
 	if ( m_bin[0] == m_bin[m_bin.size() - 1] )
 		m_bin.erase( m_bin.begin() );
 
-	offsetTree( m_tree, -m_config.partDistance / 2.0 );
+	offsetTree( m_tree, -m_config.partDistance * ZNESTER_POLY_SCALE / 2.0 );
 	for ( auto& p : m_tree )
 	{
 		if ( p.area() > 0 )
@@ -133,8 +142,8 @@ bool ZNester::runNesting( const ZPolygon& binPoly, const std::deque<ZPolygon>& p
 				{
 					for ( auto& position : placement )
 					{
-						position.x += config.binDistance;
-						position.y += config.binDistance;
+						position.x += ( config.binDistance * ZNESTER_POLY_SCALE );
+						position.y += ( config.binDistance * ZNESTER_POLY_SCALE );
 					}
 				}
 				m_callBack( allPlacements, binPolyArea );
@@ -718,7 +727,17 @@ std::tuple<double, std::deque<ZPlacement>> ZNester::nestGArandomRotations(
 	if ( !allPlacements.empty() )
 		individual->fitness = fitness;
 
-	return std::make_tuple( fitness, allPlacements );
+	auto returnPlacements = allPlacements;
+	for ( auto& returnPlacement : returnPlacements )
+	{
+		for ( auto& pos : returnPlacement )
+		{
+			pos.x /= ZNESTER_POLY_SCALE;
+			pos.y /= ZNESTER_POLY_SCALE;
+		}
+	}
+
+	return std::make_tuple( fitness, returnPlacements );
 }
 
 // an attempt at placing polygons by trying each rotation at once
