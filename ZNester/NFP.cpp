@@ -18,6 +18,7 @@ struct TransVector
 	double	dot		= 0.0;
 	double	length2 = 0.0;
 	double	scale	= 1.0;
+	double	length	= 0.0;	// only set if scale is != 1.0
 	bool	inNfp	= false;
 	bool	back	= false;
 };
@@ -434,8 +435,9 @@ std::deque<ZPolygon> noFitPolygon( ZPolygon &a, ZPolygon &b, bool inside, bool s
 
 				if ( !transVec.back && dblSmaller( transVec.dMax2, transVec.length2 ) )
 				{
-					transVec.scale = transVec.dMax / sqrt( transVec.length2 );
-					transVec.inNfp = nfp.isPointInside( reference + ( transVec.pt * transVec.scale ), false ) ==
+					transVec.scale = transVec.dMax ;
+					transVec.length = sqrt( transVec.length2 );
+					transVec.inNfp = nfp.isPointInside( reference + ( transVec.pt * transVec.scale / transVec.length ), false ) ==
 									 ePointInside::Invalid;
 				}
 				else if ( !transVec.back )
@@ -491,7 +493,10 @@ std::deque<ZPolygon> noFitPolygon( ZPolygon &a, ZPolygon &b, bool inside, bool s
 
 			// trim
 			if ( !dblEqual( translate.scale, 1.0 ) )
+			{
 				translate.pt *= translate.scale;
+				translate.pt /= translate.length;
+			}
 
 			reference += translate.pt;
 
