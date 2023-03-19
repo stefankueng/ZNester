@@ -38,7 +38,7 @@ bool inNfp( const ZPoint& p, const std::deque<ZPolygon>& nfp );
 // if an NFP is given, only search for startpoints that have not already been traversed in the given NFP
 ZPoint searchStartPoint( ZPolygon& a, ZPolygon& b, bool inside, const std::deque<ZPolygon>& nfp,
 						 const std::function<void( eZLogLevel, const std::string& msg )>& logCallback,
-						 const tDebugCallback&											 debugDisplay );
+						 const tDebugCallback&											  debugDisplay );
 
 // returns an interior NFP for the special case where A is a rectangle
 // used if the bin is a rectangle
@@ -53,7 +53,7 @@ std::deque<ZPolygon> noFitPolygon( ZPolygon& a, ZPolygon& b, bool inside, bool s
 								   const tDebugCallback&											debugDisplay );
 void				 minkowskiFallback( std::deque<ZPolygon>&											 nfpList,
 										const std::function<void( eZLogLevel, const std::string& msg )>& logCallback, const ZPolygon& a,
-                                        const ZPolygon& b, bool inside, const tDebugCallback& debugDisplay, ZPolygon& nfp );
-std::deque<ZPolygon> noFitPolygonMinkowski( const ZPolygon& a, const ZPolygon& b, bool inside,
-											const std::function<void( eZLogLevel, const std::string& msg )>& logCallback,
-											const tDebugCallback& debugDisplay );
+										const ZPolygon& b, bool inside, const tDebugCallback& debugDisplay, ZPolygon& nfp );
+std::deque<ZPolygon> noFitPolygonMinkowski(
+	const ZPolygon& a, const ZPolygon& b, bool inside,
+	const std::function<void( eZLogLevel, const std::string& msg )>& logCallback, const tDebugCallback& debugDisplay );
