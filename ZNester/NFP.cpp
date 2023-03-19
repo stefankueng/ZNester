@@ -57,6 +57,23 @@ enum eAlignment
 	On
 };
 
+void minkowskiFallback( std::deque<ZPolygon>											&nfpList,
+						const std::function<void( eZLogLevel, const std::string &msg )> &logCallback, const ZPolygon &a,
+						const ZPolygon &b, bool inside, const tDebugCallback &debugDisplay, ZPolygon &nfp )
+{
+	if ( nfpList.empty() )
+	{
+		// didn't close the loop, something went wrong here
+		// fall back using the Minkowsky difference
+		if ( logCallback )
+			logCallback( Debug, std::format( "failed to generate nfp with orbiting approach for {0}, {1} "
+											 "{2}, using minkowski difference instead.",
+											 a.id(), b.id(), inside ? "inside" : "outside" ) );
+		nfpList = noFitPolygonMinkowski( a, b, inside, logCallback, debugDisplay );
+	}
+	nfp.clear();
+}
+
 eAlignment getAlignment( const ZPoint &segStart, const ZPoint &segEnd, const ZPoint &pt )
 {
 	auto res = ( ( segEnd.x() - segStart.x() ) * ( pt.y() - segStart.y() ) -
@@ -466,17 +483,7 @@ std::deque<ZPolygon> noFitPolygon( ZPolygon &a, ZPolygon &b, bool inside, bool s
 
 			if ( feasibleVectors.empty() )
 			{
-				if ( nfpList.empty() )
-				{
-					// didn't close the loop, something went wrong here
-					// fall back using the Minkowsky difference
-					if ( logCallback )
-						logCallback( Debug, std::format( "failed to generate nfp with orbiting approach for {0}, {1} "
-														 "{2}, using minkowski difference instead.",
-														 a.id(), b.id(), inside ? "inside" : "outside" ) );
-					nfpList = noFitPolygonMinkowski( a, b, inside, logCallback, debugDisplay );
-				}
-				nfp.clear();
+				minkowskiFallback( nfpList, logCallback, a, b, inside, debugDisplay, nfp );
 				break;
 			}
 
@@ -507,17 +514,7 @@ std::deque<ZPolygon> noFitPolygon( ZPolygon &a, ZPolygon &b, bool inside, bool s
 				 ( translate.back && feasibleVectors.size() > 1 && feasibleVectors[1].back ) ||
 				 inNfpCounter > std::max( 2, static_cast<int>( nfp.size() ) / 4 ) )
 			{
-				if ( nfpList.empty() )
-				{
-					// didn't close the loop, something went wrong here
-					// fall back using the Minkowsky difference
-					if ( logCallback )
-						logCallback( Debug, std::format( "failed to generate nfp with orbiting approach for {0}, {1} "
-														 "{2}, using minkowski difference instead.",
-														 a.id(), b.id(), inside ? "inside" : "outside" ) );
-					nfpList = noFitPolygonMinkowski( a, b, inside, logCallback, debugDisplay );
-				}
-				nfp.clear();
+				minkowskiFallback( nfpList, logCallback, a, b, inside, debugDisplay, nfp );
 				break;
 			}
 
@@ -559,17 +556,7 @@ std::deque<ZPolygon> noFitPolygon( ZPolygon &a, ZPolygon &b, bool inside, bool s
 
 		if ( nfpList.empty() && counter >= maxCount )
 		{
-			if ( nfpList.empty() )
-			{
-				// didn't close the loop, something went wrong here
-				// fall back using the Minkowsky difference
-				if ( logCallback )
-					logCallback( Debug, std::format( "failed to generate nfp with orbiting approach for {0}, {1} "
-													 "{2}, using minkowski difference instead.",
-													 a.id(), b.id(), inside ? "inside" : "outside" ) );
-				nfpList = noFitPolygonMinkowski( a, b, inside, logCallback, debugDisplay );
-			}
-			nfp.clear();
+			minkowskiFallback( nfpList, logCallback, a, b, inside, debugDisplay, nfp );
 		}
 
 		if ( !nfp.empty() )

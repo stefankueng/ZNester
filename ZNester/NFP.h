@@ -50,7 +50,10 @@ std::deque<ZPolygon> noFitPolygonRectangle( const ZPolygon& a, const ZPolygon& b
 // note: we don't need searchEdges because we treat holes in polygons as separate polygons
 std::deque<ZPolygon> noFitPolygon( ZPolygon& a, ZPolygon& b, bool inside, bool searchEdges,
 								   const std::function<void( eZLogLevel, const std::string& msg )>& logCallback,
-								   const tDebugCallback&										   debugDisplay );
+								   const tDebugCallback&											debugDisplay );
+void				 minkowskiFallback( std::deque<ZPolygon>&											 nfpList,
+										const std::function<void( eZLogLevel, const std::string& msg )>& logCallback, const ZPolygon& a,
+                                        const ZPolygon& b, bool inside, const tDebugCallback& debugDisplay, ZPolygon& nfp );
 std::deque<ZPolygon> noFitPolygonMinkowski( const ZPolygon& a, const ZPolygon& b, bool inside,
 											const std::function<void( eZLogLevel, const std::string& msg )>& logCallback,
 											const tDebugCallback& debugDisplay );
