@@ -142,8 +142,8 @@ bool ZNester::runNesting( const ZPolygon& binPoly, const std::deque<ZPolygon>& p
 				{
 					for ( auto& position : placement )
 					{
-						position.x += ( config.binDistance * ZNESTER_POLY_SCALE );
-						position.y += ( config.binDistance * ZNESTER_POLY_SCALE );
+						position.x += ( config.binDistance );
+						position.y += ( config.binDistance );
 					}
 				}
 				m_callBack( allPlacements, binPolyArea );
