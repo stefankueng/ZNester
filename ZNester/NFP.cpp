@@ -557,6 +557,21 @@ std::deque<ZPolygon> noFitPolygon( ZPolygon &a, ZPolygon &b, bool inside, bool s
 			counter++;
 		}
 
+		if ( nfpList.empty() && counter >= maxCount )
+		{
+			if ( nfpList.empty() )
+			{
+				// didn't close the loop, something went wrong here
+				// fall back using the Minkowsky difference
+				if ( logCallback )
+					logCallback( Debug, std::format( "failed to generate nfp with orbiting approach for {0}, {1} "
+													 "{2}, using minkowski difference instead.",
+													 a.id(), b.id(), inside ? "inside" : "outside" ) );
+				nfpList = noFitPolygonMinkowski( a, b, inside, logCallback, debugDisplay );
+			}
+			nfp.clear();
+		}
+
 		if ( !nfp.empty() )
 		{
 			nfpList.push_back( nfp );
