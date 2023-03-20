@@ -6,6 +6,11 @@
 
 #pragma warning( push )
 #pragma warning( disable : 4458 )  // declaration of 'xxx' hides class member
+namespace Gdiplus
+{
+  using std::min;
+  using std::max;
+};
 #include <gdiplus.h>
 
 #pragma warning( pop )
