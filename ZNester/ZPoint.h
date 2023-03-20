@@ -285,7 +285,7 @@ __forceinline bool ZPoint::onSegment( const ZPoint& a, const ZPoint& b ) const
 __forceinline double ZPoint::pointDistance( const ZPoint& p, const ZPoint& s1, const ZPoint& s2, const ZPoint& norm,
 											bool infinite )
 {
-	auto   normVec	 = norm.normalized();
+	auto   normVec	 = norm;
 	ZPoint dir		 = normVec.normal();
 
 	auto   pDot		 = p.dot( dir );
