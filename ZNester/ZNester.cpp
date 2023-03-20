@@ -730,6 +730,11 @@ std::tuple<double, std::deque<ZPlacement>> ZNester::nestGArandomRotations(
 	auto returnPlacements = allPlacements;
 	for ( auto& returnPlacement : returnPlacements )
 	{
+		//returnPlacement.hullArea /= ( ZNESTER_POLY_SCALE * ZNESTER_POLY_SCALE );
+		returnPlacement.bounds = ZRect(
+			returnPlacement.bounds.x() / ZNESTER_POLY_SCALE, returnPlacement.bounds.y() / ZNESTER_POLY_SCALE,
+			returnPlacement.bounds.width() / ZNESTER_POLY_SCALE, returnPlacement.bounds.height() / ZNESTER_POLY_SCALE );
+
 		for ( auto& pos : returnPlacement )
 		{
 			pos.x /= ZNESTER_POLY_SCALE;
