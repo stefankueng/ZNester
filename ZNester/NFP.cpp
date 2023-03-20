@@ -414,13 +414,13 @@ std::deque<ZPolygon> noFitPolygon( ZPolygon &a, ZPolygon &b, bool inside, bool s
 			for ( auto &transVec : vectors )
 			{
 				double d		 = a.slideDistance( b, transVec.pt, true );
-				transVec.length2 = transVec.pt.length2();
 				if ( dblEqual( d, 0.0 ) )
 				{
 					// a zero distance would mean that sliding in this direction
 					// leads to an intersection.
 					continue;
 				}
+				transVec.length2 = transVec.pt.length2();
 				if ( d == DBL_MAX || d * d > transVec.length2 )
 				{
 					d			   = sqrt( transVec.length2 );
