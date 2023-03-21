@@ -14,10 +14,10 @@ public:
 		, m_y( y )
 	{
 	}
-	__forceinline ZPoint( const ZPoint& p ) = default;
-	__forceinline ZPoint( ZPoint&& p )		= default;
-	__forceinline ~ZPoint()					= default;
-	__forceinline ZPoint& operator=( ZPoint&& p ) = default;
+	__forceinline ZPoint( const ZPoint& p )			   = default;
+	__forceinline ZPoint( ZPoint&& p )				   = default;
+	__forceinline ~ZPoint()							   = default;
+	__forceinline ZPoint& operator=( ZPoint&& p )	   = default;
 	__forceinline ZPoint& operator=( const ZPoint& p ) = default;
 
 	__forceinline double  x() const
@@ -406,7 +406,7 @@ __forceinline double ZPoint::segmentDistance( const ZPoint& a, const ZPoint& b, 
 	else if ( dotA > efMin && dotA < efMax )
 	{
 		auto d = ZPoint::pointDistance( a, e, f, reverse );
-		if ( d != DBL_MAX && dblEqual( d, 0 ) )
+		if ( dblEqual( d, 0 ) )
 		{
 			//  A currently touches EF, but AB is moving away from EF
 			auto dB = ZPoint::pointDistance( b, e, f, reverse, true );
@@ -439,7 +439,7 @@ __forceinline double ZPoint::segmentDistance( const ZPoint& a, const ZPoint& b, 
 	{
 		auto d = ZPoint::pointDistance( b, e, f, reverse );
 
-		if ( d != DBL_MAX && dblEqual( d, 0 ) )
+		if ( dblEqual( d, 0 ) )
 		{
 			// crossA>crossB A currently touches EF, but AB is moving away from EF
 			auto dA = ZPoint::pointDistance( a, e, f, reverse, true );
@@ -448,17 +448,14 @@ __forceinline double ZPoint::segmentDistance( const ZPoint& a, const ZPoint& b, 
 				d = DBL_MAX;
 			}
 		}
-		if ( d != DBL_MAX )
-		{
-			if ( d < distance )
-				distance = d;
-		}
+		if ( d < distance )
+			distance = d;
 	}
 
 	if ( dotE > abMin && dotE < abMax )
 	{
 		auto d = ZPoint::pointDistance( e, a, b, direction );
-		if ( d != DBL_MAX && dblEqual( d, 0 ) )
+		if ( dblEqual( d, 0 ) )
 		{
 			// crossF<crossE A currently touches EF, but AB is moving away from EF
 			auto dF = ZPoint::pointDistance( f, a, b, direction, true );
@@ -467,17 +464,14 @@ __forceinline double ZPoint::segmentDistance( const ZPoint& a, const ZPoint& b, 
 				d = DBL_MAX;
 			}
 		}
-		if ( d != DBL_MAX )
-		{
-			if ( d < distance )
-				distance = d;
-		}
+		if ( d < distance )
+			distance = d;
 	}
 
 	if ( dotF > abMin && dotF < abMax )
 	{
 		auto d = ZPoint::pointDistance( f, a, b, direction );
-		if ( d != DBL_MAX && dblEqual( d, 0 ) )
+		if ( dblEqual( d, 0 ) )
 		{
 			// crossE<crossF A currently touches EF, but AB is moving away from EF
 			auto dE = ZPoint::pointDistance( e, a, b, direction, true );
@@ -486,11 +480,8 @@ __forceinline double ZPoint::segmentDistance( const ZPoint& a, const ZPoint& b, 
 				d = DBL_MAX;
 			}
 		}
-		if ( d != DBL_MAX )
-		{
-			if ( d < distance )
-				distance = d;
-		}
+		if ( d < distance )
+			distance = d;
 	}
 
 	return distance;
