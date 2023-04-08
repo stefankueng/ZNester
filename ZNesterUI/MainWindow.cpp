@@ -190,11 +190,15 @@ LRESULT CALLBACK CMainWindow::WinMsgHandler( HWND hwnd, UINT uMsg, WPARAM wParam
 						}
 					}
 				}
-				for ( const auto& pt : m_debugMarkers )
+				if ( !m_debugMarkers.empty() )
 				{
-					constexpr float markerRadius = 2.0f;
-					memG->DrawEllipse( pen.get(), pt.x - markerRadius, pt.y - markerRadius, 2.0f * markerRadius,
-									   2.0f * markerRadius );
+					auto		dbgMarkerPen = std::make_unique<Gdiplus::Pen>( Gdiplus::Color( 255, 0, 0 ), 1.0f / m_scale / scale );
+					const float dbgMarkerRad = 2.0f / m_scale / scale;
+					for ( const auto& pt : m_debugMarkers )
+					{
+						memG->DrawEllipse( dbgMarkerPen.get(), pt.x - dbgMarkerRad, pt.y - dbgMarkerRad, 2.0f * dbgMarkerRad,
+										   2.0f * dbgMarkerRad );
+					}
 				}
 
 				if ( !m_timeString.empty() )
@@ -444,6 +448,8 @@ LRESULT CMainWindow::doCommand( int id, LPARAM /*lParam*/ )
 					while ( GetMessage( &msg, nullptr, 0, 0 ) )
 					{
 						if ( msg.message == WM_LBUTTONDOWN )
+							break;
+						if ( msg.message == WM_KEYUP )
 							break;
 						if ( msg.message == WM_QUIT )
 							break;
