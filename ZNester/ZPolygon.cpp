@@ -43,26 +43,26 @@ ZPolygon::ZPolygon( ZPolygon&& other ) noexcept
 ZPolygon& ZPolygon::operator=( const ZPolygon& other )
 {
 	__super::operator=( other );
-	m_id			 = other.m_id;
-	m_rotations		 = other.m_rotations;
-	m_rotation		 = other.m_rotation;
-	m_copies		 = other.m_copies;
-	m_copy			 = other.m_copy;
-	m_offset		 = other.m_offset;
-	m_children		 = std::make_unique<std::deque<ZPolygon>>( *other.m_children );
+	m_id		= other.m_id;
+	m_rotations = other.m_rotations;
+	m_rotation	= other.m_rotation;
+	m_copies	= other.m_copies;
+	m_copy		= other.m_copy;
+	m_offset	= other.m_offset;
+	m_children	= std::make_unique<std::deque<ZPolygon>>( *other.m_children );
 	return *this;
 }
 
 ZPolygon& ZPolygon::operator=( ZPolygon&& other ) noexcept
 {
 	__super::operator=( other );
-	m_id			 = other.m_id;
-	m_rotations		 = other.m_rotations;
-	m_rotation		 = other.m_rotation;
-	m_copies		 = other.m_copies;
-	m_copy			 = other.m_copy;
-	m_offset		 = std::move( other.m_offset );
-	m_children		 = std::move( other.m_children );
+	m_id		= other.m_id;
+	m_rotations = other.m_rotations;
+	m_rotation	= other.m_rotation;
+	m_copies	= other.m_copies;
+	m_copy		= other.m_copy;
+	m_offset	= std::move( other.m_offset );
+	m_children	= std::move( other.m_children );
 	return *this;
 }
 
@@ -529,7 +529,7 @@ double ZPolygon::slideDistance( const ZPolygon& b, const ZPoint& direction, bool
 				distance = d;
 			}
 			if ( ignoreNegative && dblEqual( distance, 0.0 ) )
-				return distance;
+				return 0.0;
 		}
 	}
 	return distance;
