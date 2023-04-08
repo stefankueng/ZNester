@@ -2,6 +2,7 @@
 #include <deque>
 
 #include "ZGeomUtil.h"
+constexpr double DBL_ANG_TOL = 1e-7;
 
 class AngleRange
 {
@@ -15,14 +16,14 @@ public:
 	{
 		if ( m_start < m_end )
 		{
-			if ( dblSmaller( angle, m_start ) || dblLarger( angle, m_end ) )
+			if ( dblSmaller( angle, m_start, DBL_ANG_TOL ) || dblLarger( angle, m_end, DBL_ANG_TOL ) )
 			{
 				return false;
 			}
 		}
 		else
 		{
-			if ( dblSmaller( angle, m_start ) && dblLarger( angle, m_end ) )
+			if ( dblSmaller( angle, m_start, DBL_ANG_TOL ) && dblLarger( angle, m_end, DBL_ANG_TOL ) )
 			{
 				return false;
 			}
