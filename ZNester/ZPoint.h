@@ -86,6 +86,10 @@ public:
 	{
 		return m_x * b.m_y - m_y * b.m_x;
 	}
+	__forceinline double angle() const
+	{
+		return ( std::atan2( m_x, m_y ) ) * RAD_2DEG;
+	}
 	__forceinline bool			onSegment( const ZPoint& a, const ZPoint& b ) const;
 
 	__forceinline static double pointDistance( const ZPoint& p, const ZPoint& s1, const ZPoint& s2, const ZPoint& norm,
