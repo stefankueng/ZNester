@@ -92,8 +92,8 @@ public:
 	}
 	__forceinline bool			onSegment( const ZPoint& a, const ZPoint& b ) const;
 
-	__forceinline static double pointDistance( const ZPoint& p, const ZPoint& s1, const ZPoint& s2, const ZPoint& norm,
-											   bool infinite = false );
+	__forceinline static double pointDistance( const ZPoint& p, const ZPoint& s1, const ZPoint& s2,
+											   const ZPoint& normVec, bool infinite = false );
 	__forceinline static double segmentDistance( const ZPoint& a, const ZPoint& b, const ZPoint& e, const ZPoint& f,
 												 const ZPoint& direction );
 	__forceinline static ZPoint lineIntersect( const ZPoint& a, const ZPoint& b, const ZPoint& e, const ZPoint& f,
@@ -286,10 +286,9 @@ __forceinline bool ZPoint::onSegment( const ZPoint& a, const ZPoint& b ) const
 	return true;
 }
 
-__forceinline double ZPoint::pointDistance( const ZPoint& p, const ZPoint& s1, const ZPoint& s2, const ZPoint& norm,
+__forceinline double ZPoint::pointDistance( const ZPoint& p, const ZPoint& s1, const ZPoint& s2, const ZPoint& normVec,
 											bool infinite )
 {
-	auto   normVec	 = norm;
 	ZPoint dir		 = normVec.normal();
 
 	auto   pDot		 = p.dot( dir );
