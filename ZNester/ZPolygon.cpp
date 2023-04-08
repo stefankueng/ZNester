@@ -511,20 +511,23 @@ double ZPolygon::slideDistance( const ZPolygon& b, const ZPoint& direction, bool
 	double distance = DBL_MAX;
 	ZPoint dir		= direction.normalized();
 
+	ZPoint b2		= b[0] + b.offset();
 	for ( int i = 0; i < b.size(); ++i )
 	{
-		auto offB = ( ( i == ( b.size() - 1 ) ) ? 0 : i + 1 );
-		auto b1	  = b[i] + b.offset();
-		auto b2	  = b[offB] + b.offset();
+		ZPoint b1	= b2;
+		auto   offB = ( ( i == ( b.size() - 1 ) ) ? 0 : i + 1 );
+		b2			= b[offB] + b.offset();
+
+		ZPoint a2	= at( 0 ) + offset();
 		for ( int j = 0; j < size(); ++j )
 		{
-			auto offA = ( ( j == ( size() - 1 ) ) ? 0 : j + 1 );
-			auto a1	  = at( j ) + offset();
-			auto a2	  = at( offA ) + offset();
+			ZPoint a1	= a2;
+			auto   offA = ( ( j == ( size() - 1 ) ) ? 0 : j + 1 );
+			a2			= at( offA ) + offset();
 
-			auto d	  = ZPoint::segmentDistance( a1, a2, b1, b2, dir );
+			auto d		= ZPoint::segmentDistance( a1, a2, b1, b2, dir );
 
-			if ( ( d < distance ) && ( !ignoreNegative || d > 0 || dblEqual( d, 0.0 ) ) )
+			if ( ( d < distance ) && ( !ignoreNegative || d > -DBL_TOL ) )
 			{
 				distance = d;
 			}
