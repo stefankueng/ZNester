@@ -8,6 +8,8 @@
 #include <algorithm>
 #include <format>
 
+#include "AngleRanges.h"
+
 struct TransVector
 {
 	ZPoint	pt;
@@ -336,6 +338,7 @@ std::deque<ZPolygon> noFitPolygon( ZPolygon &a, ZPolygon &b, bool inside, bool s
 			// generate translation vectors from touching vertices/edges
 			std::vector<TransVector> vectors;
 			vectors.reserve( touching.size() * 4 );
+			AngleRanges angleRanges;
 			for ( const auto &[type, edgeA, edgeB] : touching )
 			{
 				auto &vertexA = a[edgeA];
@@ -369,6 +372,9 @@ std::deque<ZPolygon> noFitPolygon( ZPolygon &a, ZPolygon &b, bool inside, bool s
 						TransVector vB1 = { vertexB - nextB, &nextB, &vertexB };
 						TransVector vB2 = { vertexB - prevB, &prevB, &vertexB };
 
+						angleRanges.addRange( vA1.pt.angle(), vA2.pt.angle() );
+						angleRanges.addRange( vB1.pt.angle(), vB2.pt.angle() );
+
 						vectors.push_back( std::move( vA1 ) );
 						vectors.push_back( std::move( vA2 ) );
 						vectors.push_back( std::move( vB1 ) );
@@ -376,19 +382,32 @@ std::deque<ZPolygon> noFitPolygon( ZPolygon &a, ZPolygon &b, bool inside, bool s
 					}
 					break;
 					case 1:
+					{
 						// B is on segment APrev-A
 						vectors.emplace_back( vertexA - ( vertexB + b.offset() ), &prevA, &vertexA );
+						auto s = vectors.back().pt.angle();
 						vectors.emplace_back( prevA - ( vertexB + b.offset() ), &vertexA, &prevA );
-						break;
+						auto e = vectors.back().pt.angle();
+						angleRanges.addRange( s, e );
+					}
+					break;
 					case 2:
+					{
 						// A is on segment BPrev-B
 						vectors.emplace_back( vertexA - ( vertexB + b.offset() ), &prevB, &vertexB );
+						auto s = vectors.back().pt.angle();
 						vectors.emplace_back( vertexA - ( prevB + b.offset() ), &vertexB, &prevB );
-						break;
+						auto e = vectors.back().pt.angle();
+						angleRanges.addRange( s, e );
+					}
+					break;
 				}
 			}
-
+#ifdef _DEBUG
+			static bool showDebug = true;
+#else
 			static bool showDebug = false;
+#endif
 			if ( debugDisplay && showDebug )
 			{
 				ZPolygon aCopy;
@@ -406,14 +425,15 @@ std::deque<ZPolygon> noFitPolygon( ZPolygon &a, ZPolygon &b, bool inside, bool s
 				debugDisplay( { aCopy, bCopy, nfp }, markers );
 			}
 
-			// maybe there's a faster way to reject vectors that will cause immediate intersection?
-			// For now just check them all
-
 			std::vector<TransVector> feasibleVectors;
 			feasibleVectors.reserve( vectors.size() );
 			for ( auto &transVec : vectors )
 			{
-				double d		 = a.slideDistance( b, transVec.pt, true );
+				// reject vectors that would lead to an immediate intersection
+				if ( !angleRanges.angleInRange( transVec.pt.angle() ) )
+					continue;
+
+				double d = a.slideDistance( b, transVec.pt, true );
 				if ( dblEqual( d, 0.0 ) )
 				{
 					// a zero distance would mean that sliding in this direction
@@ -443,7 +463,7 @@ std::deque<ZPolygon> noFitPolygon( ZPolygon &a, ZPolygon &b, bool inside, bool s
 
 						// we need to scale down to unit vectors to normalize vector length.
 						// Could also just do a tan here
-						if ( abs( unitv.cross( prevVector ) ) < 0.0001 )
+						if ( dblEqual( unitv.cross( prevVector ), 0.0 ) )
 						{
 							transVec.back = true;
 						}
@@ -452,10 +472,10 @@ std::deque<ZPolygon> noFitPolygon( ZPolygon &a, ZPolygon &b, bool inside, bool s
 
 				if ( !transVec.back && dblSmaller( transVec.dMax2, transVec.length2 ) )
 				{
-					transVec.scale = transVec.dMax ;
+					transVec.scale	= transVec.dMax;
 					transVec.length = sqrt( transVec.length2 );
-					transVec.inNfp = nfp.isPointInside( reference + ( transVec.pt * transVec.scale / transVec.length ), false ) ==
-									 ePointInside::Invalid;
+					transVec.inNfp	= nfp.isPointInside( reference + ( transVec.pt * transVec.scale / transVec.length ),
+														 false ) == ePointInside::Invalid;
 				}
 				else if ( !transVec.back )
 					transVec.inNfp = nfp.isPointInside( reference + transVec.pt, false ) == ePointInside::Invalid;
@@ -554,7 +574,7 @@ std::deque<ZPolygon> noFitPolygon( ZPolygon &a, ZPolygon &b, bool inside, bool s
 			counter++;
 		}
 
-		if ( nfpList.empty() && counter >= maxCount )
+		if ( nfpList.empty() && ( ( counter >= maxCount ) || ( nfp.size() < ( std::max( 3ULL, a.size() / 3 ) ) ) ) )
 		{
 			minkowskiFallback( nfpList, logCallback, a, b, inside, debugDisplay, nfp );
 		}
