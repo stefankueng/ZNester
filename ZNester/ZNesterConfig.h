@@ -8,5 +8,5 @@ struct ZNesterConfig
 
 	// params for the genetic algorithm: only change if you know what you're doing
 	size_t populationSize = 10;
-	size_t mutationRate	  = 50;
+	size_t mutationRate	  = 20;
 };

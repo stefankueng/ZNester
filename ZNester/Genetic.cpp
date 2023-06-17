@@ -47,7 +47,7 @@ Individual Genetic::mutate( const Individual& individual, const ZNesterConfig& c
 		}
 
 		rnd = rand();
-		if ( rnd < mutationRate )
+		if ( rnd < mutationRate / 4 )
 		{
 			clone.rotation[i] = randomAngle( clone.placement[i] );
 		}
@@ -58,7 +58,7 @@ Individual Genetic::mutate( const Individual& individual, const ZNesterConfig& c
 std::tuple<Individual, Individual> Genetic::mate( const Individual& male, const Individual& female )
 {
 	auto	   cutpoint = static_cast<__int64>( round(
-			  std::min( std::max( static_cast<double>( rand() ) / RAND_MAX, 0.1 ), 0.9 ) * ( male.placement.size() - 1 ) ) );
+		  std::min( std::max( static_cast<double>( rand() ) / RAND_MAX, 0.1 ), 0.9 ) * ( male.placement.size() - 1 ) ) );
 
 	Individual child1;
 	child1.placement = std::deque<ZPolygon>( male.placement.begin(), male.placement.begin() + cutpoint );
