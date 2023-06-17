@@ -646,7 +646,8 @@ std::tuple<double, std::deque<ZPlacement>> ZNester::nestGArandomRotations(
 					// weigh width more, to help compress in direction of gravity
 					auto area = hullArea * ( rectBounds.width() * 2.0 / rectBounds.height() );
 
-					if ( area < minArea || ( dblEqual( minArea, area ) && ( shiftVector.x < minx ) ) )
+					if ( area < minArea || ( dblEqual( minWidth, rectBounds.width(), 10.0 ) && 
+						(( shiftVector.x < minx ) || (hullArea < minHullArea))) )
 					{
 						minArea		= area;
 						minWidth	= rectBounds.width();
