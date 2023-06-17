@@ -532,7 +532,8 @@ std::deque<ZPolygon> noFitPolygon( ZPolygon &a, ZPolygon &b, bool inside, bool s
 			// Unfortunately this can happen due to double floating point calculations...
 			if ( feasibleVectors.empty() ||
 				 ( translate.back && feasibleVectors.size() > 1 && feasibleVectors[1].back ) ||
-				 inNfpCounter > std::max( 2, static_cast<int>( nfp.size() ) / 4 ) )
+				 ( inNfpCounter > std::max( 2, static_cast<int>( nfp.size() ) / 4 ) ) ||
+				 ( inNfpCounter * 4 >= nfp.size() ) )
 			{
 				minkowskiFallback( nfpList, logCallback, a, b, inside, debugDisplay, nfp );
 				break;
