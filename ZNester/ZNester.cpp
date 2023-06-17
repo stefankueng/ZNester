@@ -393,6 +393,7 @@ std::deque<ZPolygon> ZNester::getCombinedNfp( const ZPolygon& path, const std::d
 	return finalNfp;
 }
 
+// nest with "genetic algorithm, random rotations"
 std::tuple<double, std::deque<ZPlacement>> ZNester::nestGArandomRotations(
 	const ZNesterConfig& config, const ZPolygon& binPoly, Genetic& genetic,
 	std::map<NfpKey, std::deque<ZPolygon>>& nfpCache )
@@ -526,9 +527,9 @@ std::tuple<double, std::deque<ZPlacement>> ZNester::nestGArandomRotations(
 
 			// ensure all necessary NFPs exist
 			bool unplaceable = false;
-			for ( size_t j = 0; j < placed.size(); ++j )
+			for (const auto& placedPoly : placed)
 			{
-				NfpKey placedKey{ placed[j].id(), path.id(), false, placed[j].rotation(), path.rotation() };
+				NfpKey placedKey{ placedPoly.id(), path.id(), false, placedPoly.rotation(), path.rotation() };
 
 				if ( !nfpCache.contains( placedKey ) )
 				{
@@ -544,7 +545,7 @@ std::tuple<double, std::deque<ZPlacement>> ZNester::nestGArandomRotations(
 			ZPosition position;
 			if ( placed.empty() )
 			{
-				// first placement, put it on the bottom left
+				// first item to place, put it on the bottom left
 				for ( size_t j = 0; j < binNfp.size(); ++j )
 				{
 					for ( size_t k = 0; k < binNfp[j].size(); ++k )
@@ -578,10 +579,10 @@ std::tuple<double, std::deque<ZPlacement>> ZNester::nestGArandomRotations(
 				continue;
 			}
 
-			// get the nfp of all places polygons against the one we have to place now
+			// get the nfp of all placed polygons against the one we have to place now
 			auto finalNfp = getCombinedNfp( path, placed, binNfp, nfpCache, placements );
 
-			// choose placement that results in the smallest convex hull
+			// choose placement that results in the smallest total width
 
 			minWidth		   = DBL_MAX;
 			double minArea	   = DBL_MAX;
@@ -612,6 +613,11 @@ std::tuple<double, std::deque<ZPlacement>> ZNester::nestGArandomRotations(
 
 					// enhancement: if it's necessary to place a polygon only on a specific
 					// raster grid, here's the place to do that
+
+					// enhancement: instead of using random rotations, we could go through all
+					// possible rotations and check which one results in the best layout here.
+					// would require to first calculate the Nfps for all rotations though...
+					// see below: nestGAbestRotation()
 
 					// enhancement: currently only points of nfps are checked. If two subsequent
 					// points are a large distance apart, we don't check the many possible placement
@@ -722,7 +728,7 @@ std::tuple<double, std::deque<ZPlacement>> ZNester::nestGArandomRotations(
 	}
 
 	// if paths is not empty, then some paths could not be placed
-	// so increase the fitness
+	// so increase the fitness: using less bins is always better
 	fitness += 2 * paths.size();
 
 	if ( !allPlacements.empty() )
