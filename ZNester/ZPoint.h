@@ -2,6 +2,7 @@
 #include <cassert>
 #include <cfloat>
 #include <cmath>
+#include <algorithm>
 
 #include "ZGeomUtil.h"
 
