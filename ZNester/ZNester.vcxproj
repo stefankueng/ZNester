@@ -177,6 +177,7 @@
     <ClInclude Include="..\Clipper2Lib\include\clipper2\clipper.minkowski.h" />
     <ClInclude Include="..\Clipper2Lib\include\clipper2\clipper.offset.h" />
     <ClInclude Include="..\Clipper2Lib\include\clipper2\clipper.rectclip.h" />
+    <ClInclude Include="..\Clipper2Lib\include\clipper2\clipper.version.h" />
     <ClInclude Include="AngleRanges.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="Genetic.h" />

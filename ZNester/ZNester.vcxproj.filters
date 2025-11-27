@@ -87,6 +87,9 @@
     <ClInclude Include="AngleRanges.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\Clipper2Lib\include\clipper2\clipper.version.h">
+      <Filter>Clipper2\include\clipper2</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
