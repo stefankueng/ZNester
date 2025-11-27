@@ -794,8 +794,11 @@ std::tuple<double, std::deque<ZPlacement>> ZNester::nestGAbestRotation(
 		for ( const auto& polyToPlace : placelist )
 		{
 			++placedCount;
-			auto outStr = std::format( "handling {0} of {1}\n", placedCount, placelist.size() );
-			OutputDebugStringA( outStr.c_str() );
+			if ( m_logCallback )
+			{
+				auto outStr = std::format( "handling {0} of {1}\n", placedCount, placelist.size() );
+				m_logCallback( eZLogLevel::Debug, outStr );
+			}
 
 			std::deque<double> angleList;
 			if ( polyToPlace.rotations() == 0 )
@@ -828,8 +831,11 @@ std::tuple<double, std::deque<ZPlacement>> ZNester::nestGAbestRotation(
 				}
 			}
 			std::mutex cacheMutex;
-
+#ifdef _DEBUG
 			std::for_each( std::execution::seq, nfpPairs.begin(), nfpPairs.end(),
+#else
+			std::for_each( std::execution::par, nfpPairs.begin(), nfpPairs.end(),
+#endif
 						   [&]( const auto& pair )
 						   {
 							   auto a	 = pair.partA.rotated( pair.key.aRotation );

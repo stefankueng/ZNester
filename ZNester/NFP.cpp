@@ -404,7 +404,7 @@ std::deque<ZPolygon> noFitPolygon( ZPolygon &a, ZPolygon &b, bool inside, bool s
 				}
 			}
 #ifdef _DEBUG
-			static bool showDebug = true;
+			static bool showDebug = false;
 #else
 			static bool showDebug = false;
 #endif
