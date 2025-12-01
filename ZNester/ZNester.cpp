@@ -85,7 +85,7 @@ bool ZNester::doNest( const ZPolygon& binPoly, const std::deque<ZPolygon>& polyg
 					   []( const auto& p1, const auto& p2 ) -> bool
 					   { return abs( p1.bounds().area() ) > abs( p2.bounds().area() ); } );
 
-#ifdef _DEBUG
+#ifdef DEBUG_NEST
 	srand( static_cast<int>( time( nullptr ) ) );
 	m_run = true;
 	runNesting( m_bin, m_tree, m_config );
@@ -452,7 +452,7 @@ std::tuple<double, std::deque<ZPlacement>> ZNester::nestGArandomRotations(
 
 	// calculate all necessary nfps for this iteration
 	std::mutex cacheMutex;
-#ifdef _DEBUG
+#ifdef DEBUG_NEST
 	for ( const auto& pair : nfpPairs )
 #else
 	std::for_each( std::execution::par, nfpPairs.begin(), nfpPairs.end(),
@@ -482,7 +482,7 @@ std::tuple<double, std::deque<ZPlacement>> ZNester::nestGArandomRotations(
 				nfpCache[pair.key] = cleanNfps;
 			}
 		}
-#ifdef _DEBUG
+#ifdef DEBUG_NEST
 	};
 #else
 				   } );
@@ -831,7 +831,7 @@ std::tuple<double, std::deque<ZPlacement>> ZNester::nestGAbestRotation(
 				}
 			}
 			std::mutex cacheMutex;
-#ifdef _DEBUG
+#ifdef DEBUG_NEST
 			std::for_each( std::execution::seq, nfpPairs.begin(), nfpPairs.end(),
 #else
 			std::for_each( std::execution::par, nfpPairs.begin(), nfpPairs.end(),

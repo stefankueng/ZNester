@@ -403,11 +403,8 @@ std::deque<ZPolygon> noFitPolygon( ZPolygon &a, ZPolygon &b, bool inside, bool s
 					break;
 				}
 			}
-#ifdef _DEBUG
 			static bool showDebug = false;
-#else
-			static bool showDebug = false;
-#endif
+
 			if ( debugDisplay && showDebug )
 			{
 				ZPolygon aCopy;
