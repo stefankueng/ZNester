@@ -51,8 +51,8 @@ bool ZNester::doNest( const ZPolygon& binPoly, const std::deque<ZPolygon>& polyg
 
 	m_bin = binPoly.scaled( ZNESTER_POLY_SCALE );
 	m_bin.setId( SIZE_T_MAX );
-	m_tree	 = buildTree( scaledPolys );
 	m_config = config;
+	m_tree	 = buildTree( scaledPolys );
 
 	m_bin.shrink( m_config.binDistance * ZNESTER_POLY_SCALE );
 	// remove duplicate endpoints, ensure counterclockwise winding direction
