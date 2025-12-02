@@ -504,7 +504,9 @@ std::tuple<double, std::deque<ZPlacement>> ZNester::nestGArandomRotations(
 
 	std::deque<ZPlacement> allPlacements;
 	double				   fitness = 0.0;
+#ifdef PROFILE_NEST
 	ProfileTimer		   timer( L"placing" );
+#endif
 	while ( m_run && paths.size() > 0 )
 	{
 		std::deque<ZPolygon> placed;
