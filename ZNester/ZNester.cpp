@@ -162,46 +162,47 @@ bool ZNester::runNesting( const ZPolygon& binPoly, const std::deque<ZPolygon>& p
 
 std::deque<ZPolygon> ZNester::buildTree( std::deque<ZPolygon> polygons ) const
 {
-	if ( m_config.detectChildren == false )
-		return polygons;
-	// go through all polygons and determine whether a polygon is inside another
-	// those inside others are treated as holes
-	// note: for now, only one level of polygons/holes is supported, i.e. a hole
-	// can not contain other polygons
-	std::set<ZPolygon*> children;
-	size_t				i		   = 0;
-	size_t				polyPoints = 0;
-	size_t				holes	   = 0;
-	for ( auto& poly : polygons )
+	size_t polyPoints = 0;
+	size_t holes	  = 0;
+	if ( m_config.detectChildren )
 	{
-		// ensure that each polygon does not have start and end point the same
-		if ( poly[0] == poly[poly.size() - 1] )
-			poly.erase( poly.begin() );
-
-		bool   isChild = false;
-		size_t j	   = 0;
-		for ( auto& poly2 : polygons )
+		// go through all polygons and determine whether a polygon is inside another
+		// those inside others are treated as holes
+		// note: for now, only one level of polygons/holes is supported, i.e. a hole
+		// can not contain other polygons
+		std::set<ZPolygon*> children;
+		size_t				i		   = 0;
+		for ( auto& poly : polygons )
 		{
-			if ( i == j )
+			// ensure that each polygon does not have start and end point the same
+			if ( poly[0] == poly[poly.size() - 1] )
+				poly.erase( poly.begin() );
+
+			bool   isChild = false;
+			size_t j	   = 0;
+			for ( auto& poly2 : polygons )
 			{
+				if ( i == j )
+				{
+					++j;
+					continue;
+				}
+				if ( poly2.isPointInside( poly[0], false ) == ePointInside::Inside )
+				{
+					poly2.addChild( poly );
+					isChild = true;
+					holes++;
+					break;
+				}
 				++j;
-				continue;
 			}
-			if ( poly2.isPointInside( poly[0], false ) == ePointInside::Inside )
-			{
-				poly2.addChild( poly );
-				isChild = true;
-				holes++;
-				break;
-			}
-			++j;
+			if ( isChild )
+				children.insert( &poly );
+			++i;
+			polyPoints += poly.size();
 		}
-		if ( isChild )
-			children.insert( &poly );
-		++i;
-		polyPoints += poly.size();
+		std::erase_if( polygons, [&]( auto& poly ) -> bool { return children.contains( &poly ); } );
 	}
-	std::erase_if( polygons, [&]( auto& poly ) -> bool { return children.contains( &poly ); } );
 
 	// insert copies
 	std::deque<ZPolygon> copies;
