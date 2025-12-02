@@ -162,6 +162,8 @@ bool ZNester::runNesting( const ZPolygon& binPoly, const std::deque<ZPolygon>& p
 
 std::deque<ZPolygon> ZNester::buildTree( std::deque<ZPolygon> polygons ) const
 {
+	if ( m_config.detectChildren == false )
+		return polygons;
 	// go through all polygons and determine whether a polygon is inside another
 	// those inside others are treated as holes
 	// note: for now, only one level of polygons/holes is supported, i.e. a hole
