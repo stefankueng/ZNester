@@ -27,105 +27,105 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="framework.h">
+    <ClInclude Include="ZNester\framework.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="pch.h">
+    <ClInclude Include="ZNester\pch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ZNesterAPI.h">
+    <ClInclude Include="ZNester\ZNesterAPI.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ZPoint.h">
+    <ClInclude Include="ZNester\ZPoint.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ZGeomUtil.h">
+    <ClInclude Include="ZNester\ZGeomUtil.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ZPolygon.h">
+    <ClInclude Include="ZNester\ZPolygon.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ZRect.h">
+    <ClInclude Include="ZNester\ZRect.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ZNester.h">
+    <ClInclude Include="ZNester\ZNester.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Genetic.h">
+    <ClInclude Include="ZNester\Genetic.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ZNesterConfig.h">
+    <ClInclude Include="ZNester\ZNesterConfig.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="NFP.h">
+    <ClInclude Include="ZNester\NFP.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ProfileTimer.h">
+    <ClInclude Include="ZNester\ProfileTimer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Clipper2Lib\include\clipper2\clipper.h">
+    <ClInclude Include="Clipper2Lib\include\clipper2\clipper.h">
       <Filter>Clipper2\include\clipper2</Filter>
     </ClInclude>
-    <ClInclude Include="..\Clipper2Lib\include\clipper2\clipper.minkowski.h">
+    <ClInclude Include="Clipper2Lib\include\clipper2\clipper.minkowski.h">
       <Filter>Clipper2\include\clipper2</Filter>
     </ClInclude>
-    <ClInclude Include="..\Clipper2Lib\include\clipper2\clipper.offset.h">
+    <ClInclude Include="Clipper2Lib\include\clipper2\clipper.offset.h">
       <Filter>Clipper2\include\clipper2</Filter>
     </ClInclude>
-    <ClInclude Include="..\Clipper2Lib\include\clipper2\clipper.rectclip.h">
+    <ClInclude Include="Clipper2Lib\include\clipper2\clipper.rectclip.h">
       <Filter>Clipper2\include\clipper2</Filter>
     </ClInclude>
-    <ClInclude Include="..\Clipper2Lib\include\clipper2\clipper.core.h">
+    <ClInclude Include="Clipper2Lib\include\clipper2\clipper.core.h">
       <Filter>Clipper2\include\clipper2</Filter>
     </ClInclude>
-    <ClInclude Include="..\Clipper2Lib\include\clipper2\clipper.engine.h">
+    <ClInclude Include="Clipper2Lib\include\clipper2\clipper.engine.h">
       <Filter>Clipper2\include\clipper2</Filter>
     </ClInclude>
-    <ClInclude Include="..\Clipper2Lib\include\clipper2\clipper.export.h">
+    <ClInclude Include="Clipper2Lib\include\clipper2\clipper.export.h">
       <Filter>Clipper2\include\clipper2</Filter>
     </ClInclude>
-    <ClInclude Include="AngleRanges.h">
+    <ClInclude Include="ZNester\AngleRanges.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Clipper2Lib\include\clipper2\clipper.version.h">
+    <ClInclude Include="Clipper2Lib\include\clipper2\clipper.version.h">
       <Filter>Clipper2\include\clipper2</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="dllmain.cpp">
+    <ClCompile Include="ZNester\dllmain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="pch.cpp">
+    <ClCompile Include="ZNester\pch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ZNesterAPI.cpp">
+    <ClCompile Include="ZNester\ZNesterAPI.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ZPoint.cpp">
+    <ClCompile Include="ZNester\ZPoint.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ZPolygon.cpp">
+    <ClCompile Include="ZNester\ZPolygon.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ZNester.cpp">
+    <ClCompile Include="ZNester\ZNester.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ZRect.cpp">
+    <ClCompile Include="ZNester\ZRect.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Genetic.cpp">
+    <ClCompile Include="ZNester\Genetic.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="NFP.cpp">
+    <ClCompile Include="ZNester\NFP.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Clipper2Lib\src\clipper.offset.cpp">
+    <ClCompile Include="Clipper2Lib\src\clipper.offset.cpp">
       <Filter>Clipper2\src</Filter>
     </ClCompile>
-    <ClCompile Include="..\Clipper2Lib\src\clipper.rectclip.cpp">
+    <ClCompile Include="Clipper2Lib\src\clipper.rectclip.cpp">
       <Filter>Clipper2\src</Filter>
     </ClCompile>
-    <ClCompile Include="..\Clipper2Lib\src\clipper.engine.cpp">
+    <ClCompile Include="Clipper2Lib\src\clipper.engine.cpp">
       <Filter>Clipper2\src</Filter>
     </ClCompile>
   </ItemGroup>

@@ -2,7 +2,10 @@
 
 #include "ZNester.h"
 
+#pragma warning( push )
+#pragma warning( disable : 4702 )  // unreachable code
 #include <clipper2/clipper.h>
+#pragma warning( pop )
 #include <corecrt_math_defines.h>
 #include <intsafe.h>
 

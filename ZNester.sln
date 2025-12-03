@@ -5,7 +5,7 @@ VisualStudioVersion = 17.1.32414.318
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ZNesterUI", "ZNesterUI\ZNesterUI.vcxproj", "{C6CD79E1-A288-42B1-BEA5-CB699065D6C0}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ZNester", "ZNester\ZNester.vcxproj", "{03C93172-9852-4729-AD9F-857F6E9694B5}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ZNester", "ZNester.vcxproj", "{03C93172-9852-4729-AD9F-857F6E9694B5}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Tests", "Tests\Tests.vcxproj", "{5B0F0431-2734-4C3A-93C8-30CB7A64E449}"
 EndProject
@@ -17,9 +17,7 @@ EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
-		Debug|x86 = Debug|x86
 		Release|x64 = Release|x64
-		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{C6CD79E1-A288-42B1-BEA5-CB699065D6C0}.Debug|x64.ActiveCfg = Debug|x64

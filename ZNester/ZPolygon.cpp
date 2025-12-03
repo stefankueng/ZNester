@@ -2,7 +2,10 @@
 
 #include "ZPolygon.h"
 
+#pragma warning( push )
+#pragma warning( disable : 4702 )  // unreachable code
 #include <clipper2/clipper.h>
+#pragma warning( pop )
 
 ZPolygon::ZPolygon()
 {
@@ -294,15 +297,14 @@ std::deque<ZPolygon> ZPolygon::united( const ZPolygon& other ) const
 	auto				 result = Clipper2Lib::Union( paths, Clipper2Lib::FillRule::NonZero );
 
 	std::deque<ZPolygon> unitedPolys;
-	for ( const auto& poly : result )
+	if ( const auto& poly = result.begin(); poly != result.end() )
 	{
 		ZPolygon unitedPoly;
-		for ( const auto& pt : poly )
+		for ( const auto& pt : *poly )
 		{
 			unitedPoly.emplace_back( pt.x / CLIPPER_LIB_SCALE, pt.y / CLIPPER_LIB_SCALE );
 		}
 		unitedPolys.push_back( unitedPoly );
-		break;
 	}
 
 	return unitedPolys;

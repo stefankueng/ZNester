@@ -2,7 +2,10 @@
 
 #include "NFP.h"
 
+#pragma warning( push )
+#pragma warning( disable : 4702 )  // unreachable code
 #include <clipper2/clipper.h>
+#pragma warning( pop )
 #include <intsafe.h>
 
 #include <algorithm>
