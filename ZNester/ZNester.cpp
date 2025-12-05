@@ -46,8 +46,11 @@ bool ZNester::doNest( const ZPolygon& binPoly, const std::deque<ZPolygon>& polyg
 	stopNest();
 	m_fitness = DBL_MAX;
 
+#ifdef FULL_RANDOM_NEST
 	srand( static_cast<int>( time( nullptr ) ) );
-
+#else
+	srand( 1234 );
+#endif
 	auto scaledPolys = polygons;
 	for ( auto& poly : scaledPolys )
 		poly *= ZNESTER_POLY_SCALE;
@@ -89,14 +92,22 @@ bool ZNester::doNest( const ZPolygon& binPoly, const std::deque<ZPolygon>& polyg
 					   { return abs( p1.bounds().area() ) > abs( p2.bounds().area() ); } );
 
 #ifdef DEBUG_NEST
+#	ifdef FULL_RANDOM_NEST
 	srand( static_cast<int>( time( nullptr ) ) );
+#	else
+	srand( 1234 );
+#	endif
 	m_run = true;
 	runNesting( m_bin, m_tree, m_config );
 #else
 	m_thread = std::thread(
 		[&]()
 		{
+#	ifdef FULL_RANDOM_NEST
 			srand( static_cast<int>( time( nullptr ) ) );
+#	else
+			srand( 1234 );
+#	endif
 			m_run = true;
 			runNesting( m_bin, m_tree, m_config );
 		} );
