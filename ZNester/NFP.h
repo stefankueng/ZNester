@@ -57,6 +57,9 @@ std::deque<ZPolygon> noFitPolygonRectangles(
 std::deque<ZPolygon> noFitPolygon( ZPolygon& a, ZPolygon& b, bool inside, bool searchEdges,
 								   const std::function<void( eZLogLevel, const std::string& msg )>& logCallback,
 								   const tDebugCallback&                                            debugDisplay );
+// validates a computed NFP by checking sample placements
+bool                 validateNfp( const ZPolygon& a, const ZPolygon& b, const ZPolygon& nfp, bool inside,
+								  const std::function<void( eZLogLevel, const std::string& msg )>& logCallback );
 void                 minkowskiFallback( std::deque<ZPolygon>&                                            nfpList,
 										const std::function<void( eZLogLevel, const std::string& msg )>& logCallback, const ZPolygon& a,
 										const ZPolygon& b, bool inside, const tDebugCallback& debugDisplay, ZPolygon& nfp );

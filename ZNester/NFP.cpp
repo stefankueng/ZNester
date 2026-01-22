@@ -462,6 +462,8 @@ std::deque<ZPolygon> noFitPolygon( ZPolygon& a, ZPolygon& b, bool inside, bool s
 						angleRanges.addRange( s, e );
 					}
 					break;
+					default:
+						break;
 				}
 			}
 			static bool showDebug = false;
@@ -632,8 +634,11 @@ std::deque<ZPolygon> noFitPolygon( ZPolygon& a, ZPolygon& b, bool inside, bool s
 
 			counter++;
 		}
-
 		if ( nfpList.empty() && ( ( counter >= maxCount ) || ( nfp.size() < ( std::max( 3ULL, a.size() / 3 ) ) ) ) )
+		{
+			minkowskiFallback( nfpList, logCallback, a, b, inside, debugDisplay, nfp );
+		}
+		else if ( !validateNfp( a, b, nfp, inside, logCallback ) )
 		{
 			minkowskiFallback( nfpList, logCallback, a, b, inside, debugDisplay, nfp );
 		}
@@ -655,13 +660,111 @@ std::deque<ZPolygon> noFitPolygon( ZPolygon& a, ZPolygon& b, bool inside, bool s
 	return nfpList;
 }
 
+bool validateNfp( const ZPolygon& a, const ZPolygon& b, const ZPolygon& nfp, bool inside,
+				  const std::function<void( eZLogLevel, const std::string& msg )>& logCallback )
+{
+	if ( nfp.size() < 3 )
+	{
+		if ( logCallback )
+			logCallback( Debug, std::format( "NFP validation failed: insufficient vertices ({}) for {}, {}", nfp.size(),
+											 a.id(), b.id() ) );
+		return false;
+	}
+
+	// sample every N-th vertex plus a few mid-edge points
+	const size_t sampleCount = std::min( nfp.size(), static_cast<size_t>( 8 ) );
+	const size_t step        = std::max( static_cast<size_t>( 1 ), nfp.size() / sampleCount );
+
+	auto         bCopy       = b;
+	for ( size_t i = 0; i < nfp.size(); i += step )
+	{
+		const auto& testPoint = nfp[i];
+		bCopy.setOffset( testPoint - b[0] );
+
+		// check all B vertices satisfy the constraint
+		for ( const auto& bPt : bCopy )
+		{
+			const auto ptInA = a.isPointInside( bPt + bCopy.offset(), false );
+			if ( inside )
+			{
+				// for inside NFP, all B points must be inside or on boundary of A
+				if ( ptInA == ePointInside::Outside )
+				{
+					if ( logCallback )
+						logCallback( Debug, std::format( "NFP validation failed: inside constraint violated at "
+														 "({}, {}) for {}, {}",
+														 testPoint.x(), testPoint.y(), a.id(), b.id() ) );
+					return false;
+				}
+			}
+			else
+			{
+				// for outside NFP, check no overlap via intersection test
+				if ( a.intersect( bCopy ) )
+				{
+					if ( logCallback )
+						logCallback( Debug, std::format( "NFP validation failed: intersection at ({}, {}) for {}, {}",
+														 testPoint.x(), testPoint.y(), a.id(), b.id() ) );
+					return false;
+				}
+			}
+		}
+	}
+
+	// check a point slightly outside the NFP should violate constraints
+	if ( nfp.size() >= 3 )
+	{
+		const auto nfpBounds = nfp.bounds();
+		const auto center = ZPoint( nfpBounds.x() + nfpBounds.width() / 2.0, nfpBounds.y() + nfpBounds.height() / 2.0 );
+
+		// find a point outside by moving away from centroid
+		auto testPt = nfp[0] + ( nfp[0] - center ).normalized() * 10.0;
+
+		if ( nfp.isPointInside( testPt, false ) == ePointInside::Outside )
+		{
+			bCopy.setOffset( testPt - b[0] );
+			const auto shouldViolate = inside ? true : a.intersect( bCopy );
+
+			if ( inside )
+			{
+				// for inside NFP, B should extend outside A
+				bool anyOutside = false;
+				for ( const auto& bPt : bCopy )
+				{
+					if ( a.isPointInside( bPt + bCopy.offset(), false ) == ePointInside::Outside )
+					{
+						anyOutside = true;
+						break;
+					}
+				}
+				if ( !anyOutside )
+				{
+					if ( logCallback )
+						logCallback( Debug, std::format( "NFP validation warning: outside-NFP point should violate "
+														 "constraint for {}, {}",
+														 a.id(), b.id() ) );
+				}
+			}
+			else if ( !shouldViolate )
+			{
+				if ( logCallback )
+					logCallback( Debug, std::format( "NFP validation warning: outside-NFP point should cause "
+													 "intersection for {}, {}",
+													 a.id(), b.id() ) );
+			}
+		}
+	}
+
+	return true;
+}
+
 // this is the fallback way of getting an nfp, using the Minkowski difference
 // but this is much slower than the orbiting approach above, so this is only
 // used if necessary as a fallback.
 std::deque<ZPolygon> noFitPolygonMinkowski(
 	const ZPolygon& a, const ZPolygon& b, bool inside,
-	[[maybe_unused]] const std::function<void( eZLogLevel, const std::string& msg )>& logCallback,
-	[[maybe_unused]] const tDebugCallback&                                            debugDisplay )
+	const std::function<void( eZLogLevel, const std::string& msg )>& logCallback,
+	[[maybe_unused]] const tDebugCallback&                           debugDisplay )
 {
 	std::deque<ZPolygon> nfpList;
 	Clipper2Lib::PathD   aClipper;
