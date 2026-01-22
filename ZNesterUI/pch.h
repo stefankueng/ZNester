@@ -1,4 +1,4 @@
-// header.h : include file for standard system include files,
+﻿// header.h : include file for standard system include files,
 // or project specific include files
 //
 
@@ -7,6 +7,7 @@
 #include "targetver.h"
 // Windows Header Files
 #include <windows.h>
+
 #include <windowsx.h>
 #define _USE_MATH_DEFINES
 // C RunTime Header Files

@@ -3,11 +3,12 @@
 
 struct NfpKey
 {
-	size_t aId		 = 0;
-	size_t bId		 = 0;
-	bool   inside	 = false;
+	size_t aId       = 0;
+	size_t bId       = 0;
+	bool   inside    = false;
 	double aRotation = 0.0;
 	double bRotation = 0.0;
+
 	bool   operator<( const NfpKey& o ) const
 	{
 		if ( aId != o.aId )
@@ -28,7 +29,7 @@ struct NfpPair
 {
 	const ZPolygon& partA;
 	const ZPolygon& partB;
-	NfpKey			key;
+	NfpKey          key;
 };
 
 // returns true if point already exists in the given nfp
@@ -38,15 +39,16 @@ bool inNfp( const ZPoint& p, const std::deque<ZPolygon>& nfp );
 // if an NFP is given, only search for startpoints that have not already been traversed in the given NFP
 ZPoint searchStartPoint( ZPolygon& a, ZPolygon& b, bool inside, const std::deque<ZPolygon>& nfp,
 						 const std::function<void( eZLogLevel, const std::string& msg )>& logCallback,
-						 const tDebugCallback&											  debugDisplay );
+						 const tDebugCallback&                                            debugDisplay );
 
 // returns an interior NFP for the special case where A is a rectangle
 // used if the bin is a rectangle
 std::deque<ZPolygon> noFitPolygonRectangle( const ZPolygon& a, const ZPolygon& b );
 
 // fast rectangle-only NFP (inside/outside) using a closed-form Minkowski rectangle
-std::deque<ZPolygon> noFitPolygonRectangles( const ZPolygon& a, const ZPolygon& b, bool inside,
-						const std::function<void( eZLogLevel, const std::string& msg )>& logCallback );
+std::deque<ZPolygon> noFitPolygonRectangles(
+	const ZPolygon& a, const ZPolygon& b, bool inside,
+	const std::function<void( eZLogLevel, const std::string& msg )>& logCallback );
 
 // given a static polygon A and a movable polygon B, compute a no fit polygon by orbiting B around A
 // if the inside flag is set, B is orbited inside of A rather than outside
@@ -54,8 +56,8 @@ std::deque<ZPolygon> noFitPolygonRectangles( const ZPolygon& a, const ZPolygon& 
 // note: we don't need searchEdges because we treat holes in polygons as separate polygons
 std::deque<ZPolygon> noFitPolygon( ZPolygon& a, ZPolygon& b, bool inside, bool searchEdges,
 								   const std::function<void( eZLogLevel, const std::string& msg )>& logCallback,
-								   const tDebugCallback&											debugDisplay );
-void				 minkowskiFallback( std::deque<ZPolygon>&											 nfpList,
+								   const tDebugCallback&                                            debugDisplay );
+void                 minkowskiFallback( std::deque<ZPolygon>&                                            nfpList,
 										const std::function<void( eZLogLevel, const std::string& msg )>& logCallback, const ZPolygon& a,
 										const ZPolygon& b, bool inside, const tDebugCallback& debugDisplay, ZPolygon& nfp );
 std::deque<ZPolygon> noFitPolygonMinkowski(

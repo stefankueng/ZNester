@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 
 #include "Genetic.h"
 
@@ -34,7 +34,7 @@ std::deque<Individual>& Genetic::population()
 
 Individual Genetic::mutate( const Individual& individual, const ZNesterConfig& config ) const
 {
-	auto clone		  = individual;
+	auto clone        = individual;
 	auto mutationRate = config.mutationRate * RAND_MAX / 100;
 	for ( size_t i = 0; i < clone.placement.size() - 1; ++i )
 	{
@@ -57,20 +57,20 @@ Individual Genetic::mutate( const Individual& individual, const ZNesterConfig& c
 
 std::tuple<Individual, Individual> Genetic::mate( const Individual& male, const Individual& female )
 {
-	auto	   cutpoint = static_cast<__int64>( round(
-		  std::min( std::max( static_cast<double>( rand() ) / RAND_MAX, 0.1 ), 0.9 ) * ( male.placement.size() - 1 ) ) );
+	auto       cutpoint = static_cast<__int64>( round(
+        std::min( std::max( static_cast<double>( rand() ) / RAND_MAX, 0.1 ), 0.9 ) * ( male.placement.size() - 1 ) ) );
 
 	Individual child1;
 	child1.placement = std::deque<ZPolygon>( male.placement.begin(), male.placement.begin() + cutpoint );
-	child1.rotation	 = std::deque<double>( male.rotation.begin(), male.rotation.begin() + cutpoint );
+	child1.rotation  = std::deque<double>( male.rotation.begin(), male.rotation.begin() + cutpoint );
 
 	Individual child2;
 	child2.placement = std::deque<ZPolygon>( female.placement.begin(), female.placement.begin() + cutpoint );
-	child2.rotation	 = std::deque<double>( female.rotation.begin(), female.rotation.begin() + cutpoint );
+	child2.rotation  = std::deque<double>( female.rotation.begin(), female.rotation.begin() + cutpoint );
 
 	for ( size_t i = 0; i < female.placement.size(); ++i )
 	{
-		auto id	  = female.placement[i].id();
+		auto id   = female.placement[i].id();
 		auto copy = female.placement[i].copy();
 		if ( std::ranges::find_if( child1.placement, [&]( const auto& poly )
 								   { return id == poly.id() && copy == poly.copy(); } ) == child1.placement.end() )
@@ -82,7 +82,7 @@ std::tuple<Individual, Individual> Genetic::mate( const Individual& male, const 
 
 	for ( size_t i = 0; i < male.placement.size(); ++i )
 	{
-		auto id	  = male.placement[i].id();
+		auto id   = male.placement[i].id();
 		auto copy = male.placement[i].copy();
 		if ( std::ranges::find_if( child2.placement, [&]( const auto& poly )
 								   { return id == poly.id() && copy == poly.copy(); } ) == child2.placement.end() )
@@ -126,13 +126,13 @@ void Genetic::generation( const ZNesterConfig& config )
 
 const Individual& Genetic::randomWeightedIndividual( const Individual* exclude )
 {
-	auto   rnd	  = static_cast<double>( rand() ) / RAND_MAX;
+	auto   rnd    = static_cast<double>( rand() ) / RAND_MAX;
 
 	auto   lower  = 0.0;
 	auto   weight = 1.0 / m_population.size();
 	auto   upper  = weight;
 
-	size_t i	  = 0;
+	size_t i      = 0;
 	for ( const auto& individual : m_population )
 	{
 		// if the random number falls between lower and upper bounds, select this individual
@@ -141,7 +141,7 @@ const Individual& Genetic::randomWeightedIndividual( const Individual* exclude )
 			if ( &individual != exclude )
 				return individual;
 		}
-		lower = upper;
+		lower  = upper;
 		upper += 2 * weight * ( ( m_population.size() - i ) / m_population.size() );
 		++i;
 	}
@@ -151,7 +151,7 @@ const Individual& Genetic::randomWeightedIndividual( const Individual* exclude )
 
 double Genetic::randomAngle( const ZPolygon& poly ) const
 {
-	static auto		   engine = std::default_random_engine{};
+	static auto        engine = std::default_random_engine{};
 	std::deque<double> angleList;
 	if ( poly.rotations() == 0 )
 		angleList.push_back( poly.rotation() );

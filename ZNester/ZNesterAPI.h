@@ -1,9 +1,9 @@
-#pragma once
+﻿#pragma once
 
 #ifdef ZNESTER_EXPORT
-#define ZNESTER_API __declspec( dllexport )
+#	define ZNESTER_API __declspec( dllexport )
 #else
-#define ZNESTER_API __declspec( dllimport )
+#	define ZNESTER_API __declspec( dllimport )
 #endif
 
 namespace ZNester
@@ -14,11 +14,12 @@ namespace ZNester
 		float x = 0.0f;
 		float y = 0.0f;
 	};
+
 	struct ZNesterPolygon
 	{
-		ZNesterPoint* points	 = nullptr;
-		int			  pointCount = 0;
-		__int64		  id		 = 0;
+		ZNesterPoint* points     = nullptr;
+		int           pointCount = 0;
+		__int64       id         = 0;
 	};
 
 	void ZNESTER_API run( ZNesterPolygon target, ZNesterPolygon* objects, int objectCount );

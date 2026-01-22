@@ -1,14 +1,16 @@
-#pragma once
+﻿#pragma once
 #include <memory>
 #include <string>
 #include <vector>
 #pragma warning( push )
 #pragma warning( disable : 4458 )  // declaration of 'xxx' hides class member
+
 namespace Gdiplus
 {
 	using std::max;
 	using std::min;
 };
+
 #include <gdiplus.h>
 #pragma warning( pop )
 
@@ -39,71 +41,71 @@ public:
 
 	std::vector<SVGPolygon> getPolygons() const;
 
-	void					setCanvasSize( float width, float height );
-	float					getCanvasWidth() const;
-	float					getCanvasHeight() const;
+	void                    setCanvasSize( float width, float height );
+	float                   getCanvasWidth() const;
+	float                   getCanvasHeight() const;
 
-	SVGElementRect*			addRect( float x, float y, float width, float height, float rx, float ry );
-	SVGElementCircle*		addCircle( float x, float y, float r );
-	SVGElementPath*			addPath();
-	SVGElementGroup*		addGroup();
+	SVGElementRect*         addRect( float x, float y, float width, float height, float rx, float ry );
+	SVGElementCircle*       addCircle( float x, float y, float r );
+	SVGElementPath*         addPath();
+	SVGElementGroup*        addGroup();
 
 private:
 	std::vector<std::unique_ptr<SVGElement>> m_elements;
-	float									 m_canvasWidth	= 0;
-	float									 m_canvasHeight = 0;
+	float                                    m_canvasWidth  = 0;
+	float                                    m_canvasHeight = 0;
 };
 
 class SVGElement
 {
 public:
-	SVGElement()		  = default;
+	SVGElement()          = default;
 	virtual ~SVGElement() = default;
-	void							setFill( std::unique_ptr<Gdiplus::Brush>&& brush );
-	void							setStroke( std::unique_ptr<Gdiplus::Pen>&& stroke );
-	void							pushRotation( float angle );
-	void							pushRotation( float angle, float cx, float cy );
-	void							pushScale( float sx, float sy );
-	void							pushTranslation( float tx, float ty );
-	void							pushSkewX( float angle );
-	void							pushSkewY( float angle );
-	void							pushMatrix( float a, float b, float c, float d, float e, float f );
-	void							setTransform( const Gdiplus::Matrix& mat );
-	virtual void					render( Gdiplus::Graphics&, float canvasX, float canvasY ) = 0;
-	virtual std::vector<SVGPolygon> getPolygons() const										   = 0;
+	void                            setFill( std::unique_ptr<Gdiplus::Brush>&& brush );
+	void                            setStroke( std::unique_ptr<Gdiplus::Pen>&& stroke );
+	void                            pushRotation( float angle );
+	void                            pushRotation( float angle, float cx, float cy );
+	void                            pushScale( float sx, float sy );
+	void                            pushTranslation( float tx, float ty );
+	void                            pushSkewX( float angle );
+	void                            pushSkewY( float angle );
+	void                            pushMatrix( float a, float b, float c, float d, float e, float f );
+	void                            setTransform( const Gdiplus::Matrix& mat );
+	virtual void                    render( Gdiplus::Graphics&, float canvasX, float canvasY ) = 0;
+	virtual std::vector<SVGPolygon> getPolygons() const                                        = 0;
 
 protected:
 	std::unique_ptr<Gdiplus::Brush> m_fill;
-	std::unique_ptr<Gdiplus::Pen>	m_stroke;
+	std::unique_ptr<Gdiplus::Pen>   m_stroke;
 
-	Gdiplus::Matrix					m_matrix;
+	Gdiplus::Matrix                 m_matrix;
 };
 
 class SVGElementRect : public SVGElement
 {
 public:
-	SVGElementRect()		  = default;
+	SVGElementRect()          = default;
 	virtual ~SVGElementRect() = default;
-	void					setParams( float x, float y, float width, float height, float rx, float ry );
-	void					render( Gdiplus::Graphics& graphics, float canvasX, float canvasY ) override;
+	void                    setParams( float x, float y, float width, float height, float rx, float ry );
+	void                    render( Gdiplus::Graphics& graphics, float canvasX, float canvasY ) override;
 	std::vector<SVGPolygon> getPolygons() const override;
 
 protected:
-	float m_x	   = 0.0;
-	float m_y	   = 0.0;
+	float m_x      = 0.0;
+	float m_y      = 0.0;
 	float m_width  = 0.0;
 	float m_height = 0.0;
-	float m_rx	   = 0.0;
-	float m_ry	   = 0.0;
+	float m_rx     = 0.0;
+	float m_ry     = 0.0;
 };
 
 class SVGElementCircle : public SVGElement
 {
 public:
-	SVGElementCircle()			= default;
+	SVGElementCircle()          = default;
 	virtual ~SVGElementCircle() = default;
-	void					setParams( float x, float y, float r );
-	void					render( Gdiplus::Graphics& graphics, float canvasX, float canvasY ) override;
+	void                    setParams( float x, float y, float r );
+	void                    render( Gdiplus::Graphics& graphics, float canvasX, float canvasY ) override;
 	std::vector<SVGPolygon> getPolygons() const override;
 
 protected:
@@ -132,17 +134,17 @@ public:
 	void startPath();
 	void closePath();
 	bool isClosed() const;
-	const Gdiplus::PointF&	getLastPos() const;
-	void					getBounds( Gdiplus::RectF& bounds ) const;
-	void					render( Gdiplus::Graphics& graphics, float canvasX, float canvasY ) override;
+	const Gdiplus::PointF&  getLastPos() const;
+	void                    getBounds( Gdiplus::RectF& bounds ) const;
+	void                    render( Gdiplus::Graphics& graphics, float canvasX, float canvasY ) override;
 	std::vector<SVGPolygon> getPolygons() const override;
 
 protected:
 	Gdiplus::GraphicsPath m_path{};
-	Gdiplus::PointF		  m_lastPos{};
-	Gdiplus::PointF		  m_lastC2{};  // last position of the bezier control point
-	Gdiplus::PointF		  m_firstPos{};
-	bool				  m_bFirst = true;
+	Gdiplus::PointF       m_lastPos{};
+	Gdiplus::PointF       m_lastC2{};  // last position of the bezier control point
+	Gdiplus::PointF       m_firstPos{};
+	bool                  m_bFirst = true;
 
 protected:
 	static float getAngle( const Gdiplus::PointF& a, const Gdiplus::PointF& b );
@@ -151,14 +153,14 @@ protected:
 class SVGElementGroup : public SVGElement
 {
 public:
-	SVGElementGroup()		   = default;
+	SVGElementGroup()          = default;
 	virtual ~SVGElementGroup() = default;
-	void					setOpacity( float opacity );
-	void					render( Gdiplus::Graphics& parentGraphics, float cX, float cY ) override;
+	void                    setOpacity( float opacity );
+	void                    render( Gdiplus::Graphics& parentGraphics, float cX, float cY ) override;
 	std::vector<SVGPolygon> getPolygons() const override;
-	SVG&					getInternalSVG();
+	SVG&                    getInternalSVG();
 
 protected:
 	float m_opacity;
-	SVG	  m_svg;
+	SVG   m_svg;
 };

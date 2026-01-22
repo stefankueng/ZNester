@@ -1,38 +1,63 @@
 ---
-BasedOnStyle: Google
+BasedOnStyle: Microsoft
 Language: Cpp
 AccessModifierOffset: -4
 AlignAfterOpenBracket: Align
-AlignConsecutiveAssignments: AcrossEmptyLines 
-AlignConsecutiveBitFields: AcrossEmptyLines 
-AlignConsecutiveDeclarations: AcrossEmptyLines 
-AlignConsecutiveMacros: AcrossEmptyLines 
+AlignArrayOfStructures: Left
+AlignConsecutiveAssignments:
+  Enabled: true
+  AcrossEmptyLines: true
+  AlignCompound: true
+  PadOperators: true
+AlignConsecutiveBitFields: 
+  Enabled: true
+  AcrossEmptyLines: true
+  AlignCompound: true
+  PadOperators: true
+AlignConsecutiveDeclarations: 
+  Enabled: true
+  AcrossEmptyLines: true
+  AlignCompound: true
+  PadOperators: true
+AlignConsecutiveMacros: 
+  Enabled: true
+  AcrossEmptyLines: true
+  AlignCompound: true
+  PadOperators: true
 AlignEscapedNewlines: Left
 AlignOperands: Align
-AlignTrailingComments: true
+AlignTrailingComments:
+  Kind: Always
+  OverEmptyLines: 1
+AlignConsecutiveShortCaseStatements:
+  Enabled: true
+  AcrossEmptyLines: true
+  AcrossComments: true
+  AlignCaseColons: false
 AllowAllArgumentsOnNextLine: true
-AllowAllConstructorInitializersOnNextLine: true
 AllowAllParametersOfDeclarationOnNextLine: true
-AllowShortBlocksOnASingleLine: Never
+AllowShortBlocksOnASingleLine: Empty
+AllowShortCaseExpressionOnASingleLine: false
 AllowShortCaseLabelsOnASingleLine: false
 AllowShortLambdasOnASingleLine: All
 AllowShortEnumsOnASingleLine: false
 AllowShortFunctionsOnASingleLine: Empty
 AllowShortIfStatementsOnASingleLine: Never
 AllowShortLoopsOnASingleLine: false
-AlwaysBreakAfterDefinitionReturnType: None
-AlwaysBreakAfterReturnType: None
+AllowShortNamespacesOnASingleLine: false
 AlwaysBreakBeforeMultilineStrings: true
-AlwaysBreakTemplateDeclarations: Yes
 AttributeMacros: 
   - __capability
 BinPackArguments: true
 BinPackParameters: true
+# clang-format 21
+#BinPackLongBracedList: true
 BitFieldColonSpacing: Both
+BracedInitializerIndentWidth: 4
 BraceWrapping: 
   AfterCaseLabel: true
   AfterClass: true
-  AfterControlStatement: true
+  AfterControlStatement: Always 
   AfterEnum: true
   AfterFunction: true
   AfterNamespace: true
@@ -43,29 +68,35 @@ BraceWrapping:
   BeforeCatch: true
   BeforeElse: true
   IndentBraces: false
-  SplitEmptyFunction: false
+  SplitEmptyFunction: true
   SplitEmptyRecord: false
   SplitEmptyNamespace: false
   BeforeLambdaBody: true
   BeforeWhile: true
+BreakAfterAttributes: Never
+BreakAfterReturnType: Automatic
+BreakArrays: false
 BreakBeforeBinaryOperators: None
 BreakBeforeBraces: Allman
 BreakBeforeInheritanceComma: false
+# clang-format 21
+#BreakBeforeTemplateCloser: false
+BreakBinaryOperations: Never
 BreakInheritanceList: BeforeColon
 BreakBeforeConceptDeclarations: true
 BreakBeforeTernaryOperators: true
 BreakConstructorInitializers: BeforeComma
 BreakAfterJavaFieldAnnotations: false
+BreakFunctionDefinitionParameters: false
+BreakTemplateDeclarations: Yes
 BreakStringLiterals: true
 ColumnLimit: 120
 CommentPragmas: '^ IWYU pragma:'
 CompactNamespaces: true
-ConstructorInitializerAllOnOneLineOrOnePerLine: false
 ConstructorInitializerIndentWidth : 4
 ContinuationIndentWidth: 4
 Cpp11BracedListStyle: true
-DeriveLineEnding: false
-DerivePointerAlignment: true
+DerivePointerAlignment: false
 EmptyLineBeforeAccessModifier: LogicalBlock
 ExperimentalAutoDetectBinPacking: false
 FixNamespaceComments: false
@@ -77,20 +108,26 @@ IncludeBlocks: Regroup
 IncludeCategories: 
   - Regex: '[<"](stdafx.h|pch.h)'
     Priority: -1
-  - Regex: '^<ext/.*\.h>'
+  - Regex: '[<"](windows.h|minwindef.h|windef.h)'
+    CaseSensitive: false
+    Priority: 1
+  - Regex: '[<"](Qt)'
+    CaseSensitive: false
     Priority: 2
+  - Regex: '^<ext/.*\.h>'
+    Priority: 3
     SortPriority: 0
     CaseSensitive: false
   - Regex: '^<.*\.h>'
-    Priority: 1
+    Priority: 4
     SortPriority: 0
     CaseSensitive: false
   - Regex: '^<.*'
-    Priority: 2
+    Priority: 5
     SortPriority: 0
     CaseSensitive: false
   - Regex: '.*'
-    Priority: 3
+    Priority: 6
     SortPriority: 0
     CaseSensitive: false
 IncludeIsMainRegex: ([-_](test|unittest))?$
@@ -99,14 +136,27 @@ IndentCaseBlocks: false
 IndentCaseLabels: true
 IndentExternBlock: AfterExternBlock
 IndentGotoLabels: true
-IndentPPDirectives: None
+IndentPPDirectives: AfterHash
 IndentRequires: false
 IndentWidth: 4
 IndentWrappedFunctionNames: false
+InsertNewlineAtEOF: false
 InsertTrailingCommas: None
+IntegerLiteralSeparator:
+  Binary: 8
+  BinaryMinDigits: 32
+  Decimal: 3
+  DecimalMinDigits: 9
+  Hex: 4
+  HexMinDigits: 12
 JavaScriptQuotes: Leave
 JavaScriptWrapImports: true
-KeepEmptyLinesAtTheStartOfBlocks: false
+KeepEmptyLines:
+  AtEndOfFile: false
+  AtStartOfBlock: false
+  AtStartOfFile: false
+LambdaBodyIndentation: Signature
+LineEnding: CRLF
 MacroBlockBegin: ''
 MacroBlockEnd: ''
 MaxEmptyLinesToKeep: 1
@@ -116,6 +166,7 @@ ObjCBlockIndentWidth: 2
 ObjCBreakBeforeNestedBlockParam: true
 ObjCSpaceAfterProperty: false
 ObjCSpaceBeforeProtocolList: true
+PackConstructorInitializers: Never
 PenaltyBreakAssignment: 2
 PenaltyBreakBeforeFirstCallParameter: 1
 PenaltyBreakComment: 300
@@ -136,6 +187,9 @@ RawStringFormats:
     - CPP
     - 'c++'
     - 'C++'
+    - 'cxx'
+    - 'CXX'
+    - 'Cxx'
     CanonicalDelimiter: ''
     BasedOnStyle: google
   - Language: TextProto
@@ -157,6 +211,9 @@ RawStringFormats:
     CanonicalDelimiter: pb
     BasedOnStyle: google
 ReflowComments: true
+RemoveEmptyLinesInUnwrappedLines: true
+RequiresExpressionIndentation: OuterScope
+SeparateDefinitionBlocks: Always
 SortIncludes: true
 SortJavaStaticImport: Before
 SortUsingDeclarations: true
@@ -173,23 +230,27 @@ SpaceBeforeParens: ControlStatements
 SpaceBeforeRangeBasedForLoopColon: true
 SpaceBeforeSquareBrackets: false
 SpaceInEmptyBlock: false
-SpaceInEmptyParentheses: false
 SpacesBeforeTrailingComments: 2
 SpacesInAngles: false
 SpacesInContainerLiterals: true
-SpacesInCStyleCastParentheses: true
-SpacesInConditionalStatement: true
-SpacesInParentheses: true
+SpacesInParens: Custom
+SpacesInParensOptions:
+  ExceptDoubleParentheses: false
+  InConditionalStatements: true
+  InCStyleCasts: false
+  InEmptyParentheses: false
+  Other: true
 SpacesInSquareBrackets: false
 Standard: Auto
 StatementAttributeLikeMacros: 
   - Q_EMIT
 StatementMacros: 
   - Q_UNUSED
+  - Q_OBJECT
   - QT_REQUIRE_VERSION
+  - Q_PROPERTY
 TabWidth: 4
-UseCRLF: true
-UseTab: Always
+UseTab: ForContinuationAndIndentation
 WhitespaceSensitiveMacros: 
   - STRINGIZE
   - PP_STRINGIZE

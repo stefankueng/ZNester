@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <format>
 #include <string>
 
@@ -10,6 +10,7 @@ public:
 	{
 		QueryPerformanceCounter( &startTime );
 	}
+
 	~ProfileTimer()
 	{
 		LARGE_INTEGER endTime;
@@ -17,10 +18,10 @@ public:
 		LARGE_INTEGER frequency;
 		QueryPerformanceFrequency( &frequency );
 		LARGE_INTEGER milliseconds;
-		milliseconds.QuadPart = endTime.QuadPart - startTime.QuadPart;
+		milliseconds.QuadPart  = endTime.QuadPart - startTime.QuadPart;
 		milliseconds.QuadPart *= 1000;
 		milliseconds.QuadPart /= frequency.QuadPart;
-		auto output = std::format( L"{0} : {1} ms\n", info.c_str(), milliseconds.QuadPart );
+		auto output            = std::format( L"{0} : {1} ms\n", info.c_str(), milliseconds.QuadPart );
 		OutputDebugString( output.c_str() );
 	}
 

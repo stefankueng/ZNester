@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 
 #include "ZPolygon.h"
 
@@ -22,50 +22,50 @@ inline ZPolygon::ZPolygon( size_t id, size_t rotations )
 ZPolygon::ZPolygon( const ZPolygon& other )
 	: std::deque<ZPoint>( other )
 {
-	m_id		= other.m_id;
+	m_id        = other.m_id;
 	m_rotations = other.m_rotations;
-	m_rotation	= other.m_rotation;
-	m_copies	= other.m_copies;
-	m_copy		= other.m_copy;
-	m_offset	= other.m_offset;
-	m_children	= std::make_unique<std::deque<ZPolygon>>( *other.m_children );
+	m_rotation  = other.m_rotation;
+	m_copies    = other.m_copies;
+	m_copy      = other.m_copy;
+	m_offset    = other.m_offset;
+	m_children  = std::make_unique<std::deque<ZPolygon>>( *other.m_children );
 }
 
 ZPolygon::ZPolygon( ZPolygon&& other ) noexcept
 	: std::deque<ZPoint>( std::move( other ) )
 {
-	m_id		= other.m_id;
+	m_id        = other.m_id;
 	m_rotations = other.m_rotations;
-	m_rotation	= other.m_rotation;
-	m_copies	= other.m_copies;
-	m_copy		= other.m_copy;
-	m_offset	= std::move( other.m_offset );
-	m_children	= std::move( other.m_children );
+	m_rotation  = other.m_rotation;
+	m_copies    = other.m_copies;
+	m_copy      = other.m_copy;
+	m_offset    = std::move( other.m_offset );
+	m_children  = std::move( other.m_children );
 }
 
 ZPolygon& ZPolygon::operator=( const ZPolygon& other )
 {
 	__super::operator=( other );
-	m_id		= other.m_id;
+	m_id        = other.m_id;
 	m_rotations = other.m_rotations;
-	m_rotation	= other.m_rotation;
-	m_copies	= other.m_copies;
-	m_copy		= other.m_copy;
-	m_offset	= other.m_offset;
-	m_children	= std::make_unique<std::deque<ZPolygon>>( *other.m_children );
+	m_rotation  = other.m_rotation;
+	m_copies    = other.m_copies;
+	m_copy      = other.m_copy;
+	m_offset    = other.m_offset;
+	m_children  = std::make_unique<std::deque<ZPolygon>>( *other.m_children );
 	return *this;
 }
 
 ZPolygon& ZPolygon::operator=( ZPolygon&& other ) noexcept
 {
 	__super::operator=( other );
-	m_id		= other.m_id;
+	m_id        = other.m_id;
 	m_rotations = other.m_rotations;
-	m_rotation	= other.m_rotation;
-	m_copies	= other.m_copies;
-	m_copy		= other.m_copy;
-	m_offset	= std::move( other.m_offset );
-	m_children	= std::move( other.m_children );
+	m_rotation  = other.m_rotation;
+	m_copies    = other.m_copies;
+	m_copy      = other.m_copy;
+	m_offset    = std::move( other.m_offset );
+	m_children  = std::move( other.m_children );
 	return *this;
 }
 
@@ -154,7 +154,7 @@ ePointInside ZPolygon::isPointInside( const ZPoint& pt, bool useOffset ) const
 
 	bool inside = false;
 
-	auto off	= useOffset ? offset() : ZPoint( 0.0, 0.0 );
+	auto off    = useOffset ? offset() : ZPoint( 0.0, 0.0 );
 	for ( size_t i = 0, j = size() - 1; i < size(); j = i++ )
 	{
 		auto pi = at( i ) + off;
@@ -232,18 +232,19 @@ void ZPolygon::rotate( double radAngle )
 	}
 	m_rotation = radAngle;
 }
+
 ZPolygon ZPolygon::rotated( double radAngle ) const
 {
-	auto	 sinA = sin( radAngle );
-	auto	 cosA = cos( radAngle );
+	auto     sinA = sin( radAngle );
+	auto     cosA = cos( radAngle );
 	ZPolygon rot( *this );
 	for ( auto& pt : rot )
 	{
-		auto x	= pt.x();
-		auto y	= pt.y();
+		auto x  = pt.x();
+		auto y  = pt.y();
 		auto x1 = x * cosA - y * sinA;
 		auto y1 = x * sinA + y * cosA;
-		pt		= { x1, y1 };
+		pt      = { x1, y1 };
 	}
 	rot.m_rotation = radAngle;
 	for ( auto& child : *rot.m_children )
@@ -258,10 +259,10 @@ void ZPolygon::shrink( double offset )
 	if ( !isValid() )
 		return;
 
-	bool				isAntiClockWise = this->isAntiClockWise();
+	bool                isAntiClockWise = this->isAntiClockWise();
 
 	Clipper2Lib::PathsD paths;
-	Clipper2Lib::PathD	path;
+	Clipper2Lib::PathD  path;
 	for ( const auto& pt : *this )
 		path.emplace_back( pt.x() * CLIPPER_LIB_SCALE, pt.y() * CLIPPER_LIB_SCALE );
 	paths.push_back( path );
@@ -285,8 +286,8 @@ void ZPolygon::shrink( double offset )
 std::deque<ZPolygon> ZPolygon::united( const ZPolygon& other ) const
 {
 	Clipper2Lib::PathsD paths;
-	Clipper2Lib::PathD	path;
-	Clipper2Lib::PathD	path2;
+	Clipper2Lib::PathD  path;
+	Clipper2Lib::PathD  path2;
 	for ( const auto& pt : *this )
 		path.emplace_back( pt.x() * CLIPPER_LIB_SCALE, pt.y() * CLIPPER_LIB_SCALE );
 	paths.push_back( path );
@@ -294,7 +295,7 @@ std::deque<ZPolygon> ZPolygon::united( const ZPolygon& other ) const
 		path2.emplace_back( pt.x() * CLIPPER_LIB_SCALE, pt.y() * CLIPPER_LIB_SCALE );
 	paths.push_back( path2 );
 
-	auto				 result = Clipper2Lib::Union( paths, Clipper2Lib::FillRule::NonZero );
+	auto                 result = Clipper2Lib::Union( paths, Clipper2Lib::FillRule::NonZero );
 
 	std::deque<ZPolygon> unitedPolys;
 	if ( const auto& poly = result.begin(); poly != result.end() )
@@ -314,7 +315,7 @@ ZPolygon ZPolygon::difference( const std::deque<ZPolygon>& other ) const
 {
 	Clipper2Lib::PathsD subjects;
 	Clipper2Lib::PathsD clips;
-	Clipper2Lib::PathD	path;
+	Clipper2Lib::PathD  path;
 	for ( const auto& pt : *this )
 		path.emplace_back( pt.x() * CLIPPER_LIB_SCALE, pt.y() * CLIPPER_LIB_SCALE );
 	subjects.push_back( path );
@@ -351,10 +352,10 @@ bool ZPolygon::intersect( const ZPolygon& poly ) const
 		size_t nextAIndex  = i == size() - 1 ? 0 : i + 1;
 		auto   next2AIndex = ( i + 2 ) % size();
 
-		auto   a0		   = at( prevAIndex ) + aOffset;
-		auto   a1		   = at( i ) + aOffset;
-		auto   a2		   = at( nextAIndex ) + aOffset;
-		auto   a3		   = at( next2AIndex ) + aOffset;
+		auto   a0          = at( prevAIndex ) + aOffset;
+		auto   a1          = at( i ) + aOffset;
+		auto   a2          = at( nextAIndex ) + aOffset;
+		auto   a3          = at( next2AIndex ) + aOffset;
 
 		for ( size_t j = 0; j < poly.size(); ++j )
 		{
@@ -362,10 +363,10 @@ bool ZPolygon::intersect( const ZPolygon& poly ) const
 			size_t nextBIndex  = j == poly.size() - 1 ? 0 : j + 1;
 			auto   next2BIndex = ( j + 2 ) % poly.size();
 
-			auto   b0		   = poly[prevBIndex] + bOffset;
-			auto   b1		   = poly[j] + bOffset;
-			auto   b2		   = poly[nextBIndex] + bOffset;
-			auto   b3		   = poly[next2BIndex] + bOffset;
+			auto   b0          = poly[prevBIndex] + bOffset;
+			auto   b1          = poly[j] + bOffset;
+			auto   b2          = poly[nextBIndex] + bOffset;
+			auto   b3          = poly[next2BIndex] + bOffset;
 
 			if ( a1 == b1 || b1.onSegment( a1, a2 ) )
 			{
@@ -481,7 +482,7 @@ double ZPolygon::projectionDistance( const ZPolygon& edgeB, const ZPoint& direct
 	for ( const auto& edge : edgeB )
 	{
 		// the shortest/most negative projection of B onto A
-		ZPoint p			 = edge + edgeB.offset();
+		ZPoint p             = edge + edgeB.offset();
 		double minProjection = DBL_MAX;
 		for ( int j = 0; j < size(); ++j )
 		{
@@ -511,23 +512,23 @@ double ZPolygon::projectionDistance( const ZPolygon& edgeB, const ZPoint& direct
 double ZPolygon::slideDistance( const ZPolygon& b, const ZPoint& direction, bool ignoreNegative ) const
 {
 	double distance = DBL_MAX;
-	ZPoint dir		= direction.normalized();
+	ZPoint dir      = direction.normalized();
 
-	ZPoint b2		= b[0] + b.offset();
+	ZPoint b2       = b[0] + b.offset();
 	for ( int i = 0; i < b.size(); ++i )
 	{
-		ZPoint b1	= b2;
+		ZPoint b1   = b2;
 		auto   offB = ( ( i == ( b.size() - 1 ) ) ? 0 : i + 1 );
-		b2			= b[offB] + b.offset();
+		b2          = b[offB] + b.offset();
 
-		ZPoint a2	= at( 0 ) + offset();
+		ZPoint a2   = at( 0 ) + offset();
 		for ( int j = 0; j < size(); ++j )
 		{
-			ZPoint a1	= a2;
+			ZPoint a1   = a2;
 			auto   offA = ( ( j == ( size() - 1 ) ) ? 0 : j + 1 );
-			a2			= at( offA ) + offset();
+			a2          = at( offA ) + offset();
 
-			auto d		= ZPoint::segmentDistance( a1, a2, b1, b2, dir );
+			auto d      = ZPoint::segmentDistance( a1, a2, b1, b2, dir );
 
 			if ( ( d < distance ) && ( !ignoreNegative || d > -DBL_TOL ) )
 			{
@@ -544,6 +545,7 @@ __forceinline double ccw( const ZPoint& a, const ZPoint& b, const ZPoint& c )
 {
 	return ( b.x() - a.x() ) * ( c.y() - a.y() ) - ( b.y() - a.y() ) * ( c.x() - a.x() );
 }
+
 __forceinline bool isLeftOf( const ZPoint& a, const ZPoint& b )
 {
 	return a < b;
@@ -576,7 +578,7 @@ ZPolygon ZPolygon::convexHull( ZPolygon& points )
 
 	// Add our first three points to the hull.
 	ZPolygon hull;
-	auto	 it = points.begin();
+	auto     it = points.begin();
 	hull.push_back( *it++ );
 	hull.push_back( *it++ );
 	hull.push_back( *it++ );
@@ -611,6 +613,7 @@ void ZPolygon::setId( size_t id )
 {
 	m_id = id;
 }
+
 void ZPolygon::setRotation( const double& r )
 {
 	m_rotation = r;

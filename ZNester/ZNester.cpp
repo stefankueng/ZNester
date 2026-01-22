@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 
 #include "ZNester.h"
 
@@ -58,7 +58,7 @@ bool ZNester::doNest( const ZPolygon& binPoly, const std::deque<ZPolygon>& polyg
 	m_bin = binPoly.scaled( ZNESTER_POLY_SCALE );
 	m_bin.setId( SIZE_T_MAX );
 	m_config = config;
-	m_tree	 = buildTree( scaledPolys );
+	m_tree   = buildTree( scaledPolys );
 
 	m_bin.shrink( m_config.binDistance * ZNESTER_POLY_SCALE );
 	// remove duplicate endpoints, ensure counterclockwise winding direction
@@ -87,8 +87,7 @@ bool ZNester::doNest( const ZPolygon& binPoly, const std::deque<ZPolygon>& polyg
 	m_bin.translate( -binBounds.x(), -binBounds.y() );
 
 	// sort the polygons by size for initial placement, biggest first
-	std::ranges::sort( m_tree,
-					   []( const auto& p1, const auto& p2 ) -> bool
+	std::ranges::sort( m_tree, []( const auto& p1, const auto& p2 ) -> bool
 					   { return abs( p1.bounds().area() ) > abs( p2.bounds().area() ); } );
 
 #ifdef DEBUG_NEST
@@ -132,8 +131,8 @@ bool ZNester::isNesting() const
 
 bool ZNester::runNesting( const ZPolygon& binPoly, const std::deque<ZPolygon>& polygons, const ZNesterConfig& config )
 {
-	Genetic								   genetic( binPoly, polygons, config );
-	auto								   binPolyArea = std::abs( binPoly.area() );
+	Genetic                                genetic( binPoly, polygons, config );
+	auto                                   binPolyArea = std::abs( binPoly.area() );
 
 	std::map<NfpKey, std::deque<ZPolygon>> nfpCache;
 
@@ -177,7 +176,7 @@ bool ZNester::runNesting( const ZPolygon& binPoly, const std::deque<ZPolygon>& p
 std::deque<ZPolygon> ZNester::buildTree( std::deque<ZPolygon> polygons ) const
 {
 	size_t polyPoints = 0;
-	size_t holes	  = 0;
+	size_t holes      = 0;
 	if ( m_config.detectChildren )
 	{
 		// go through all polygons and determine whether a polygon is inside another
@@ -185,7 +184,7 @@ std::deque<ZPolygon> ZNester::buildTree( std::deque<ZPolygon> polygons ) const
 		// note: for now, only one level of polygons/holes is supported, i.e. a hole
 		// can not contain other polygons
 		std::set<ZPolygon*> children;
-		size_t				i		   = 0;
+		size_t              i = 0;
 		for ( auto& poly : polygons )
 		{
 			// ensure that each polygon does not have start and end point the same
@@ -193,7 +192,7 @@ std::deque<ZPolygon> ZNester::buildTree( std::deque<ZPolygon> polygons ) const
 				poly.erase( poly.begin() );
 
 			bool   isChild = false;
-			size_t j	   = 0;
+			size_t j       = 0;
 			for ( auto& poly2 : polygons )
 			{
 				if ( i == j )
@@ -227,7 +226,7 @@ std::deque<ZPolygon> ZNester::buildTree( std::deque<ZPolygon> polygons ) const
 			for ( size_t j = 1; j < poly.copies(); ++j )
 			{
 				copies.push_back( poly );
-				auto& copy	= copies.back();
+				auto& copy  = copies.back();
 				copy.m_copy = j;
 				if ( !copy.children().empty() )
 				{
@@ -353,9 +352,9 @@ std::deque<ZPolygon> ZNester::generateNfps( ZPolygon& a, ZPolygon& b, const NfpK
 }
 
 std::deque<ZPolygon> ZNester::getCombinedNfp( const ZPolygon& path, const std::deque<ZPolygon>& placed,
-											  const std::deque<ZPolygon>&					binNfp,
+											  const std::deque<ZPolygon>&                   binNfp,
 											  const std::map<NfpKey, std::deque<ZPolygon>>& nfpCache,
-											  const ZPlacement&								placements ) const
+											  const ZPlacement&                             placements ) const
 {
 	Clipper2Lib::PathsD clipperPaths;
 	for ( size_t j = 0; j < placed.size(); ++j )
@@ -435,8 +434,8 @@ std::tuple<double, std::deque<ZPlacement>> ZNester::nestGArandomRotations(
 
 	auto  binPolyArea = std::abs( binPoly.area() );
 
-	auto& placelist	  = individual->placement;
-	auto& rotations	  = individual->rotation;
+	auto& placelist   = individual->placement;
+	auto& rotations   = individual->rotation;
 
 	for ( size_t i = 0; i < placelist.size(); ++i )
 	{
@@ -445,11 +444,11 @@ std::tuple<double, std::deque<ZPlacement>> ZNester::nestGArandomRotations(
 
 	// determine which nfps need to be calculated
 	std::deque<NfpPair> nfpPairs;
-	std::set<NfpKey>	nfpPairKeys;
+	std::set<NfpKey>    nfpPairKeys;
 	for ( size_t i = 0; i < placelist.size(); ++i )
 	{
 		auto&  part = placelist[i];
-		NfpKey key	= { binPoly.id(), part.id(), true, 0.0, rotations[i] };
+		NfpKey key  = { binPoly.id(), part.id(), true, 0.0, rotations[i] };
 		if ( !nfpCache.contains( key ) && !nfpPairKeys.contains( key ) )
 		{
 			nfpPairs.emplace_back( binPoly, part, key );
@@ -458,7 +457,7 @@ std::tuple<double, std::deque<ZPlacement>> ZNester::nestGArandomRotations(
 		for ( size_t j = 0; j < i; ++j )
 		{
 			auto& placed = placelist[j];
-			key			 = { placed.id(), part.id(), false, rotations[j], rotations[i] };
+			key          = { placed.id(), part.id(), false, rotations[j], rotations[i] };
 			if ( !nfpCache.contains( key ) && !nfpPairKeys.contains( key ) )
 			{
 				nfpPairs.emplace_back( placed, part, key );
@@ -478,8 +477,8 @@ std::tuple<double, std::deque<ZPlacement>> ZNester::nestGArandomRotations(
 	{
 		if ( m_run )
 		{
-			auto a	  = pair.partA.rotated( pair.key.aRotation );
-			auto b	  = pair.partB.rotated( pair.key.bRotation );
+			auto a    = pair.partA.rotated( pair.key.aRotation );
+			auto b    = pair.partB.rotated( pair.key.bRotation );
 			auto nfPs = generateNfps( a, b, pair.key, config.useHoles );
 			if ( !nfPs.empty() )
 			{
@@ -515,21 +514,21 @@ std::tuple<double, std::deque<ZPlacement>> ZNester::nestGArandomRotations(
 		rotated.push_back( r );
 	}
 
-	auto&				   paths = rotated;
+	auto&                  paths = rotated;
 
 	std::deque<ZPlacement> allPlacements;
-	double				   fitness = 0.0;
+	double                 fitness = 0.0;
 #ifdef PROFILE_NEST
-	ProfileTimer		   timer( L"placing" );
+	ProfileTimer timer( L"placing" );
 #endif
 	while ( m_run && paths.size() > 0 )
 	{
 		std::deque<ZPolygon> placed;
-		ZPolygon			 placedPoints;
-		ZPlacement			 placements;
-		ZPlacement			 childPlacements;
-		fitness += 1.0;	 // add 1 for each new bin opened (lower fitness is better)
-		double minWidth = DBL_MAX;
+		ZPolygon             placedPoints;
+		ZPlacement           placements;
+		ZPlacement           childPlacements;
+		fitness         += 1.0;  // add 1 for each new bin opened (lower fitness is better)
+		double minWidth  = DBL_MAX;
 
 		for ( const auto& path : paths )
 		{
@@ -537,7 +536,7 @@ std::tuple<double, std::deque<ZPlacement>> ZNester::nestGArandomRotations(
 				return {};
 
 			// inner NFP
-			NfpKey		binKey{ SIZE_T_MAX, path.id(), true, 0ULL, path.rotation() };
+			NfpKey      binKey{ SIZE_T_MAX, path.id(), true, 0ULL, path.rotation() };
 			const auto& binNfp = nfpCache[binKey];
 
 			// part unplaceable, skip (will be placed into next bin)
@@ -546,7 +545,7 @@ std::tuple<double, std::deque<ZPlacement>> ZNester::nestGArandomRotations(
 
 			// ensure all necessary NFPs exist
 			bool unplaceable = false;
-			for (const auto& placedPoly : placed)
+			for ( const auto& placedPoly : placed )
 			{
 				NfpKey placedKey{ placedPoly.id(), path.id(), false, placedPoly.rotation(), path.rotation() };
 
@@ -573,9 +572,9 @@ std::tuple<double, std::deque<ZPlacement>> ZNester::nestGArandomRotations(
 							 ( dblEqual( binNfp[j][k].x() - path[0].x(), position.x ) &&
 							   binNfp[j][k].y() - path[0].y() < position.y ) )
 						{
-							position.x		  = binNfp[j][k].x() - path[0].x();
-							position.y		  = binNfp[j][k].y() - path[0].y();
-							position.id		  = path.id();
+							position.x        = binNfp[j][k].x() - path[0].x();
+							position.y        = binNfp[j][k].y() - path[0].y();
+							position.id       = path.id();
 							position.rotation = path.rotation();
 						}
 					}
@@ -590,7 +589,7 @@ std::tuple<double, std::deque<ZPlacement>> ZNester::nestGArandomRotations(
 					for ( const auto& child : path.children() )
 					{
 						auto childPos = position;
-						childPos.id	  = child.id();
+						childPos.id   = child.id();
 						childPlacements.push_back( childPos );
 					}
 				}
@@ -603,9 +602,9 @@ std::tuple<double, std::deque<ZPlacement>> ZNester::nestGArandomRotations(
 
 			// choose placement that results in the smallest total width
 
-			minWidth		   = DBL_MAX;
-			double minArea	   = DBL_MAX;
-			double minx		   = DBL_MAX;
+			minWidth           = DBL_MAX;
+			double minArea     = DBL_MAX;
+			double minx        = DBL_MAX;
 			double minHullArea = DBL_MAX;
 			ZRect  minBounds;
 			for ( const auto& nfPoly : finalNfp )
@@ -643,10 +642,10 @@ std::tuple<double, std::deque<ZPlacement>> ZNester::nestGArandomRotations(
 					// positions in between those points. Not sure if that would improve the final
 					// placement though, but I leave this comment here...
 
-					double	  allMinXTotal = allMinX;
-					double	  allMaxXTotal = allMaxX;
-					double	  allMinYTotal = allMinY;
-					double	  allMaxYTotal = allMaxY;
+					double    allMinXTotal = allMinX;
+					double    allMaxXTotal = allMaxX;
+					double    allMinYTotal = allMinY;
+					double    allMaxYTotal = allMaxY;
 
 					ZPosition shiftVector  = { nfPoly[k].x() - path[0].x(), nfPoly[k].y() - path[0].y(), path.id(),
 											   path.rotation() };
@@ -665,20 +664,20 @@ std::tuple<double, std::deque<ZPlacement>> ZNester::nestGArandomRotations(
 					auto allPoints = placedPoints;
 					for ( const auto& pt : path )
 						allPoints.emplace_back( pt.x() + shiftVector.x, pt.y() + shiftVector.y );
-					auto hull	  = ZPolygon::convexHull( allPoints );
+					auto hull     = ZPolygon::convexHull( allPoints );
 					auto hullArea = std::abs( hull.area() );
 
 					// weigh width more, to help compress in direction of gravity
 					auto area = hullArea * ( rectBounds.width() * 2.0 / rectBounds.height() );
 
-					if ( area < minArea || ( dblEqual( minWidth, rectBounds.width(), 10.0 ) && 
-						(( shiftVector.x < minx ) || (hullArea < minHullArea))) )
+					if ( area < minArea || ( dblEqual( minWidth, rectBounds.width(), 10.0 ) &&
+											 ( ( shiftVector.x < minx ) || ( hullArea < minHullArea ) ) ) )
 					{
-						minArea		= area;
-						minWidth	= rectBounds.width();
-						position	= shiftVector;
-						minx		= shiftVector.x;
-						minBounds	= rectBounds;
+						minArea     = area;
+						minWidth    = rectBounds.width();
+						position    = shiftVector;
+						minx        = shiftVector.x;
+						minBounds   = rectBounds;
 						minHullArea = hullArea;
 					}
 				}
@@ -691,14 +690,14 @@ std::tuple<double, std::deque<ZPlacement>> ZNester::nestGArandomRotations(
 					placedPoints.emplace_back( pt.x() + position.x, pt.y() + position.y );
 				placedPoints = ZPolygon::convexHull( placedPoints );
 				placements.push_back( position );
-				placements.bounds	= minBounds;
+				placements.bounds   = minBounds;
 				placements.hullArea = minHullArea;
 				if ( !path.children().empty() )
 				{
 					for ( const auto& child : path.children() )
 					{
 						auto childPos = position;
-						childPos.id	  = child.id();
+						childPos.id   = child.id();
 						childPlacements.push_back( childPos );
 					}
 				}
@@ -725,8 +724,7 @@ std::tuple<double, std::deque<ZPlacement>> ZNester::nestGArandomRotations(
 		{
 			// remove the placed polygons from the global list,
 			// what's left needs to be placed in the next bin
-			paths.erase( std::ranges::remove_if( paths,
-												 [&]( const auto& p ) -> bool
+			paths.erase( std::ranges::remove_if( paths, [&]( const auto& p ) -> bool
 												 { return p.id() == placed[i].id() && p.copy() == placed[i].copy(); } )
 							 .begin(),
 						 paths.end() );
@@ -756,7 +754,7 @@ std::tuple<double, std::deque<ZPlacement>> ZNester::nestGArandomRotations(
 	auto returnPlacements = allPlacements;
 	for ( auto& returnPlacement : returnPlacements )
 	{
-		//returnPlacement.hullArea /= ( ZNESTER_POLY_SCALE * ZNESTER_POLY_SCALE );
+		// returnPlacement.hullArea /= ( ZNESTER_POLY_SCALE * ZNESTER_POLY_SCALE );
 		returnPlacement.bounds = ZRect(
 			returnPlacement.bounds.x() / ZNESTER_POLY_SCALE, returnPlacement.bounds.y() / ZNESTER_POLY_SCALE,
 			returnPlacement.bounds.width() / ZNESTER_POLY_SCALE, returnPlacement.bounds.height() / ZNESTER_POLY_SCALE );
@@ -797,19 +795,19 @@ std::tuple<double, std::deque<ZPlacement>> ZNester::nestGAbestRotation(
 		individual = &genetic.population()[1];
 	}
 
-	auto				   binPolyArea = std::abs( binPoly.area() );
+	auto                   binPolyArea = std::abs( binPoly.area() );
 
-	auto&				   placelist   = individual->placement;
+	auto&                  placelist   = individual->placement;
 
 	std::deque<ZPolygon>   placed;
-	double				   fitness = 0.0;
-	ZPlacement			   placements;
-	ZPlacement			   childPlacements;
+	double                 fitness = 0.0;
+	ZPlacement             placements;
+	ZPlacement             childPlacements;
 	std::deque<ZPlacement> allPlacements;
 	while ( !placelist.empty() )
 	{
 		size_t placedCount = 0;
-		double minWidth	   = DBL_MAX;
+		double minWidth    = DBL_MAX;
 		for ( const auto& polyToPlace : placelist )
 		{
 			++placedCount;
@@ -857,8 +855,8 @@ std::tuple<double, std::deque<ZPlacement>> ZNester::nestGAbestRotation(
 #endif
 						   [&]( const auto& pair )
 						   {
-							   auto a	 = pair.partA.rotated( pair.key.aRotation );
-							   auto b	 = pair.partB.rotated( pair.key.bRotation );
+							   auto a    = pair.partA.rotated( pair.key.aRotation );
+							   auto b    = pair.partB.rotated( pair.key.bRotation );
 							   auto nfPs = generateNfps( a, b, pair.key, config.useHoles );
 							   if ( !nfPs.empty() )
 							   {
@@ -884,11 +882,11 @@ std::tuple<double, std::deque<ZPlacement>> ZNester::nestGAbestRotation(
 
 			// find the best angle
 			ZPosition position;
-			ZRect	  minBounds;
+			ZRect     minBounds;
 			ZPolygon  path = polyToPlace;
-			minWidth	   = DBL_MAX;
+			minWidth       = DBL_MAX;
 			double minArea = DBL_MAX;
-			double minx	   = DBL_MAX;
+			double minx    = DBL_MAX;
 			for ( const auto& angle : angleList )
 			{
 				NfpKey binKey{ SIZE_T_MAX, polyToPlace.id(), true, 0ULL, angle };
@@ -896,13 +894,13 @@ std::tuple<double, std::deque<ZPlacement>> ZNester::nestGAbestRotation(
 				path.setRotation( angle );
 				if ( !nfpCache.contains( binKey ) )
 				{
-					auto bPoly		 = binPoly;
-					auto nfPs		 = generateNfps( bPoly, path, binKey, config.useHoles );
+					auto bPoly       = binPoly;
+					auto nfPs        = generateNfps( bPoly, path, binKey, config.useHoles );
 					nfpCache[binKey] = nfPs;
 				}
-				const auto& binNfp	 = nfpCache[binKey];
+				const auto& binNfp   = nfpCache[binKey];
 
-				auto		finalNfp = getCombinedNfp( path, placed, binNfp, nfpCache, placements );
+				auto        finalNfp = getCombinedNfp( path, placed, binNfp, nfpCache, placements );
 				if ( finalNfp.empty() )
 				{
 					if ( placed.empty() )
@@ -937,10 +935,10 @@ std::tuple<double, std::deque<ZPlacement>> ZNester::nestGAbestRotation(
 					}
 					for ( size_t k = 0; k < nfPoly.size(); ++k )
 					{
-						double	  allMinXTotal = allMinX;
-						double	  allMaxXTotal = allMaxX;
-						double	  allMinYTotal = allMinY;
-						double	  allMaxYTotal = allMaxY;
+						double    allMinXTotal = allMinX;
+						double    allMaxXTotal = allMaxX;
+						double    allMinYTotal = allMinY;
+						double    allMaxYTotal = allMaxY;
 
 						ZPosition shiftVector  = { nfPoly[k].x() - path[0].x(), nfPoly[k].y() - path[0].y(), path.id(),
 												   path.rotation() };
@@ -961,10 +959,10 @@ std::tuple<double, std::deque<ZPlacement>> ZNester::nestGAbestRotation(
 
 						if ( area < minArea || ( dblEqual( minArea, area ) && ( shiftVector.x < minx ) ) )
 						{
-							minArea	  = area;
+							minArea   = area;
 							minWidth  = rectBounds.width();
 							position  = shiftVector;
-							minx	  = shiftVector.x;
+							minx      = shiftVector.x;
 							minBounds = rectBounds;
 						}
 					}
@@ -982,7 +980,7 @@ std::tuple<double, std::deque<ZPlacement>> ZNester::nestGAbestRotation(
 					for ( const auto& child : bestPath.children() )
 					{
 						auto childPos = position;
-						childPos.id	  = child.id();
+						childPos.id   = child.id();
 						childPlacements.push_back( childPos );
 					}
 				}
@@ -1006,8 +1004,7 @@ std::tuple<double, std::deque<ZPlacement>> ZNester::nestGAbestRotation(
 		for ( size_t i = 0; i < placed.size(); ++i )
 		{
 			placelist.erase(
-				std::ranges::remove_if( placelist,
-										[&]( const auto& p ) -> bool
+				std::ranges::remove_if( placelist, [&]( const auto& p ) -> bool
 										{ return p.id() == placed[i].id() && p.copy() == placed[i].copy(); } )
 					.begin(),
 				placelist.end() );
@@ -1023,7 +1020,7 @@ std::tuple<double, std::deque<ZPlacement>> ZNester::nestGAbestRotation(
 		{
 			if ( m_logCallback )
 				m_logCallback( Error, "something went terribly wrong, stopping iteration" );
-			break;	// something went wrong
+			break;  // something went wrong
 		}
 	}
 	// there were parts that couldn't be placed

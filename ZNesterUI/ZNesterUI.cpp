@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 
 #include "ZNesterUI.h"
 
@@ -6,11 +6,13 @@
 
 #pragma warning( push )
 #pragma warning( disable : 4458 )  // declaration of 'xxx' hides class member
+
 namespace Gdiplus
 {
-  using std::min;
-  using std::max;
+	using std::max;
+	using std::min;
 };
+
 #include <gdiplus.h>
 
 #pragma warning( pop )
@@ -28,7 +30,7 @@ int APIENTRY wWinMain( _In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstanc
 	InitCommonControlsEx( &used );
 
 	Gdiplus::GdiplusStartupInput gdiplusStartupInput;
-	ULONG_PTR					 gdiplusToken = 0;
+	ULONG_PTR                    gdiplusToken = 0;
 	GdiplusStartup( &gdiplusToken, &gdiplusStartupInput, nullptr );
 
 	MSG msg;

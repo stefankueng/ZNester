@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <deque>
 
 #include "ZGeomUtil.h"
@@ -12,6 +12,7 @@ public:
 		, m_end( end )
 	{
 	}
+
 	bool angleInRange( double angle ) const
 	{
 		if ( m_start < m_end )

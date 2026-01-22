@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 
 #include "MainWindow.h"
 
@@ -29,17 +29,17 @@ bool CMainWindow::registerAndCreateWindow()
 	WNDCLASSEX wcx;
 
 	// Fill in the window class structure with default parameters
-	wcx.cbSize		= sizeof( WNDCLASSEX );
-	wcx.style		= CS_HREDRAW | CS_VREDRAW;
+	wcx.cbSize      = sizeof( WNDCLASSEX );
+	wcx.style       = CS_HREDRAW | CS_VREDRAW;
 	wcx.lpfnWndProc = CWindow::stWinMsgHandler;
-	wcx.cbClsExtra	= 0;
-	wcx.cbWndExtra	= 0;
-	wcx.hInstance	= hResource;
+	wcx.cbClsExtra  = 0;
+	wcx.cbWndExtra  = 0;
+	wcx.hInstance   = hResource;
 	ResString clsName( hResource, IDS_APP_TITLE );
 	wcx.lpszClassName = clsName;
-	wcx.hIconSm		  = LoadIcon( wcx.hInstance, MAKEINTRESOURCE( IDI_ZNESTERUI ) );
-	wcx.hIcon		  = LoadIcon( wcx.hInstance, MAKEINTRESOURCE( IDI_ZNESTERUI ) );
-	wcx.hCursor		  = LoadCursor( nullptr, IDC_ARROW );
+	wcx.hIconSm       = LoadIcon( wcx.hInstance, MAKEINTRESOURCE( IDI_ZNESTERUI ) );
+	wcx.hIcon         = LoadIcon( wcx.hInstance, MAKEINTRESOURCE( IDI_ZNESTERUI ) );
+	wcx.hCursor       = LoadCursor( nullptr, IDC_ARROW );
 	wcx.hbrBackground = reinterpret_cast<HBRUSH>( ( COLOR_WINDOW + 1 ) );
 	wcx.lpszMenuName  = MAKEINTRESOURCEW( IDC_ZNESTERUI );
 
@@ -72,19 +72,19 @@ LRESULT CALLBACK CMainWindow::WinMsgHandler( HWND hwnd, UINT uMsg, WPARAM wParam
 		case WM_PAINT:
 		{
 			PAINTSTRUCT ps{};
-			RECT		rect{};
+			RECT        rect{};
 
 			::GetClientRect( *this, &rect );
 			HDC hdc = BeginPaint( hwnd, &ps );
 			{
 				std::scoped_lock lock( m_polygonMutex );
 
-				Gdiplus::Bitmap	 bmp( rect.right, rect.bottom );
-				auto			 memG = std::unique_ptr<Gdiplus::Graphics>( Gdiplus::Graphics::FromImage( &bmp ) );
+				Gdiplus::Bitmap  bmp( rect.right, rect.bottom );
+				auto             memG = std::unique_ptr<Gdiplus::Graphics>( Gdiplus::Graphics::FromImage( &bmp ) );
 				memG->Clear( Gdiplus::Color::White );
-				auto					 binPen = Gdiplus::Pen( Gdiplus::Color( 0, 0, 0 ) );
+				auto                     binPen = Gdiplus::Pen( Gdiplus::Color( 0, 0, 0 ) );
 
-				std::vector<SVGPolygon>* polys	= &m_polygons;
+				std::vector<SVGPolygon>* polys  = &m_polygons;
 				if ( !m_debugPolys.empty() )
 					polys = &m_debugPolys;
 				if ( !m_polygonsPlaced.empty() )
@@ -114,9 +114,9 @@ LRESULT CALLBACK CMainWindow::WinMsgHandler( HWND hwnd, UINT uMsg, WPARAM wParam
 					}
 				}
 
-				auto			scaleX = ( rect.right - 0.0f ) / ( maxX - minX );
-				auto			scaleY = ( rect.bottom - 0.0f ) / ( maxY - minY );
-				auto			scale  = std::min( scaleX, scaleY );
+				auto            scaleX = ( rect.right - 0.0f ) / ( maxX - minX );
+				auto            scaleY = ( rect.bottom - 0.0f ) / ( maxY - minY );
+				auto            scale  = std::min( scaleX, scaleY );
 				Gdiplus::Matrix transformMatrix;
 				transformMatrix.Translate( static_cast<float>( m_scalePt.x ), static_cast<float>( m_scalePt.y ) );
 				transformMatrix.Scale( m_scale, m_scale );
@@ -128,7 +128,7 @@ LRESULT CALLBACK CMainWindow::WinMsgHandler( HWND hwnd, UINT uMsg, WPARAM wParam
 				for ( const auto& bin : m_binsPlaced )
 				{
 					auto   binPoints = std::make_unique<Gdiplus::PointF[]>( bin.points.size() );
-					size_t i		 = 0;
+					size_t i         = 0;
 					for ( const auto& pt : bin.points )
 					{
 						binPoints[i].X = pt.x;
@@ -138,15 +138,15 @@ LRESULT CALLBACK CMainWindow::WinMsgHandler( HWND hwnd, UINT uMsg, WPARAM wParam
 					memG->DrawPolygon( &binPen, binPoints.get(), static_cast<int>( m_bin.points.size() ) );
 				}
 
-				auto		pen = std::make_unique<Gdiplus::Pen>( Gdiplus::Color( 255, 0, 0 ), 1.0f / m_scale / scale );
-				const float ptRad	= 1.5f / m_scale / scale;
+				auto        pen = std::make_unique<Gdiplus::Pen>( Gdiplus::Color( 255, 0, 0 ), 1.0f / m_scale / scale );
+				const float ptRad   = 1.5f / m_scale / scale;
 
-				int			polyNum = 0;
+				int         polyNum = 0;
 				for ( const auto& polygon : *polys )
 				{
 					++polyNum;
 					auto points = std::make_unique<Gdiplus::PointF[]>( polygon.points.size() );
-					int	 j		= 0;
+					int  j      = 0;
 					for ( const auto& pt : polygon.points )
 					{
 						points[j].X = pt.x;
@@ -192,12 +192,13 @@ LRESULT CALLBACK CMainWindow::WinMsgHandler( HWND hwnd, UINT uMsg, WPARAM wParam
 				}
 				if ( !m_debugMarkers.empty() )
 				{
-					auto		dbgMarkerPen = std::make_unique<Gdiplus::Pen>( Gdiplus::Color( 255, 0, 0 ), 1.0f / m_scale / scale );
+					auto dbgMarkerPen =
+						std::make_unique<Gdiplus::Pen>( Gdiplus::Color( 255, 0, 0 ), 1.0f / m_scale / scale );
 					const float dbgMarkerRad = 2.0f / m_scale / scale;
 					for ( const auto& pt : m_debugMarkers )
 					{
-						memG->DrawEllipse( dbgMarkerPen.get(), pt.x - dbgMarkerRad, pt.y - dbgMarkerRad, 2.0f * dbgMarkerRad,
-										   2.0f * dbgMarkerRad );
+						memG->DrawEllipse( dbgMarkerPen.get(), pt.x - dbgMarkerRad, pt.y - dbgMarkerRad,
+										   2.0f * dbgMarkerRad, 2.0f * dbgMarkerRad );
 					}
 				}
 
@@ -205,7 +206,7 @@ LRESULT CALLBACK CMainWindow::WinMsgHandler( HWND hwnd, UINT uMsg, WPARAM wParam
 				{
 					memG->ResetTransform();
 					Gdiplus::FontFamily fontFamily( L"Arial" );
-					Gdiplus::Font		font( &fontFamily, 12, Gdiplus::FontStyleBold, Gdiplus::UnitPoint );
+					Gdiplus::Font       font( &fontFamily, 12, Gdiplus::FontStyleBold, Gdiplus::UnitPoint );
 					Gdiplus::SolidBrush solidBrush( Gdiplus::Color( 0, 80, 0 ) );
 					memG->DrawString( m_timeString.c_str(), -1, &font,
 									  { 20.0f, static_cast<float>( rect.top + 20.0f ) }, nullptr, &solidBrush );
@@ -214,7 +215,7 @@ LRESULT CALLBACK CMainWindow::WinMsgHandler( HWND hwnd, UINT uMsg, WPARAM wParam
 				{
 					memG->ResetTransform();
 					Gdiplus::FontFamily fontFamily( L"Arial" );
-					Gdiplus::Font		font( &fontFamily, 12, Gdiplus::FontStyleBold, Gdiplus::UnitPoint );
+					Gdiplus::Font       font( &fontFamily, 12, Gdiplus::FontStyleBold, Gdiplus::UnitPoint );
 					Gdiplus::SolidBrush solidBrush( Gdiplus::Color( 0, 80, 0 ) );
 					memG->DrawString( m_totalTimeString.c_str(), -1, &font,
 									  { rect.right - 500.0f, static_cast<float>( rect.top + 10.0f ) }, nullptr,
@@ -224,7 +225,7 @@ LRESULT CALLBACK CMainWindow::WinMsgHandler( HWND hwnd, UINT uMsg, WPARAM wParam
 				{
 					memG->ResetTransform();
 					Gdiplus::FontFamily fontFamily( L"Arial" );
-					Gdiplus::Font		font( &fontFamily, 12, Gdiplus::FontStyleBold, Gdiplus::UnitPoint );
+					Gdiplus::Font       font( &fontFamily, 12, Gdiplus::FontStyleBold, Gdiplus::UnitPoint );
 					Gdiplus::SolidBrush solidBrush( Gdiplus::Color( 0, 80, 0 ) );
 					memG->DrawString( m_infoString.c_str(), -1, &font,
 									  { rect.right - 500.0f, static_cast<float>( rect.top + 50.0f ) }, nullptr,
@@ -238,7 +239,7 @@ LRESULT CALLBACK CMainWindow::WinMsgHandler( HWND hwnd, UINT uMsg, WPARAM wParam
 		break;
 		case WM_GETMINMAXINFO:
 		{
-			MINMAXINFO* mmi		  = reinterpret_cast<MINMAXINFO*>( lParam );
+			MINMAXINFO* mmi       = reinterpret_cast<MINMAXINFO*>( lParam );
 			mmi->ptMinTrackSize.x = 640;
 			mmi->ptMinTrackSize.y = 400;
 			return 0;
@@ -269,11 +270,11 @@ LRESULT CALLBACK CMainWindow::WinMsgHandler( HWND hwnd, UINT uMsg, WPARAM wParam
 			if ( m_downStartPt.x != 0 && m_downStartPt.y != 0 && wParam & MK_LBUTTON )
 			{
 				POINT pt{ GET_X_LPARAM( lParam ), GET_Y_LPARAM( lParam ) };
-				auto  deltaX = pt.x - m_downStartPt.x;
-				auto  deltaY = pt.y - m_downStartPt.y;
-				m_scalePt.x += deltaX;
-				m_scalePt.y += deltaY;
-				m_downStartPt = pt;
+				auto  deltaX   = pt.x - m_downStartPt.x;
+				auto  deltaY   = pt.y - m_downStartPt.y;
+				m_scalePt.x   += deltaX;
+				m_scalePt.y   += deltaY;
+				m_downStartPt  = pt;
 				InvalidateRect( *this, nullptr, FALSE );
 			}
 		}
@@ -288,7 +289,7 @@ LRESULT CALLBACK CMainWindow::WinMsgHandler( HWND hwnd, UINT uMsg, WPARAM wParam
 
 			// zoom
 			m_scale += ( zDelta / 600.0f );
-			m_scale = std::max( 1.0f, m_scale );
+			m_scale  = std::max( 1.0f, m_scale );
 
 			// determine where the focus has moved as part of the zoom
 			auto newZoomFocusX = oldZoomFocus.X * m_scale + m_scalePt.x;
@@ -332,7 +333,7 @@ LRESULT CMainWindow::doCommand( int id, LPARAM /*lParam*/ )
 		case ID_VIEW_SHOWPOLYGONPOINTS:
 		{
 			m_bShowPolygonPoints = !m_bShowPolygonPoints;
-			auto hMenuMain		 = GetMenu( *this );
+			auto hMenuMain       = GetMenu( *this );
 			CheckMenuItem( hMenuMain, ID_VIEW_SHOWPOLYGONPOINTS,
 						   MF_BYCOMMAND | ( m_bShowPolygonPoints ? MF_CHECKED : 0 ) );
 			InvalidateRect( *this, nullptr, TRUE );
@@ -389,7 +390,7 @@ LRESULT CMainWindow::doCommand( int id, LPARAM /*lParam*/ )
 			m_polygons = m_svg.getPolygons();
 
 			std::deque<ZPolygon> polygons;
-			size_t				 pid = 1;
+			size_t               pid = 1;
 			for ( const auto& [poly] : m_polygons )
 			{
 				ZPolygon p;
@@ -404,12 +405,12 @@ LRESULT CMainWindow::doCommand( int id, LPARAM /*lParam*/ )
 			}
 
 			ZNesterConfig config;
-			config.binDistance	= static_cast<double>( dlg.m_binDistance );
+			config.binDistance  = static_cast<double>( dlg.m_binDistance );
 			config.partDistance = static_cast<double>( dlg.m_partDistance );
-			config.useHoles		= dlg.m_useHoles;
+			config.useHoles     = dlg.m_useHoles;
 
-			m_iterationBegin	= std::chrono::steady_clock::now();
-			m_begin				= m_iterationBegin;
+			m_iterationBegin    = std::chrono::steady_clock::now();
+			m_begin             = m_iterationBegin;
 			m_nester.setLogCallback(
 				[&]( eZLogLevel level, const std::string& msg )
 				{
@@ -479,11 +480,11 @@ LRESULT CMainWindow::doCommand( int id, LPARAM /*lParam*/ )
 						}
 
 						// arrange the bins from left to right, aligned at the top
-						float			   binX = 0.0f;
-						float			   binY = 0.0f;
+						float              binX = 0.0f;
+						float              binY = 0.0f;
 						std::vector<float> binOffsets;
-						SVGPolygon		   binPoly;
-						float			   rightX = binX;
+						SVGPolygon         binPoly;
+						float              rightX = binX;
 						for ( const auto& pt : m_bin.points )
 						{
 							binPoly.points.emplace_back( pt.x - minX + binX, pt.y - minY + binY );
@@ -494,7 +495,7 @@ LRESULT CMainWindow::doCommand( int id, LPARAM /*lParam*/ )
 						binX = rightX;
 
 						// now go through all placed parts
-						size_t		 binIndex = 0;
+						size_t       binIndex = 0;
 						std::wstring infoString;
 						for ( const auto& binPositions : positions )
 						{
@@ -514,7 +515,7 @@ LRESULT CMainWindow::doCommand( int id, LPARAM /*lParam*/ )
 							{
 								auto startIt = binPositions.begin();
 
-								auto found	 = std::find_if( startIt, binPositions.end(),
+								auto found   = std::find_if( startIt, binPositions.end(),
 															 [&]( const auto& p ) { return p.id == polyId; } );
 								while ( found != binPositions.end() )
 								{
@@ -522,26 +523,26 @@ LRESULT CMainWindow::doCommand( int id, LPARAM /*lParam*/ )
 									for ( const auto& pt : poly )
 									{
 										auto radAngle = found->rotation;
-										auto x		  = pt.x * cos( radAngle ) - pt.y * sin( radAngle );
-										auto y		  = pt.x * sin( radAngle ) + pt.y * cos( radAngle );
+										auto x        = pt.x * cos( radAngle ) - pt.y * sin( radAngle );
+										auto y        = pt.x * sin( radAngle ) + pt.y * cos( radAngle );
 
-										x			  = x + found->x + ( binIndex * rightX );
-										y			  = y + found->y;
+										x             = x + found->x + ( binIndex * rightX );
+										y             = y + found->y;
 
 										polyPlaced.points.emplace_back( static_cast<float>( x ),
 																		static_cast<float>( y ) );
 									}
 									m_polygonsPlaced.push_back( polyPlaced );
 									startIt = ++found;
-									found	= std::find_if( startIt, binPositions.end(),
+									found   = std::find_if( startIt, binPositions.end(),
 															[&]( const auto& p ) { return p.id == polyId; } );
 								}
 								++polyId;
 							}
 							++binIndex;
-							auto info = std::format( L"bin {0}: fill-width {1:.1f}mm, {2:.2f}%", binIndex,
-													 binPositions.bounds.width(),
-													 binPositions.hullArea * 100.0 / binArea );
+							auto info =
+								std::format( L"bin {0}: fill-width {1:.1f}mm, {2:.2f}%", binIndex,
+											 binPositions.bounds.width(), binPositions.hullArea * 100.0 / binArea );
 							if ( !infoString.empty() )
 								infoString += L"\n";
 							infoString += info;
@@ -550,7 +551,7 @@ LRESULT CMainWindow::doCommand( int id, LPARAM /*lParam*/ )
 					}
 
 					std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
-					auto								  milliSeconds =
+					auto                                  milliSeconds =
 						std::chrono::duration_cast<std::chrono::milliseconds>( end - m_iterationBegin ).count();
 					m_timeString = std::format( L"{0} ms", milliSeconds );
 					auto totalMilliSeconds =
@@ -583,7 +584,7 @@ LRESULT CMainWindow::doCommand( int id, LPARAM /*lParam*/ )
 
 void CMainWindow::clearZoom()
 {
-	m_scale		= 1.0f;
+	m_scale     = 1.0f;
 	m_scalePt.x = 0;
 	m_scalePt.y = 0;
 };
@@ -595,15 +596,15 @@ INT_PTR CALLBACK about( HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam )
 	switch ( message )
 	{
 		case WM_INITDIALOG:
-			return ( INT_PTR )TRUE;
+			return (INT_PTR)TRUE;
 
 		case WM_COMMAND:
 			if ( LOWORD( wParam ) == IDOK || LOWORD( wParam ) == IDCANCEL )
 			{
 				EndDialog( hDlg, LOWORD( wParam ) );
-				return ( INT_PTR )TRUE;
+				return (INT_PTR)TRUE;
 			}
 			break;
 	}
-	return ( INT_PTR )FALSE;
+	return (INT_PTR)FALSE;
 }

@@ -7,10 +7,10 @@
 
 static HWND gHDlgCurrent = nullptr;
 
-INT_PTR		CDialog::doModal( HINSTANCE hInstance, int resID, HWND hWndParent )
+INT_PTR     CDialog::doModal( HINSTANCE hInstance, int resID, HWND hWndParent )
 {
 	m_bPseudoModal = false;
-	m_hResource	   = hInstance;
+	m_hResource    = hInstance;
 	return DialogBoxParam( hInstance, MAKEINTRESOURCE( resID ), hWndParent, &CDialog::stDlgFunc,
 						   reinterpret_cast<LPARAM>( this ) );
 }
@@ -18,7 +18,7 @@ INT_PTR		CDialog::doModal( HINSTANCE hInstance, int resID, HWND hWndParent )
 INT_PTR CDialog::doModal( HINSTANCE hInstance, LPCDLGTEMPLATE pDlgTemplate, HWND hWndParent )
 {
 	m_bPseudoModal = false;
-	m_hResource	   = hInstance;
+	m_hResource    = hInstance;
 	return DialogBoxIndirectParam( hInstance, pDlgTemplate, hWndParent, &CDialog::stDlgFunc,
 								   reinterpret_cast<LPARAM>( this ) );
 }
@@ -27,8 +27,8 @@ INT_PTR CDialog::doModal( HINSTANCE hInstance, int resID, HWND hWndParent, UINT 
 {
 	m_bPseudoModal = true;
 	m_bPseudoEnded = false;
-	m_hResource	   = hInstance;
-	m_hwnd		   = CreateDialogParam( hInstance, MAKEINTRESOURCE( resID ), hWndParent, &CDialog::stDlgFunc,
+	m_hResource    = hInstance;
+	m_hwnd         = CreateDialogParam( hInstance, MAKEINTRESOURCE( resID ), hWndParent, &CDialog::stDlgFunc,
 										reinterpret_cast<LPARAM>( this ) );
 
 	// deactivate the parent window
@@ -40,9 +40,9 @@ INT_PTR CDialog::doModal( HINSTANCE hInstance, int resID, HWND hWndParent, UINT 
 	::SetForegroundWindow( m_hwnd );
 
 	// Main message loop:
-	MSG	   msg		   = { nullptr };
+	MSG    msg         = { nullptr };
 	HACCEL hAccelTable = LoadAccelerators( m_hResource, MAKEINTRESOURCE( idAccel ) );
-	BOOL   bRet		   = TRUE;
+	BOOL   bRet        = TRUE;
 	while ( !m_bPseudoEnded && ( ( bRet = GetMessage( &msg, nullptr, 0, 0 ) ) != 0 ) )
 	{
 		if ( bRet == -1 )
@@ -86,8 +86,8 @@ BOOL CDialog::endDialog( HWND hDlg, INT_PTR nResult )
 HWND CDialog::create( HINSTANCE hInstance, int resID, HWND hWndParent )
 {
 	m_bPseudoModal = true;
-	m_hResource	   = hInstance;
-	m_hwnd		   = CreateDialogParam( hInstance, MAKEINTRESOURCE( resID ), hWndParent, &CDialog::stDlgFunc,
+	m_hResource    = hInstance;
+	m_hwnd         = CreateDialogParam( hInstance, MAKEINTRESOURCE( resID ), hWndParent, &CDialog::stDlgFunc,
 										reinterpret_cast<LPARAM>( this ) );
 	return m_hwnd;
 }
@@ -97,7 +97,7 @@ void CDialog::showModeless( HINSTANCE hInstance, int resID, HWND hWndParent, boo
 	if ( m_hwnd == nullptr )
 	{
 		m_hResource = hInstance;
-		m_hwnd		= CreateDialogParam( hInstance, MAKEINTRESOURCE( resID ), hWndParent, &CDialog::stDlgFunc,
+		m_hwnd      = CreateDialogParam( hInstance, MAKEINTRESOURCE( resID ), hWndParent, &CDialog::stDlgFunc,
 										 reinterpret_cast<LPARAM>( this ) );
 	}
 	if ( show )
@@ -112,7 +112,7 @@ void CDialog::showModeless( HINSTANCE hInstance, LPCDLGTEMPLATE pDlgTemplate, HW
 	if ( m_hwnd == nullptr )
 	{
 		m_hResource = hInstance;
-		m_hwnd		= CreateDialogIndirectParam( hInstance, pDlgTemplate, hWndParent, &CDialog::stDlgFunc,
+		m_hwnd      = CreateDialogIndirectParam( hInstance, pDlgTemplate, hWndParent, &CDialog::stDlgFunc,
 												 reinterpret_cast<LPARAM>( this ) );
 	}
 	if ( show )
@@ -124,11 +124,11 @@ void CDialog::showModeless( HINSTANCE hInstance, LPCDLGTEMPLATE pDlgTemplate, HW
 
 void CDialog::initDialog( HWND hwndDlg, UINT iconID, bool bPosition /* = true*/ ) const
 {
-	RECT			rc, rcDlg, rcOwner;
+	RECT            rc, rcDlg, rcOwner;
 	WINDOWPLACEMENT placement;
 	placement.length = sizeof( WINDOWPLACEMENT );
 
-	HWND hwndOwner	 = ::GetParent( hwndDlg );
+	HWND hwndOwner   = ::GetParent( hwndDlg );
 	GetWindowPlacement( hwndOwner, &placement );
 	if ( ( hwndOwner == nullptr ) || ( placement.showCmd == SW_SHOWMINIMIZED ) ||
 		 ( placement.showCmd == SW_SHOWMINNOACTIVE ) )
@@ -154,10 +154,10 @@ void CDialog::initDialog( HWND hwndDlg, UINT iconID, bool bPosition /* = true*/ 
 void CDialog::addToolTip( UINT ctrlID, LPCWSTR text )
 {
 	TOOLINFO tt;
-	tt.cbSize	= sizeof( TOOLINFO );
-	tt.uFlags	= TTF_IDISHWND | TTF_SUBCLASS;
-	tt.hwnd		= text == LPSTR_TEXTCALLBACK ? *this : GetDlgItem( *this, ctrlID );
-	tt.uId		= reinterpret_cast<UINT_PTR>( GetDlgItem( *this, ctrlID ) );
+	tt.cbSize   = sizeof( TOOLINFO );
+	tt.uFlags   = TTF_IDISHWND | TTF_SUBCLASS;
+	tt.hwnd     = text == LPSTR_TEXTCALLBACK ? *this : GetDlgItem( *this, ctrlID );
+	tt.uId      = reinterpret_cast<UINT_PTR>( GetDlgItem( *this, ctrlID ) );
 	tt.lpszText = const_cast<LPWSTR>( text );
 
 	SendMessage( m_hToolTips, TTM_ADDTOOL, 0, reinterpret_cast<LPARAM>( &tt ) );
@@ -166,10 +166,10 @@ void CDialog::addToolTip( UINT ctrlID, LPCWSTR text )
 void CDialog::addToolTip( HWND hWnd, LPCWSTR text ) const
 {
 	TOOLINFO tt;
-	tt.cbSize	= sizeof( TOOLINFO );
-	tt.uFlags	= TTF_IDISHWND | TTF_SUBCLASS;
-	tt.hwnd		= hWnd;
-	tt.uId		= reinterpret_cast<UINT_PTR>( hWnd );
+	tt.cbSize   = sizeof( TOOLINFO );
+	tt.uFlags   = TTF_IDISHWND | TTF_SUBCLASS;
+	tt.hwnd     = hWnd;
+	tt.uId      = reinterpret_cast<UINT_PTR>( hWnd );
 	tt.lpszText = const_cast<LPWSTR>( text );
 
 	SendMessage( m_hToolTips, TTM_ADDTOOL, 0, reinterpret_cast<LPARAM>( &tt ) );
@@ -188,7 +188,7 @@ INT_PTR CALLBACK CDialog::stDlgFunc( HWND hwndDlg, UINT uMsg, WPARAM wParam, LPA
 		{
 			// get the pointer to the window from lpCreateParams
 			SetWindowLongPtr( hwndDlg, GWLP_USERDATA, lParam );
-			pWnd		 = reinterpret_cast<CDialog*>( lParam );
+			pWnd         = reinterpret_cast<CDialog*>( lParam );
 			pWnd->m_hwnd = hwndDlg;
 			// create the tooltip control
 			pWnd->m_hToolTips = CreateWindowEx( 0, TOOLTIPS_CLASS, nullptr, WS_POPUP | TTS_NOPREFIX | TTS_ALWAYSTIP,
@@ -211,9 +211,9 @@ INT_PTR CALLBACK CDialog::stDlgFunc( HWND hwndDlg, UINT uMsg, WPARAM wParam, LPA
 		switch ( uMsg )
 		{
 			case WM_ACTIVATE:
-				if ( 0 == wParam )	// becoming inactive
+				if ( 0 == wParam )  // becoming inactive
 					gHDlgCurrent = nullptr;
-				else  // becoming active
+				else                // becoming active
 					gHDlgCurrent = hwndDlg;
 				break;
 			default:
@@ -288,10 +288,10 @@ void CDialog::RefreshCursor()
 void CDialog::showEditBalloon( UINT nId, LPCWSTR title, LPCWSTR text, int icon /*= TTI_ERROR*/ )
 {
 	EDITBALLOONTIP ebt = { 0 };
-	ebt.cbStruct	   = sizeof( EDITBALLOONTIP );
-	ebt.pszTitle	   = title;
-	ebt.pszText		   = text;
-	ebt.ttiIcon		   = icon;
+	ebt.cbStruct       = sizeof( EDITBALLOONTIP );
+	ebt.pszTitle       = title;
+	ebt.pszText        = text;
+	ebt.ttiIcon        = icon;
 	if ( !::SendMessage( GetDlgItem( *this, nId ), EM_SHOWBALLOONTIP, 0, reinterpret_cast<LPARAM>( &ebt ) ) )
 	{
 		UINT uType = MB_ICONERROR;
@@ -321,21 +321,21 @@ void CDialog::setTransparency( BYTE alpha, COLORREF color /*= 0xFF000000*/ )
 {
 	if ( alpha == 255 )
 	{
-		LONG_PTR exStyle = GetWindowLongPtr( *this, GWL_EXSTYLE );
-		exStyle &= ~WS_EX_LAYERED;
+		LONG_PTR exStyle  = GetWindowLongPtr( *this, GWL_EXSTYLE );
+		exStyle          &= ~WS_EX_LAYERED;
 		SetWindowLongPtr( *this, GWL_EXSTYLE, exStyle );
 	}
 	else
 	{
-		LONG_PTR exStyle = GetWindowLongPtr( *this, GWL_EXSTYLE );
-		exStyle |= WS_EX_LAYERED;
+		LONG_PTR exStyle  = GetWindowLongPtr( *this, GWL_EXSTYLE );
+		exStyle          |= WS_EX_LAYERED;
 		SetWindowLongPtr( *this, GWL_EXSTYLE, exStyle );
 	}
 	COLORREF col   = color;
-	DWORD	 flags = LWA_ALPHA;
+	DWORD    flags = LWA_ALPHA;
 	if ( col & 0xFF000000 )
 	{
-		col	  = RGB( 255, 255, 255 );
+		col   = RGB( 255, 255, 255 );
 		flags = LWA_ALPHA;
 	}
 	else
@@ -362,14 +362,14 @@ RECT CDialog::adjustControlSize( UINT nID )
 	// next step: find the rectangle the control text needs to
 	// be displayed
 
-	HDC	 hDC = GetWindowDC( *this );
+	HDC  hDC = GetWindowDC( *this );
 	RECT controlRect;
 	GetWindowRect( hwndDlgItem, &controlRect );
 	::MapWindowPoints( nullptr, *this, reinterpret_cast<LPPOINT>( &controlRect ), 2 );
 	RECT controlRectOrig = controlRect;
 	if ( hDC )
 	{
-		HFONT hFont	   = GetWindowFont( hwndDlgItem );
+		HFONT hFont    = GetWindowFont( hwndDlgItem );
 		HFONT hOldFont = static_cast<HFONT>( SelectObject( hDC, hFont ) );
 		if ( DrawText( hDC, sControlText.get(), -1, &controlRect,
 					   DT_WORDBREAK | DT_EDITCONTROL | DT_EXPANDTABS | DT_LEFT | DT_CALCRECT ) )

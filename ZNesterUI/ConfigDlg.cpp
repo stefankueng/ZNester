@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 
 #include "ConfigDlg.h"
 
@@ -57,11 +57,11 @@ LRESULT ConfigDlg::doCommand( int id )
 		case IDOK:
 		{
 			wchar_t buf[1024]{};
-			m_width	 = 0;
+			m_width  = 0;
 			m_height = 0;
 			m_binPath.clear();
 			m_objPath.clear();
-			m_copies	   = 0;
+			m_copies       = 0;
 			m_partDistance = 0;
 			m_binDistance  = 0;
 			if ( IsDlgButtonChecked( *this, IDC_RECTBINRADIO ) )
@@ -85,7 +85,7 @@ LRESULT ConfigDlg::doCommand( int id )
 			m_binDistance = _wtoi( buf );
 			GetWindowText( GetDlgItem( *this, IDC_ROTATIONS ), buf, _countof( buf ) );
 			m_rotations = _wtoi( buf );
-			m_useHoles	= !!IsDlgButtonChecked( *this, IDC_FILLHOLESCHECK );
+			m_useHoles  = !!IsDlgButtonChecked( *this, IDC_FILLHOLESCHECK );
 
 			if ( !PathFileExists( m_objPath.c_str() ) || PathIsDirectory( m_objPath.c_str() ) )
 			{
@@ -137,7 +137,7 @@ LRESULT ConfigDlg::doCommand( int id )
 std::vector<std::wstring> ConfigDlg::askForFiles( const std::vector<std::wstring>& filters )
 {
 	Microsoft::WRL::ComPtr<IFileOpenDialog> pfd;
-	HRESULT									hr =
+	HRESULT                                 hr =
 		CoCreateInstance( CLSID_FileOpenDialog, nullptr, CLSCTX_INPROC_SERVER, IID_PPV_ARGS( pfd.GetAddressOf() ) );
 	if ( FAILED( hr ) )
 		return {};
@@ -145,7 +145,7 @@ std::vector<std::wstring> ConfigDlg::askForFiles( const std::vector<std::wstring
 	// Set the dialog options, if it fails don't continue as we don't
 	// know what options we're blending. Shouldn't ever fail anyway.
 	DWORD dwOptions = 0;
-	hr				= pfd->GetOptions( &dwOptions );
+	hr              = pfd->GetOptions( &dwOptions );
 
 	// allow the user to enter a filename that does not exist yet
 	dwOptions &= ~( FOS_FILEMUSTEXIST );
@@ -161,8 +161,8 @@ std::vector<std::wstring> ConfigDlg::askForFiles( const std::vector<std::wstring
 
 	if ( !filters.empty() )
 	{
-		auto					  filterSpec	  = std::make_unique<COMDLG_FILTERSPEC[]>( filters.size() );
-		int						  filterSpecIndex = 0;
+		auto                      filterSpec      = std::make_unique<COMDLG_FILTERSPEC[]>( filters.size() );
+		int                       filterSpecIndex = 0;
 		std::vector<std::wstring> filterStore;
 		for ( const auto& filter : filters )
 		{
@@ -181,7 +181,7 @@ std::vector<std::wstring> ConfigDlg::askForFiles( const std::vector<std::wstring
 
 	// Show the open file dialog, not much we can do if that doesn't work.
 	hr = pfd->Show( *this );
-	if ( hr == HRESULT_FROM_WIN32( ERROR_CANCELLED ) )	// Expected error
+	if ( hr == HRESULT_FROM_WIN32( ERROR_CANCELLED ) )  // Expected error
 		return {};
 	if ( FAILED( hr ) )
 		return {};
@@ -192,7 +192,7 @@ std::vector<std::wstring> ConfigDlg::askForFiles( const std::vector<std::wstring
 		return {};
 
 	DWORD count = 0;
-	hr			= psiaResults->GetCount( &count );
+	hr          = psiaResults->GetCount( &count );
 	std::vector<std::wstring> paths;
 	paths.reserve( count );
 	for ( decltype( count ) i = 0; i < count; ++i )
@@ -202,7 +202,7 @@ std::vector<std::wstring> ConfigDlg::askForFiles( const std::vector<std::wstring
 		if ( SUCCEEDED( hr ) )
 		{
 			PWSTR pszPath = nullptr;
-			hr			  = psiResult->GetDisplayName( SIGDN_FILESYSPATH, &pszPath );
+			hr            = psiResult->GetDisplayName( SIGDN_FILESYSPATH, &pszPath );
 			if ( SUCCEEDED( hr ) )
 			{
 				paths.push_back( pszPath );

@@ -15,35 +15,35 @@
 
 struct TransVector
 {
-	ZPoint	pt;
-	ZPoint *start	= nullptr;
-	ZPoint *end		= nullptr;
-	double	dMax	= 0.0;
-	double	dMax2	= 0.0;
-	double	dot		= 0.0;
-	double	length2 = 0.0;
-	double	scale	= 1.0;
-	double	length	= 0.0;	// only set if scale is != 1.0
-	bool	inNfp	= false;
-	bool	back	= false;
+	ZPoint  pt;
+	ZPoint* start   = nullptr;
+	ZPoint* end     = nullptr;
+	double  dMax    = 0.0;
+	double  dMax2   = 0.0;
+	double  dot     = 0.0;
+	double  length2 = 0.0;
+	double  scale   = 1.0;
+	double  length  = 0.0;  // only set if scale is != 1.0
+	bool    inNfp   = false;
+	bool    back    = false;
 };
 
 struct EdgeDescriptor
 {
-	int	   type	 = 0;
+	int    type  = 0;
 	size_t edgeA = 0;
 	size_t edgeB = 0;
 };
 
-bool inNfp( const ZPoint &p, const std::deque<ZPolygon> &nfp )
+bool inNfp( const ZPoint& p, const std::deque<ZPolygon>& nfp )
 {
 	if ( nfp.empty() )
 	{
 		return false;
 	}
-	for ( const auto &poly : nfp )
+	for ( const auto& poly : nfp )
 	{
-		for ( const auto &pt : poly )
+		for ( const auto& pt : poly )
 		{
 			if ( p == pt )
 			{
@@ -62,9 +62,9 @@ enum eAlignment
 	On
 };
 
-void minkowskiFallback( std::deque<ZPolygon>											&nfpList,
-						const std::function<void( eZLogLevel, const std::string &msg )> &logCallback, const ZPolygon &a,
-						const ZPolygon &b, bool inside, const tDebugCallback &debugDisplay, ZPolygon &nfp )
+void minkowskiFallback( std::deque<ZPolygon>&                                            nfpList,
+						const std::function<void( eZLogLevel, const std::string& msg )>& logCallback, const ZPolygon& a,
+						const ZPolygon& b, bool inside, const tDebugCallback& debugDisplay, ZPolygon& nfp )
 {
 	if ( nfpList.empty() )
 	{
@@ -79,7 +79,7 @@ void minkowskiFallback( std::deque<ZPolygon>											&nfpList,
 	nfp.clear();
 }
 
-eAlignment getAlignment( const ZPoint &segStart, const ZPoint &segEnd, const ZPoint &pt )
+eAlignment getAlignment( const ZPoint& segStart, const ZPoint& segEnd, const ZPoint& pt )
 {
 	auto res = ( ( segEnd.x() - segStart.x() ) * ( pt.y() - segStart.y() ) -
 				 ( segEnd.y() - segStart.y() ) * ( pt.x() - segStart.x() ) );
@@ -98,9 +98,9 @@ eAlignment getAlignment( const ZPoint &segStart, const ZPoint &segEnd, const ZPo
 	}
 }
 
-ZPoint searchStartPoint( ZPolygon &a, ZPolygon &b, bool inside, const std::deque<ZPolygon> &nfp,
-						 [[maybe_unused]] const std::function<void( eZLogLevel, const std::string &msg )> &logCallback,
-						 [[maybe_unused]] const tDebugCallback &debugDisplay )
+ZPoint searchStartPoint( ZPolygon& a, ZPolygon& b, bool inside, const std::deque<ZPolygon>& nfp,
+						 [[maybe_unused]] const std::function<void( eZLogLevel, const std::string& msg )>& logCallback,
+						 [[maybe_unused]] const tDebugCallback& debugDisplay )
 {
 	for ( int i = 0; i < a.size(); ++i )
 	{
@@ -123,7 +123,7 @@ ZPoint searchStartPoint( ZPolygon &a, ZPolygon &b, bool inside, const std::deque
 				// }
 
 				ePointInside bInside = ePointInside::Invalid;
-				for ( const auto &bPt : b )
+				for ( const auto& bPt : b )
 				{
 					auto inPoly = a.isPointInside( bPt + b.offset(), true );
 					if ( inPoly != ePointInside::Invalid )
@@ -149,12 +149,12 @@ ZPoint searchStartPoint( ZPolygon &a, ZPolygon &b, bool inside, const std::deque
 
 				// slide B along vector
 				auto   next = ( i + 1ULL ) == a.size() ? 0 : i + 1;
-				auto   v	= a[next] - a[i];
+				auto   v    = a[next] - a[i];
 
-				double d1	= a.projectionDistance( b, v );
-				double d2	= b.projectionDistance( a, -v );
+				double d1   = a.projectionDistance( b, v );
+				double d2   = b.projectionDistance( a, -v );
 
-				double d	= DBL_MAX;
+				double d    = DBL_MAX;
 
 				if ( d1 != DBL_MAX || d2 != DBL_MAX )
 					d = std::min( d1, d2 );
@@ -167,8 +167,8 @@ ZPoint searchStartPoint( ZPolygon &a, ZPolygon &b, bool inside, const std::deque
 
 				if ( d * d < vd2 && !dblEqual( d * d, vd2 ) )
 				{
-					double vd = v.length();
-					v *= d / vd;
+					double vd  = v.length();
+					v         *= d / vd;
 				}
 
 				b.setOffset( b.offset() + v );
@@ -184,7 +184,7 @@ ZPoint searchStartPoint( ZPolygon &a, ZPolygon &b, bool inside, const std::deque
 				//     debugDisplay({aCopy, bCopy});
 				// }
 
-				for ( const auto &bPt : b )
+				for ( const auto& bPt : b )
 				{
 					auto inPoly = a.isPointInside( bPt + b.offset(), true );
 					if ( inPoly != ePointInside::Invalid )
@@ -214,9 +214,9 @@ std::deque<ZPolygon> noFitPolygonRectangles(
 	if ( !a.isRectangle() || !b.isRectangle() )
 		return {};
 
-	const auto	boundsA = a.bounds();
-	const auto	boundsB = b.bounds();
-	const auto& b0		= b[0];
+	const auto  boundsA = a.bounds();
+	const auto  boundsB = b.bounds();
+	const auto& b0      = b[0];
 
 	if ( inside )
 	{
@@ -271,8 +271,8 @@ std::deque<ZPolygon> noFitPolygonRectangle( const ZPolygon& a, const ZPolygon& b
 	{
 		return {};
 	}
-	ZPolygon	poly;
-	const auto &b0 = b[0];
+	ZPolygon    poly;
+	const auto& b0 = b[0];
 	poly.emplace_back( boundsA.x() - boundsB.x() + b0.x(), boundsA.y() - boundsB.y() + b0.y() );
 	poly.emplace_back( boundsA.x() + boundsA.width() - ( boundsB.x() + boundsB.width() ) + b0.x(),
 					   boundsA.y() - boundsB.y() + b0.y() );
@@ -284,9 +284,9 @@ std::deque<ZPolygon> noFitPolygonRectangle( const ZPolygon& a, const ZPolygon& b
 	return { poly };
 }
 
-std::deque<ZPolygon> noFitPolygon( ZPolygon &a, ZPolygon &b, bool inside, bool searchEdges,
-								   const std::function<void( eZLogLevel, const std::string &msg )> &logCallback,
-								   const tDebugCallback											   &debugDisplay )
+std::deque<ZPolygon> noFitPolygon( ZPolygon& a, ZPolygon& b, bool inside, bool searchEdges,
+								   const std::function<void( eZLogLevel, const std::string& msg )>& logCallback,
+								   const tDebugCallback&                                            debugDisplay )
 {
 	if ( a.size() < 3 || b.size() < 3 )
 	{
@@ -301,30 +301,30 @@ std::deque<ZPolygon> noFitPolygon( ZPolygon &a, ZPolygon &b, bool inside, bool s
 			return rectNfp;
 		}
 	}
-	auto   minA		 = DBL_MAX;
+	auto   minA      = DBL_MAX;
 	size_t minAIndex = 0;
-	auto   maxB		 = -DBL_MAX;
+	auto   maxB      = -DBL_MAX;
 	size_t maxBIndex = 0;
 
-	size_t h		 = 0;
-	for ( auto &pt : a )
+	size_t h         = 0;
+	for ( auto& pt : a )
 	{
 		pt.setMarked( false );
 		if ( pt.y() < minA )
 		{
-			minA	  = pt.y();
+			minA      = pt.y();
 			minAIndex = h;
 		}
 		++h;
 	}
 
 	h = 0;
-	for ( auto &pt : b )
+	for ( auto& pt : b )
 	{
 		pt.setMarked( false );
 		if ( pt.y() > maxB )
 		{
-			maxB	  = pt.y();
+			maxB      = pt.y();
 			maxBIndex = h;
 		}
 		++h;
@@ -360,16 +360,16 @@ std::deque<ZPolygon> noFitPolygon( ZPolygon &a, ZPolygon &b, bool inside, bool s
 		b.setOffset( startPoint );
 
 		// maintain a list of touching points/edges
-		ZPoint	 prevVector;  // keep track of previous vector to detect backward sliding
+		ZPoint   prevVector;  // keep track of previous vector to detect backward sliding
 		ZPolygon nfp;
-		auto	 reference = b[0] + b.offset();
-		auto	 start	   = reference;
+		auto     reference = b[0] + b.offset();
+		auto     start     = reference;
 
 		nfp.push_back( reference );
 
-		size_t counter		= 0;
-		size_t maxCount		= 10 * ( a.size() + b.size() );
-		int	   inNfpCounter = 0;
+		size_t counter      = 0;
+		size_t maxCount     = 10 * ( a.size() + b.size() );
+		int    inNfpCounter = 0;
 		while ( counter < maxCount )  // sanity check, prevent infinite loop
 		{
 			std::vector<EdgeDescriptor> touching;
@@ -400,9 +400,9 @@ std::deque<ZPolygon> noFitPolygon( ZPolygon &a, ZPolygon &b, bool inside, bool s
 			std::vector<TransVector> vectors;
 			vectors.reserve( touching.size() * 4 );
 			AngleRanges angleRanges;
-			for ( const auto &[type, edgeA, edgeB] : touching )
+			for ( const auto& [type, edgeA, edgeB] : touching )
 			{
-				auto &vertexA = a[edgeA];
+				auto& vertexA = a[edgeA];
 				vertexA.setMarked( true );
 
 				// adjacent A vertices
@@ -410,17 +410,17 @@ std::deque<ZPolygon> noFitPolygon( ZPolygon &a, ZPolygon &b, bool inside, bool s
 				auto  prevAIndex = ( edgeA == 0 ) ? a.size() - 1 : edgeA - 1ULL;  // loop
 				auto  nextAIndex = ( edgeA == a.size() - 1 ) ? 0 : edgeA + 1ULL;  // loop
 
-				auto &prevA		 = a[prevAIndex];
-				auto &nextA		 = a[nextAIndex];
+				auto& prevA      = a[prevAIndex];
+				auto& nextA      = a[nextAIndex];
 
 				// adjacent B vertices
-				auto &vertexB	 = b[edgeB];
+				auto& vertexB    = b[edgeB];
 
 				auto  prevBIndex = ( edgeB == 0 ) ? b.size() - 1 : edgeB - 1ULL;  // loop
 				auto  nextBIndex = ( edgeB == b.size() - 1 ) ? 0 : edgeB + 1ULL;  // loop
 
-				auto &prevB		 = b[prevBIndex];
-				auto &nextB		 = b[nextBIndex];
+				auto& prevB      = b[prevBIndex];
+				auto& nextB      = b[nextBIndex];
 
 				switch ( type )
 				{
@@ -470,12 +470,12 @@ std::deque<ZPolygon> noFitPolygon( ZPolygon &a, ZPolygon &b, bool inside, bool s
 			{
 				ZPolygon aCopy;
 				ZPolygon bCopy;
-				for ( const auto &pt : a )
+				for ( const auto& pt : a )
 					aCopy.emplace_back( pt.x() + a.offsetX(), pt.y() + a.offsetY() );
-				for ( const auto &pt : b )
+				for ( const auto& pt : b )
 					bCopy.emplace_back( pt.x() + b.offsetX(), pt.y() + b.offsetY() );
 				std::deque<ZPoint> markers;
-				for ( const auto &t : touching )
+				for ( const auto& t : touching )
 				{
 					markers.push_back( a[t.edgeA] );
 					markers.push_back( b[t.edgeB] + b.offset() );
@@ -485,7 +485,7 @@ std::deque<ZPolygon> noFitPolygon( ZPolygon &a, ZPolygon &b, bool inside, bool s
 
 			std::vector<TransVector> feasibleVectors;
 			feasibleVectors.reserve( vectors.size() );
-			for ( auto &transVec : vectors )
+			for ( auto& transVec : vectors )
 			{
 				// reject vectors that would lead to an immediate intersection
 				if ( !angleRanges.angleInRange( transVec.pt.angle() ) )
@@ -501,7 +501,7 @@ std::deque<ZPolygon> noFitPolygon( ZPolygon &a, ZPolygon &b, bool inside, bool s
 				transVec.length2 = transVec.pt.length2();
 				if ( d == DBL_MAX || d * d > transVec.length2 )
 				{
-					d			   = sqrt( transVec.length2 );
+					d              = sqrt( transVec.length2 );
 					transVec.dMax2 = transVec.length2;
 				}
 				else
@@ -530,9 +530,9 @@ std::deque<ZPolygon> noFitPolygon( ZPolygon &a, ZPolygon &b, bool inside, bool s
 
 				if ( !transVec.back && dblSmaller( transVec.dMax2, transVec.length2 ) )
 				{
-					transVec.scale	= transVec.dMax;
+					transVec.scale  = transVec.dMax;
 					transVec.length = sqrt( transVec.length2 );
-					transVec.inNfp	= nfp.isPointInside( reference + ( transVec.pt * transVec.scale / transVec.length ),
+					transVec.inNfp  = nfp.isPointInside( reference + ( transVec.pt * transVec.scale / transVec.length ),
 														 false ) == ePointInside::Invalid;
 				}
 				else if ( !transVec.back )
@@ -546,7 +546,7 @@ std::deque<ZPolygon> noFitPolygon( ZPolygon &a, ZPolygon &b, bool inside, bool s
 			// - does not point inside the nfp
 			// - does not point directly backwards
 			std::ranges::sort( feasibleVectors,
-							   [&]( const auto &l, const auto &r )
+							   [&]( const auto& l, const auto& r )
 							   {
 								   if ( l.back != r.back )
 									   return !l.back;
@@ -565,7 +565,7 @@ std::deque<ZPolygon> noFitPolygon( ZPolygon &a, ZPolygon &b, bool inside, bool s
 				break;
 			}
 
-			auto &translate = feasibleVectors[0];
+			auto& translate = feasibleVectors[0];
 			if ( translate.inNfp )
 				++inNfpCounter;
 			else
@@ -604,11 +604,11 @@ std::deque<ZPolygon> noFitPolygon( ZPolygon &a, ZPolygon &b, bool inside, bool s
 			}
 
 			// if A and B start on a touching horizontal line, the end point may not be the start point
-			bool looped	  = false;
-			int	 numCheck = std::min( std::max( 3, static_cast<int>( nfp.size() ) / 8 ), 6 );
+			bool looped   = false;
+			int  numCheck = std::min( std::max( 3, static_cast<int>( nfp.size() ) / 8 ), 6 );
 			if ( nfp.size() > 8 )
 			{
-				for ( const auto &pt : nfp )
+				for ( const auto& pt : nfp )
 				{
 					if ( reference == pt )
 					{
@@ -659,28 +659,28 @@ std::deque<ZPolygon> noFitPolygon( ZPolygon &a, ZPolygon &b, bool inside, bool s
 // but this is much slower than the orbiting approach above, so this is only
 // used if necessary as a fallback.
 std::deque<ZPolygon> noFitPolygonMinkowski(
-	const ZPolygon &a, const ZPolygon &b, bool inside,
-	[[maybe_unused]] const std::function<void( eZLogLevel, const std::string &msg )> &logCallback,
-	[[maybe_unused]] const tDebugCallback											 &debugDisplay )
+	const ZPolygon& a, const ZPolygon& b, bool inside,
+	[[maybe_unused]] const std::function<void( eZLogLevel, const std::string& msg )>& logCallback,
+	[[maybe_unused]] const tDebugCallback&                                            debugDisplay )
 {
 	std::deque<ZPolygon> nfpList;
-	Clipper2Lib::PathD	 aClipper;
-	for ( const auto &pt : a )
+	Clipper2Lib::PathD   aClipper;
+	for ( const auto& pt : a )
 	{
 		aClipper.emplace_back( pt.x(), pt.y() );
 	}
 	Clipper2Lib::PathD bClipper;
-	for ( const auto &pt : b )
+	for ( const auto& pt : b )
 	{
 		bClipper.emplace_back( -pt.x(), -pt.y() );
 	}
 
 	auto  clipperNfp = Clipper2Lib::MinkowskiSum( aClipper, bClipper, true, 8 );
-	auto &b0		 = b[0];
-	for ( const auto &poly : clipperNfp )
+	auto& b0         = b[0];
+	for ( const auto& poly : clipperNfp )
 	{
 		ZPolygon nfp;
-		for ( const auto &pt : poly )
+		for ( const auto& pt : poly )
 			nfp.emplace_back( pt.x + b0.x(), pt.y + b0.y() );
 		if ( !nfp.empty() )
 			nfpList.push_back( nfp );

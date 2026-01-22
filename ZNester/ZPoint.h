@@ -1,8 +1,8 @@
-#pragma once
+﻿#pragma once
+#include <algorithm>
 #include <cassert>
 #include <cfloat>
 #include <cmath>
-#include <algorithm>
 
 #include "ZGeomUtil.h"
 
@@ -10,21 +10,24 @@ class ZPoint
 {
 public:
 	__forceinline ZPoint() = default;
+
 	__forceinline ZPoint( double x, double y )
 		: m_x( x )
 		, m_y( y )
 	{
 	}
-	__forceinline ZPoint( const ZPoint& p )			   = default;
-	__forceinline ZPoint( ZPoint&& p )				   = default;
-	__forceinline ~ZPoint()							   = default;
-	__forceinline ZPoint& operator=( ZPoint&& p )	   = default;
+
+	__forceinline ZPoint( const ZPoint& p )            = default;
+	__forceinline ZPoint( ZPoint&& p )                 = default;
+	__forceinline ~ZPoint()                            = default;
+	__forceinline ZPoint& operator=( ZPoint&& p )      = default;
 	__forceinline ZPoint& operator=( const ZPoint& p ) = default;
 
 	__forceinline double  x() const
 	{
 		return m_x;
 	};
+
 	__forceinline double y() const
 	{
 		return m_y;
@@ -34,6 +37,7 @@ public:
 	{
 		m_x = x;
 	}
+
 	__forceinline void setY( double y )
 	{
 		m_y = y;
@@ -43,6 +47,7 @@ public:
 	{
 		return m_marked;
 	}
+
 	__forceinline void setMarked( bool b )
 	{
 		m_marked = b;
@@ -57,10 +62,12 @@ public:
 	{
 		return m_x * b.m_x + m_y * b.m_y;
 	}
+
 	__forceinline double cross( const ZPoint& b ) const
 	{
 		return m_x * b.m_y - m_y * b.m_x;
 	}
+
 	__forceinline ZPoint normal() const
 	{
 		return ZPoint( m_y, -m_x );
@@ -70,28 +77,34 @@ public:
 	{
 		return std::sqrt( m_x * m_x + m_y * m_y );
 	}
+
 	__forceinline double length2() const
 	{
 		return m_x * m_x + m_y * m_y;
 	}
+
 	__forceinline ZPoint normalized() const
 	{
 		double l = length();
 		return ZPoint( m_x / l, m_y / l );
 	}
+
 	__forceinline double distance( const ZPoint& b ) const
 	{
 		return ZPoint( m_x - b.m_x, m_y - b.m_y ).length();
 	}
+
 	__forceinline double det( const ZPoint& b ) const
 	{
 		return m_x * b.m_y - m_y * b.m_x;
 	}
+
 	__forceinline double angle() const
 	{
 		return ( std::atan2( m_x, m_y ) ) * RAD_2DEG;
 	}
-	__forceinline bool			onSegment( const ZPoint& a, const ZPoint& b ) const;
+
+	__forceinline bool          onSegment( const ZPoint& a, const ZPoint& b ) const;
 
 	__forceinline static double pointDistance( const ZPoint& p, const ZPoint& s1, const ZPoint& s2,
 											   const ZPoint& normVec, bool infinite = false );
@@ -101,10 +114,11 @@ public:
 											   bool infinite = false );
 	__forceinline static double ZCrossProduct( const ZPoint& k, const ZPoint& k1, const ZPoint& k2 );
 
-	__forceinline ZPoint		operator*( const double& a ) const
+	__forceinline ZPoint        operator*( const double& a ) const
 	{
 		return ZPoint( m_x * a, m_y * a );
 	}
+
 	__forceinline ZPoint operator-() const
 	{
 		return ZPoint( -m_x, -m_y );
@@ -116,30 +130,35 @@ public:
 		m_y += b.m_y;
 		return *this;
 	}
+
 	__forceinline ZPoint& operator+=( const double& b )
 	{
 		m_x += b;
 		m_y += b;
 		return *this;
 	}
+
 	__forceinline ZPoint& operator-=( const ZPoint& b )
 	{
 		m_x -= b.m_x;
 		m_y -= b.m_y;
 		return *this;
 	}
+
 	__forceinline ZPoint& operator-=( const double& b )
 	{
 		m_x -= b;
 		m_y -= b;
 		return *this;
 	}
+
 	__forceinline ZPoint& operator*=( const double& b )
 	{
 		m_x *= b;
 		m_y *= b;
 		return *this;
 	}
+
 	__forceinline ZPoint& operator/=( const double& b )
 	{
 		m_x /= b;
@@ -151,14 +170,17 @@ public:
 	{
 		return dblEqual( m_x, b.m_x ) && dblEqual( m_y, b.m_y );
 	}
+
 	__forceinline bool operator==( const double& d ) const
 	{
 		return dblEqual( m_x, d ) && dblEqual( m_y, d );
 	}
+
 	__forceinline bool operator!=( const ZPoint& b ) const
 	{
 		return !dblEqual( m_x, b.m_x ) || !dblEqual( m_y, b.m_y );
 	}
+
 	__forceinline bool operator<( const ZPoint& b ) const
 	{
 		if ( !dblEqual( m_x, b.m_x ) )
@@ -169,8 +191,8 @@ public:
 	}
 
 private:
-	double m_x		= DBL_MAX;
-	double m_y		= DBL_MAX;
+	double m_x      = DBL_MAX;
+	double m_y      = DBL_MAX;
 	bool   m_marked = false;
 };
 
@@ -178,42 +200,52 @@ __forceinline ZPoint operator+( const ZPoint& a, const ZPoint& b )
 {
 	return ZPoint( a.x() + b.x(), a.y() + b.y() );
 }
+
 __forceinline ZPoint operator+( const ZPoint& a, const double& b )
 {
 	return ZPoint( a.x() + b, a.y() + b );
 }
+
 __forceinline ZPoint operator+( const double& a, const ZPoint& b )
 {
 	return ZPoint( a + b.x(), a + b.y() );
 }
+
 __forceinline ZPoint operator-( const ZPoint& a, const ZPoint& b )
 {
 	return ZPoint( a.x() - b.x(), a.y() - b.y() );
 }
+
 __forceinline ZPoint operator-( const ZPoint& a, const double& b )
 {
 	return ZPoint( a.x() - b, a.y() - b );
 }
+
 __forceinline ZPoint operator-( const double& a, const ZPoint& b )
 {
 	return ZPoint( a - b.x(), a - b.y() );
 }
+
 __forceinline ZPoint operator*( const ZPoint& a, const ZPoint& b )
 {
 	return ZPoint( a.x() * b.x(), a.y() * b.y() );
 }
+
 __forceinline ZPoint operator*( const double& a, const ZPoint& b )
 {
 	return ZPoint( a * b.x(), a * b.y() );
 }
+
 __forceinline ZPoint operator/( const ZPoint& a, const ZPoint& b )
 {
 	return ZPoint( a.x() / b.x(), a.y() / b.y() );
 }
+
 __forceinline ZPoint operator/( const ZPoint& a, const double& b )
 {
 	return ZPoint( a.x() / b, a.y() / b );
 }
+
 __forceinline ZPoint operator/( const double& a, const ZPoint& b )
 {
 	return ZPoint( a / b.x(), a / b.y() );
@@ -290,13 +322,13 @@ __forceinline bool ZPoint::onSegment( const ZPoint& a, const ZPoint& b ) const
 __forceinline double ZPoint::pointDistance( const ZPoint& p, const ZPoint& s1, const ZPoint& s2, const ZPoint& normVec,
 											bool infinite )
 {
-	ZPoint dir		 = normVec.normal();
+	ZPoint dir       = normVec.normal();
 
-	auto   pDot		 = p.dot( dir );
-	auto   s1Dot	 = s1.dot( dir );
-	auto   s2Dot	 = s2.dot( dir );
+	auto   pDot      = p.dot( dir );
+	auto   s1Dot     = s1.dot( dir );
+	auto   s2Dot     = s2.dot( dir );
 
-	auto   pDotNorm	 = p.dot( normVec );
+	auto   pDotNorm  = p.dot( normVec );
 	auto   s1DotNorm = s1.dot( normVec );
 	auto   s2DotNorm = s2.dot( normVec );
 
@@ -307,7 +339,7 @@ __forceinline double ZPoint::pointDistance( const ZPoint& p, const ZPoint& s1, c
 		if ( ( ( pDot < s1Dot || dots1dot ) && ( pDot < s2Dot || dots2dot ) ) ||
 			 ( ( pDot > s1Dot || dots1dot ) && ( pDot > s2Dot || dots2dot ) ) )
 		{
-			return DBL_MAX;	 // dot doesn't collide with segment, or lies directly on the vertex
+			return DBL_MAX;  // dot doesn't collide with segment, or lies directly on the vertex
 		}
 		if ( ( dots1dot && dots2dot ) && ( pDotNorm > s1DotNorm && pDotNorm > s2DotNorm ) )
 		{
@@ -321,15 +353,16 @@ __forceinline double ZPoint::pointDistance( const ZPoint& p, const ZPoint& s1, c
 
 	return -( pDotNorm - s1DotNorm + ( s1DotNorm - s2DotNorm ) * ( s1Dot - pDot ) / ( s1Dot - s2Dot ) );
 }
+
 __forceinline double ZPoint::segmentDistance( const ZPoint& a, const ZPoint& b, const ZPoint& e, const ZPoint& f,
 											  const ZPoint& direction )
 {
 	ZPoint normal = direction.normal();
 
-	auto   dotA	  = a.dot( normal );
-	auto   dotB	  = b.dot( normal );
-	auto   dotE	  = e.dot( normal );
-	auto   dotF	  = f.dot( normal );
+	auto   dotA   = a.dot( normal );
+	auto   dotB   = b.dot( normal );
+	auto   dotE   = e.dot( normal );
+	auto   dotF   = f.dot( normal );
 
 	auto   abMin  = std::min( dotA, dotB );
 	auto   abMax  = std::max( dotA, dotB );
@@ -389,7 +422,7 @@ __forceinline double ZPoint::segmentDistance( const ZPoint& a, const ZPoint& b, 
 		auto maxMax = std::max( abMax, efMax );
 		auto minMin = std::min( abMin, efMin );
 
-		overlap		= ( minMax - maxMin ) / ( maxMax - minMin );
+		overlap     = ( minMax - maxMin ) / ( maxMax - minMin );
 	}
 
 	ZPoint reverse = -direction;
@@ -490,15 +523,16 @@ __forceinline double ZPoint::segmentDistance( const ZPoint& a, const ZPoint& b, 
 
 	return distance;
 }
+
 __forceinline ZPoint ZPoint::lineIntersect( const ZPoint& a, const ZPoint& b, const ZPoint& e, const ZPoint& f,
 											bool infinite )
 {
-	auto   a1	 = b.m_y - a.m_y;
-	auto   b1	 = a.m_x - b.m_x;
-	auto   c1	 = b.m_x * a.m_y - a.m_x * b.m_y;
-	auto   a2	 = f.m_y - e.m_y;
-	auto   b2	 = e.m_x - f.m_x;
-	auto   c2	 = f.m_x * e.m_y - e.m_x * f.m_y;
+	auto   a1    = b.m_y - a.m_y;
+	auto   b1    = a.m_x - b.m_x;
+	auto   c1    = b.m_x * a.m_y - a.m_x * b.m_y;
+	auto   a2    = f.m_y - e.m_y;
+	auto   b2    = e.m_x - f.m_x;
+	auto   c2    = f.m_x * e.m_y - e.m_x * f.m_y;
 
 	double denom = a1 * b2 - a2 * b1;
 	if ( dblEqual( denom, 0.0 ) )

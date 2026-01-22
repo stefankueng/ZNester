@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 
 #include "SVG.h"
 
@@ -16,159 +16,159 @@ using Microsoft::WRL::ComPtr;
 
 struct COLORTABLE
 {
-	LPCWSTR	 name;
+	LPCWSTR  name;
 	COLORREF color;
 };
 
 constexpr COLORTABLE S_COLORTABLE[] = {
-	{ L"aliceblue", RGB( 240, 248, 255 ) },
-	{ L"antiquewhite", RGB( 250, 235, 215 ) },
-	{ L"aqua", RGB( 0, 255, 255 ) },
-	{ L"aquamarine", RGB( 127, 255, 212 ) },
-	{ L"azure", RGB( 240, 255, 255 ) },
-	{ L"beige", RGB( 245, 245, 220 ) },
-	{ L"bisque", RGB( 255, 228, 196 ) },
-	{ L"black", RGB( 0, 0, 0 ) },
-	{ L"blanchedalmond", RGB( 255, 235, 205 ) },
-	{ L"blue", RGB( 0, 0, 255 ) },
-	{ L"blueviolet", RGB( 138, 43, 226 ) },
-	{ L"brown", RGB( 165, 42, 42 ) },
-	{ L"burlywood", RGB( 222, 184, 135 ) },
-	{ L"cadetblue", RGB( 95, 158, 160 ) },
-	{ L"chartreuse", RGB( 127, 255, 0 ) },
-	{ L"chocolate", RGB( 210, 105, 30 ) },
-	{ L"coral", RGB( 255, 127, 80 ) },
-	{ L"cornflowerblue", RGB( 100, 149, 237 ) },
-	{ L"cornsilk", RGB( 255, 248, 220 ) },
-	{ L"crimson", RGB( 220, 20, 60 ) },
-	{ L"cyan", RGB( 0, 255, 255 ) },
-	{ L"darkblue", RGB( 0, 0, 139 ) },
-	{ L"darkcyan", RGB( 0, 139, 139 ) },
-	{ L"darkgoldenrod", RGB( 184, 134, 11 ) },
-	{ L"darkgray", RGB( 169, 169, 169 ) },
-	{ L"darkgreen", RGB( 0, 100, 0 ) },
-	{ L"darkgrey", RGB( 169, 169, 169 ) },
-	{ L"darkkhaki", RGB( 189, 183, 107 ) },
-	{ L"darkmagenta", RGB( 139, 0, 139 ) },
-	{ L"darkolivegreen", RGB( 85, 107, 47 ) },
-	{ L"darkorange", RGB( 255, 140, 0 ) },
-	{ L"darkorchid", RGB( 153, 50, 204 ) },
-	{ L"darkred", RGB( 139, 0, 0 ) },
-	{ L"darksalmon", RGB( 233, 150, 122 ) },
-	{ L"darkseagreen", RGB( 143, 188, 143 ) },
-	{ L"darkslateblue", RGB( 72, 61, 139 ) },
-	{ L"darkslategray", RGB( 47, 79, 79 ) },
-	{ L"darkslategrey", RGB( 47, 79, 79 ) },
-	{ L"darkturquoise", RGB( 0, 206, 209 ) },
-	{ L"darkviolet", RGB( 148, 0, 211 ) },
-	{ L"deeppink", RGB( 255, 20, 147 ) },
-	{ L"deepskyblue", RGB( 0, 191, 255 ) },
-	{ L"dimgray", RGB( 105, 105, 105 ) },
-	{ L"dimgrey", RGB( 105, 105, 105 ) },
-	{ L"dodgerblue", RGB( 30, 144, 255 ) },
-	{ L"firebrick", RGB( 178, 34, 34 ) },
-	{ L"floralwhite", RGB( 255, 250, 240 ) },
-	{ L"forestgreen", RGB( 34, 139, 34 ) },
-	{ L"fuchsia", RGB( 255, 0, 255 ) },
-	{ L"gainsboro", RGB( 220, 220, 220 ) },
-	{ L"ghostwhite", RGB( 248, 248, 255 ) },
-	{ L"gold", RGB( 255, 215, 0 ) },
-	{ L"goldenrod", RGB( 218, 165, 32 ) },
-	{ L"gray", RGB( 128, 128, 128 ) },
-	{ L"grey", RGB( 128, 128, 128 ) },
-	{ L"green", RGB( 0, 128, 0 ) },
-	{ L"greenyellow", RGB( 173, 255, 47 ) },
-	{ L"honeydew", RGB( 240, 255, 240 ) },
-	{ L"hotpink", RGB( 255, 105, 180 ) },
-	{ L"indianred", RGB( 205, 92, 92 ) },
-	{ L"indigo", RGB( 75, 0, 130 ) },
-	{ L"ivory", RGB( 255, 255, 240 ) },
-	{ L"khaki", RGB( 240, 230, 140 ) },
-	{ L"lavender", RGB( 230, 230, 250 ) },
-	{ L"lavenderblush", RGB( 255, 240, 245 ) },
-	{ L"lawngreen", RGB( 124, 252, 0 ) },
-	{ L"lemonchiffon", RGB( 255, 250, 205 ) },
-	{ L"lightblue", RGB( 173, 216, 230 ) },
-	{ L"lightcoral", RGB( 240, 128, 128 ) },
-	{ L"lightcyan", RGB( 224, 255, 255 ) },
-	{ L"lightgoldenrodyellow", RGB( 250, 250, 210 ) },
-	{ L"lightgray", RGB( 211, 211, 211 ) },
-	{ L"lightgreen", RGB( 144, 238, 144 ) },
-	{ L"lightgrey", RGB( 211, 211, 211 ) },
+	{L"aliceblue",            RGB( 240, 248, 255 )},
+	{L"antiquewhite",         RGB( 250, 235, 215 )},
+	{L"aqua",				 RGB( 0,   255, 255 )},
+	{L"aquamarine",           RGB( 127, 255, 212 )},
+	{L"azure",				RGB( 240, 255, 255 )},
+	{L"beige",				RGB( 245, 245, 220 )},
+	{L"bisque",               RGB( 255, 228, 196 )},
+	{L"black",				RGB( 0,   0,   0 )  },
+	{L"blanchedalmond",       RGB( 255, 235, 205 )},
+	{L"blue",				 RGB( 0,   0,   255 )},
+	{L"blueviolet",           RGB( 138, 43,  226 )},
+	{L"brown",				RGB( 165, 42,  42 ) },
+	{L"burlywood",            RGB( 222, 184, 135 )},
+	{L"cadetblue",            RGB( 95,  158, 160 )},
+	{L"chartreuse",           RGB( 127, 255, 0 )  },
+	{L"chocolate",            RGB( 210, 105, 30 ) },
+	{L"coral",				RGB( 255, 127, 80 ) },
+	{L"cornflowerblue",       RGB( 100, 149, 237 )},
+	{L"cornsilk",             RGB( 255, 248, 220 )},
+	{L"crimson",              RGB( 220, 20,  60 ) },
+	{L"cyan",				 RGB( 0,   255, 255 )},
+	{L"darkblue",             RGB( 0,   0,   139 )},
+	{L"darkcyan",             RGB( 0,   139, 139 )},
+	{L"darkgoldenrod",        RGB( 184, 134, 11 ) },
+	{L"darkgray",             RGB( 169, 169, 169 )},
+	{L"darkgreen",            RGB( 0,   100, 0 )  },
+	{L"darkgrey",             RGB( 169, 169, 169 )},
+	{L"darkkhaki",            RGB( 189, 183, 107 )},
+	{L"darkmagenta",          RGB( 139, 0,   139 )},
+	{L"darkolivegreen",       RGB( 85,  107, 47 ) },
+	{L"darkorange",           RGB( 255, 140, 0 )  },
+	{L"darkorchid",           RGB( 153, 50,  204 )},
+	{L"darkred",              RGB( 139, 0,   0 )  },
+	{L"darksalmon",           RGB( 233, 150, 122 )},
+	{L"darkseagreen",         RGB( 143, 188, 143 )},
+	{L"darkslateblue",        RGB( 72,  61,  139 )},
+	{L"darkslategray",        RGB( 47,  79,  79 ) },
+	{L"darkslategrey",        RGB( 47,  79,  79 ) },
+	{L"darkturquoise",        RGB( 0,   206, 209 )},
+	{L"darkviolet",           RGB( 148, 0,   211 )},
+	{L"deeppink",             RGB( 255, 20,  147 )},
+	{L"deepskyblue",          RGB( 0,   191, 255 )},
+	{L"dimgray",              RGB( 105, 105, 105 )},
+	{L"dimgrey",              RGB( 105, 105, 105 )},
+	{L"dodgerblue",           RGB( 30,  144, 255 )},
+	{L"firebrick",            RGB( 178, 34,  34 ) },
+	{L"floralwhite",          RGB( 255, 250, 240 )},
+	{L"forestgreen",          RGB( 34,  139, 34 ) },
+	{L"fuchsia",              RGB( 255, 0,   255 )},
+	{L"gainsboro",            RGB( 220, 220, 220 )},
+	{L"ghostwhite",           RGB( 248, 248, 255 )},
+	{L"gold",				 RGB( 255, 215, 0 )  },
+	{L"goldenrod",            RGB( 218, 165, 32 ) },
+	{L"gray",				 RGB( 128, 128, 128 )},
+	{L"grey",				 RGB( 128, 128, 128 )},
+	{L"green",				RGB( 0,   128, 0 )  },
+	{L"greenyellow",          RGB( 173, 255, 47 ) },
+	{L"honeydew",             RGB( 240, 255, 240 )},
+	{L"hotpink",              RGB( 255, 105, 180 )},
+	{L"indianred",            RGB( 205, 92,  92 ) },
+	{L"indigo",               RGB( 75,  0,   130 )},
+	{L"ivory",				RGB( 255, 255, 240 )},
+	{L"khaki",				RGB( 240, 230, 140 )},
+	{L"lavender",             RGB( 230, 230, 250 )},
+	{L"lavenderblush",        RGB( 255, 240, 245 )},
+	{L"lawngreen",            RGB( 124, 252, 0 )  },
+	{L"lemonchiffon",         RGB( 255, 250, 205 )},
+	{L"lightblue",            RGB( 173, 216, 230 )},
+	{L"lightcoral",           RGB( 240, 128, 128 )},
+	{L"lightcyan",            RGB( 224, 255, 255 )},
+	{L"lightgoldenrodyellow", RGB( 250, 250, 210 )},
+	{L"lightgray",            RGB( 211, 211, 211 )},
+	{L"lightgreen",           RGB( 144, 238, 144 )},
+	{L"lightgrey",            RGB( 211, 211, 211 )},
 
-	{ L"lightpink", RGB( 255, 182, 193 ) },
-	{ L"lightsalmon", RGB( 255, 160, 122 ) },
-	{ L"lightseagreen", RGB( 32, 178, 170 ) },
-	{ L"lightskyblue", RGB( 135, 206, 250 ) },
-	{ L"lightslategray", RGB( 119, 136, 153 ) },
-	{ L"lightslategrey", RGB( 119, 136, 153 ) },
-	{ L"lightsteelblue", RGB( 176, 196, 222 ) },
-	{ L"lightyellow", RGB( 255, 255, 224 ) },
-	{ L"lime", RGB( 0, 255, 0 ) },
-	{ L"limegreen", RGB( 50, 205, 50 ) },
-	{ L"linen", RGB( 250, 240, 230 ) },
-	{ L"magenta", RGB( 255, 0, 255 ) },
-	{ L"maroon", RGB( 128, 0, 0 ) },
-	{ L"mediumaquamarine", RGB( 102, 205, 170 ) },
-	{ L"mediumblue", RGB( 0, 0, 205 ) },
-	{ L"mediumorchid", RGB( 186, 85, 211 ) },
-	{ L"mediumpurple", RGB( 147, 112, 219 ) },
-	{ L"mediumseagreen", RGB( 60, 179, 113 ) },
-	{ L"mediumslateblue", RGB( 123, 104, 238 ) },
-	{ L"mediumspringgreen", RGB( 0, 250, 154 ) },
-	{ L"mediumturquoise", RGB( 72, 209, 204 ) },
-	{ L"mediumvioletred", RGB( 199, 21, 133 ) },
-	{ L"midnightblue", RGB( 25, 25, 112 ) },
-	{ L"mintcream", RGB( 245, 255, 250 ) },
-	{ L"mistyrose", RGB( 255, 228, 225 ) },
-	{ L"moccasin", RGB( 255, 228, 181 ) },
-	{ L"navajowhite", RGB( 255, 222, 173 ) },
-	{ L"navy", RGB( 0, 0, 128 ) },
-	{ L"oldlace", RGB( 253, 245, 230 ) },
-	{ L"olive", RGB( 128, 128, 0 ) },
-	{ L"olivedrab", RGB( 107, 142, 35 ) },
-	{ L"orange", RGB( 255, 165, 0 ) },
-	{ L"orangered", RGB( 255, 69, 0 ) },
-	{ L"orchid", RGB( 218, 112, 214 ) },
-	{ L"palegoldenrod", RGB( 238, 232, 170 ) },
-	{ L"palegreen", RGB( 152, 251, 152 ) },
-	{ L"paleturquoise", RGB( 175, 238, 238 ) },
-	{ L"palevioletred", RGB( 219, 112, 147 ) },
-	{ L"papayawhip", RGB( 255, 239, 213 ) },
-	{ L"peachpuff", RGB( 255, 218, 185 ) },
-	{ L"peru", RGB( 205, 133, 63 ) },
-	{ L"pink", RGB( 255, 192, 203 ) },
-	{ L"plum", RGB( 221, 160, 221 ) },
-	{ L"powderblue", RGB( 176, 224, 230 ) },
-	{ L"purple", RGB( 128, 0, 128 ) },
-	{ L"red", RGB( 255, 0, 0 ) },
-	{ L"rosybrown", RGB( 188, 143, 143 ) },
-	{ L"royalblue", RGB( 65, 105, 225 ) },
-	{ L"saddlebrown", RGB( 139, 69, 19 ) },
-	{ L"salmon", RGB( 250, 128, 114 ) },
-	{ L"sandybrown", RGB( 244, 164, 96 ) },
-	{ L"seagreen", RGB( 46, 139, 87 ) },
-	{ L"seashell", RGB( 255, 245, 238 ) },
-	{ L"sienna", RGB( 160, 82, 45 ) },
-	{ L"silver", RGB( 192, 192, 192 ) },
-	{ L"skyblue", RGB( 135, 206, 235 ) },
-	{ L"slateblue", RGB( 106, 90, 205 ) },
-	{ L"slategray", RGB( 112, 128, 144 ) },
-	{ L"slategrey", RGB( 112, 128, 144 ) },
-	{ L"snow", RGB( 255, 250, 250 ) },
-	{ L"springgreen", RGB( 0, 255, 127 ) },
-	{ L"steelblue", RGB( 70, 130, 180 ) },
-	{ L"tan", RGB( 210, 180, 140 ) },
-	{ L"teal", RGB( 0, 128, 128 ) },
-	{ L"thistle", RGB( 216, 191, 216 ) },
-	{ L"tomato", RGB( 255, 99, 71 ) },
-	{ L"turquoise", RGB( 64, 224, 208 ) },
-	{ L"violet", RGB( 238, 130, 238 ) },
-	{ L"wheat", RGB( 245, 222, 179 ) },
-	{ L"white", RGB( 255, 255, 255 ) },
-	{ L"whitesmoke", RGB( 245, 245, 245 ) },
-	{ L"yellow", RGB( 255, 255, 0 ) },
-	{ L"yellowgreen", RGB( 154, 205, 50 ) },
+	{L"lightpink",            RGB( 255, 182, 193 )},
+	{L"lightsalmon",          RGB( 255, 160, 122 )},
+	{L"lightseagreen",        RGB( 32,  178, 170 )},
+	{L"lightskyblue",         RGB( 135, 206, 250 )},
+	{L"lightslategray",       RGB( 119, 136, 153 )},
+	{L"lightslategrey",       RGB( 119, 136, 153 )},
+	{L"lightsteelblue",       RGB( 176, 196, 222 )},
+	{L"lightyellow",          RGB( 255, 255, 224 )},
+	{L"lime",				 RGB( 0,   255, 0 )  },
+	{L"limegreen",            RGB( 50,  205, 50 ) },
+	{L"linen",				RGB( 250, 240, 230 )},
+	{L"magenta",              RGB( 255, 0,   255 )},
+	{L"maroon",               RGB( 128, 0,   0 )  },
+	{L"mediumaquamarine",     RGB( 102, 205, 170 )},
+	{L"mediumblue",           RGB( 0,   0,   205 )},
+	{L"mediumorchid",         RGB( 186, 85,  211 )},
+	{L"mediumpurple",         RGB( 147, 112, 219 )},
+	{L"mediumseagreen",       RGB( 60,  179, 113 )},
+	{L"mediumslateblue",      RGB( 123, 104, 238 )},
+	{L"mediumspringgreen",    RGB( 0,   250, 154 )},
+	{L"mediumturquoise",      RGB( 72,  209, 204 )},
+	{L"mediumvioletred",      RGB( 199, 21,  133 )},
+	{L"midnightblue",         RGB( 25,  25,  112 )},
+	{L"mintcream",            RGB( 245, 255, 250 )},
+	{L"mistyrose",            RGB( 255, 228, 225 )},
+	{L"moccasin",             RGB( 255, 228, 181 )},
+	{L"navajowhite",          RGB( 255, 222, 173 )},
+	{L"navy",				 RGB( 0,   0,   128 )},
+	{L"oldlace",              RGB( 253, 245, 230 )},
+	{L"olive",				RGB( 128, 128, 0 )  },
+	{L"olivedrab",            RGB( 107, 142, 35 ) },
+	{L"orange",               RGB( 255, 165, 0 )  },
+	{L"orangered",            RGB( 255, 69,  0 )  },
+	{L"orchid",               RGB( 218, 112, 214 )},
+	{L"palegoldenrod",        RGB( 238, 232, 170 )},
+	{L"palegreen",            RGB( 152, 251, 152 )},
+	{L"paleturquoise",        RGB( 175, 238, 238 )},
+	{L"palevioletred",        RGB( 219, 112, 147 )},
+	{L"papayawhip",           RGB( 255, 239, 213 )},
+	{L"peachpuff",            RGB( 255, 218, 185 )},
+	{L"peru",				 RGB( 205, 133, 63 ) },
+	{L"pink",				 RGB( 255, 192, 203 )},
+	{L"plum",				 RGB( 221, 160, 221 )},
+	{L"powderblue",           RGB( 176, 224, 230 )},
+	{L"purple",               RGB( 128, 0,   128 )},
+	{L"red",				  RGB( 255, 0,   0 )  },
+	{L"rosybrown",            RGB( 188, 143, 143 )},
+	{L"royalblue",            RGB( 65,  105, 225 )},
+	{L"saddlebrown",          RGB( 139, 69,  19 ) },
+	{L"salmon",               RGB( 250, 128, 114 )},
+	{L"sandybrown",           RGB( 244, 164, 96 ) },
+	{L"seagreen",             RGB( 46,  139, 87 ) },
+	{L"seashell",             RGB( 255, 245, 238 )},
+	{L"sienna",               RGB( 160, 82,  45 ) },
+	{L"silver",               RGB( 192, 192, 192 )},
+	{L"skyblue",              RGB( 135, 206, 235 )},
+	{L"slateblue",            RGB( 106, 90,  205 )},
+	{L"slategray",            RGB( 112, 128, 144 )},
+	{L"slategrey",            RGB( 112, 128, 144 )},
+	{L"snow",				 RGB( 255, 250, 250 )},
+	{L"springgreen",          RGB( 0,   255, 127 )},
+	{L"steelblue",            RGB( 70,  130, 180 )},
+	{L"tan",				  RGB( 210, 180, 140 )},
+	{L"teal",				 RGB( 0,   128, 128 )},
+	{L"thistle",              RGB( 216, 191, 216 )},
+	{L"tomato",               RGB( 255, 99,  71 ) },
+	{L"turquoise",            RGB( 64,  224, 208 )},
+	{L"violet",               RGB( 238, 130, 238 )},
+	{L"wheat",				RGB( 245, 222, 179 )},
+	{L"white",				RGB( 255, 255, 255 )},
+	{L"whitesmoke",           RGB( 245, 245, 245 )},
+	{L"yellow",               RGB( 255, 255, 0 )  },
+	{L"yellowgreen",          RGB( 154, 205, 50 ) },
 };
 
 // trim from start
@@ -222,7 +222,7 @@ int lookupColorTable( LPCTSTR lpName, COLORREF& color )
 
 void searchReplace( std::wstring& str, const std::wstring& toReplace, const std::wstring& replaceWith )
 {
-	std::wstring			result;
+	std::wstring            result;
 	std::wstring::size_type pos = 0;
 	for ( ;; )
 	{
@@ -235,7 +235,7 @@ void searchReplace( std::wstring& str, const std::wstring& toReplace, const std:
 		}
 		else
 		{
-			break;	// exit loop
+			break;  // exit loop
 		}
 	}
 	str = std::move( result );
@@ -244,7 +244,7 @@ void searchReplace( std::wstring& str, const std::wstring& toReplace, const std:
 void makeDictFromString( LPCTSTR lpString, std::map<std::wstring, std::wstring>& rDict )
 {
 	std::wstring strKey, strValue;
-	bool		 bKey = true;
+	bool         bKey = true;
 	for ( ; *lpString; lpString++ )
 	{
 		if ( *lpString == L'\n' || *lpString == L'\r' )
@@ -259,9 +259,9 @@ void makeDictFromString( LPCTSTR lpString, std::map<std::wstring, std::wstring>&
 		{
 			if ( !strKey.empty() )
 			{
-				bKey		  = true;
-				strKey		  = trim( strKey );
-				strValue	  = trim( strValue );
+				bKey          = true;
+				strKey        = trim( strKey );
+				strValue      = trim( strValue );
 				rDict[strKey] = strValue;
 				strKey.clear();
 				strValue.clear();
@@ -282,15 +282,15 @@ void makeDictFromString( LPCTSTR lpString, std::map<std::wstring, std::wstring>&
 
 	if ( !strKey.empty() )
 	{
-		strKey		  = trim( strKey );
-		strValue	  = trim( strValue );
+		strKey        = trim( strKey );
+		strValue      = trim( strValue );
 		rDict[strKey] = strValue;
 	}
 }
 
 HRESULT recursiveBuildVectorImage( SVG& image, ComPtr<IXMLDOMNode> node );
 
-void	SVG::clear()
+void    SVG::clear()
 {
 	m_elements.clear();
 }
@@ -300,14 +300,14 @@ bool SVG::parseFile( const std::wstring& path )
 	clear();
 	// initialize XML Parser
 	ComPtr<IXMLDOMDocument> document;
-	HRESULT					hResult =
+	HRESULT                 hResult =
 		CoCreateInstance( CLSID_DOMDocument, nullptr, CLSCTX_INPROC_SERVER, IID_PPV_ARGS( document.GetAddressOf() ) );
 	if ( FAILED( hResult ) )
 		return false;
 
 	document->put_resolveExternals( VARIANT_FALSE );  // DTD?
-	document->put_validateOnParse( VARIANT_FALSE );	  // validate?
-	document->put_async( VARIANT_FALSE );			  // set flag to wait for parser
+	document->put_validateOnParse( VARIANT_FALSE );   // validate?
+	document->put_async( VARIANT_FALSE );             // set flag to wait for parser
 
 	// load SVG document
 	VARIANT_BOOL verbResult;
@@ -332,11 +332,12 @@ bool SVG::parseFile( const std::wstring& path )
 	}
 	return S_OK;
 }
+
 void SVG::render( Gdiplus::Graphics& graphics ) const
 {
-	Gdiplus::SmoothingMode		sm	 = graphics.GetSmoothingMode();
-	Gdiplus::PixelOffsetMode	pom	 = graphics.GetPixelOffsetMode();
-	Gdiplus::CompositingMode	comm = graphics.GetCompositingMode();
+	Gdiplus::SmoothingMode      sm   = graphics.GetSmoothingMode();
+	Gdiplus::PixelOffsetMode    pom  = graphics.GetPixelOffsetMode();
+	Gdiplus::CompositingMode    comm = graphics.GetCompositingMode();
 	Gdiplus::CompositingQuality comq = graphics.GetCompositingQuality();
 
 	graphics.SetSmoothingMode( Gdiplus::SmoothingModeHighQuality );
@@ -408,7 +409,7 @@ SVGElementRect* SVG::addRect( float x, float y, float width, float height, float
 SVGElementCircle* SVG::addCircle( float x, float y, float r )
 {
 	auto pCircle = std::make_unique<SVGElementCircle>();
-	auto ptr	 = pCircle.get();
+	auto ptr     = pCircle.get();
 	pCircle->setParams( x, y, r );
 	m_elements.push_back( std::move( pCircle ) );
 	return ptr;
@@ -425,7 +426,7 @@ SVGElementPath* SVG::addPath()
 SVGElementGroup* SVG::addGroup()
 {
 	auto pGroup = std::make_unique<SVGElementGroup>();
-	auto ptr	= pGroup.get();
+	auto ptr    = pGroup.get();
 	m_elements.push_back( std::move( pGroup ) );
 	return ptr;
 }
@@ -487,12 +488,12 @@ void SVGElement::setTransform( const Gdiplus::Matrix& mat )
 
 void SVGElementRect::setParams( float x, float y, float width, float height, float rx, float ry )
 {
-	m_x		 = x;
-	m_y		 = y;
-	m_width	 = width;
+	m_x      = x;
+	m_y      = y;
+	m_width  = width;
 	m_height = height;
-	m_rx	 = rx;
-	m_ry	 = ry;
+	m_rx     = rx;
+	m_ry     = ry;
 }
 
 void SVGElementRect::render( Gdiplus::Graphics& graphics, float, float )
@@ -549,7 +550,7 @@ void SVGElementRect::render( Gdiplus::Graphics& graphics, float, float )
 std::vector<SVGPolygon> SVGElementRect::getPolygons() const
 {
 	SVGPolygon poly;
-	float	   rx = m_rx, ry = m_ry;
+	float      rx = m_rx, ry = m_ry;
 	if ( rx > 0.0f || ry > 0.0f )
 	{
 		if ( rx == 0.0f )
@@ -568,7 +569,7 @@ std::vector<SVGPolygon> SVGElementRect::getPolygons() const
 		path.AddArc( m_x, m_y, rx, ry, 180, 90 );
 		path.CloseFigure();
 		path.Flatten( nullptr, 1.0 );
-		auto count	= path.GetPointCount();
+		auto count  = path.GetPointCount();
 		auto points = std::make_unique<Gdiplus::PointF[]>( count );
 		path.GetPathPoints( points.get(), count );
 		m_matrix.TransformPoints( points.get(), count );
@@ -622,12 +623,12 @@ void SVGElementCircle::render( Gdiplus::Graphics& graphics, float, float )
 
 std::vector<SVGPolygon> SVGElementCircle::getPolygons() const
 {
-	SVGPolygon			  poly;
+	SVGPolygon            poly;
 	Gdiplus::GraphicsPath path;
 	path.SetFillMode( Gdiplus::FillModeWinding );
 	path.AddEllipse( m_x - m_r, m_y - m_r, m_r * 2.0f, m_r * 2.0f );
 	path.Flatten( nullptr, 1.0 );
-	auto count	= path.GetPointCount();
+	auto count  = path.GetPointCount();
 	auto points = std::make_unique<Gdiplus::PointF[]>( count );
 	path.GetPathPoints( points.get(), count );
 	m_matrix.TransformPoints( points.get(), count );
@@ -742,8 +743,8 @@ void SVGElementPath::bezier( float x1, float y1, float x2, float y2, float endX,
 	Gdiplus::PointF end( endX, endY );
 	if ( !m_bFirst && !bAbsolute )
 	{
-		c1	= c1 + m_lastPos;
-		c2	= c2 + m_lastPos;
+		c1  = c1 + m_lastPos;
+		c2  = c2 + m_lastPos;
 		end = end + m_lastPos;
 	}
 	if ( m_bFirst )
@@ -764,7 +765,7 @@ void SVGElementPath::smoothCubicBezier( float x2, float y2, float endX, float en
 	Gdiplus::PointF end( endX, endY );
 	if ( !m_bFirst && !bAbsolute )
 	{
-		c2	= c2 + m_lastPos;
+		c2  = c2 + m_lastPos;
 		end = end + m_lastPos;
 	}
 	if ( m_bFirst )
@@ -774,7 +775,7 @@ void SVGElementPath::smoothCubicBezier( float x2, float y2, float endX, float en
 	m_bFirst = false;
 	Gdiplus::PointF c1(
 		m_lastPos.X * 2.0f - m_lastC2.X,
-		m_lastPos.Y * 2.0f - m_lastC2.Y );	// reflection of the second control point of the previous curve
+		m_lastPos.Y * 2.0f - m_lastC2.Y );  // reflection of the second control point of the previous curve
 
 	m_path.AddBezier( m_lastPos, c1, c2, end );
 
@@ -788,7 +789,7 @@ void SVGElementPath::quadraticBezier( float x1, float y1, float endX, float endY
 	Gdiplus::PointF end( endX, endY );
 	if ( !m_bFirst && !bAbsolute )
 	{
-		c1	= c1 + m_lastPos;
+		c1  = c1 + m_lastPos;
 		end = end + m_lastPos;
 	}
 	if ( m_bFirst )
@@ -816,7 +817,7 @@ void SVGElementPath::smoothQuadraticBezier( float endX, float endY, bool bAbsolu
 	}
 	m_bFirst = false;
 	Gdiplus::PointF c1( m_lastPos.X * 2.0f - m_lastC2.X,
-						m_lastPos.Y * 2.0f - m_lastC2.Y );	// reflection of the control point of the previous curve
+						m_lastPos.Y * 2.0f - m_lastC2.Y );  // reflection of the control point of the previous curve
 
 	m_path.AddBezier( m_lastPos, c1, c1, end );
 
@@ -854,8 +855,8 @@ void SVGElementPath::arcTo( float rx, float ry, float xAxisRotation, int largeAR
 	float sPhi = sinf( xAxisRotation );
 
 	// step1
-	float dx	= x1 - x2;
-	float dy	= y1 - y2;
+	float dx    = x1 - x2;
+	float dy    = y1 - y2;
 	float x1Phi = ( cPhi * dx + sPhi * dy ) * 0.5f;
 	float y1Phi = ( -sPhi * dx + cPhi * dy ) * 0.5f;
 
@@ -868,7 +869,7 @@ void SVGElementPath::arcTo( float rx, float ry, float xAxisRotation, int largeAR
 	}
 
 	// step2
-	float sign	= ( largeARCFlag == sweepFlag ) ? -1.0f : 1.0f;
+	float sign  = ( largeARCFlag == sweepFlag ) ? -1.0f : 1.0f;
 	float scale = sqrtf( ( pow2( rx * ry ) - pow2( rx * y1Phi ) - pow2( ry * x1Phi ) ) /
 						 ( pow2( rx * y1Phi ) + pow2( ry * x1Phi ) ) );
 	float cxPhi = sign * scale * rx * y1Phi / ry;
@@ -881,8 +882,8 @@ void SVGElementPath::arcTo( float rx, float ry, float xAxisRotation, int largeAR
 	// step4
 	Gdiplus::PointF u( ( x1Phi - cxPhi ) / rx, ( y1Phi - cyPhi ) / ry );
 	Gdiplus::PointF v( ( -x1Phi - cxPhi ) / rx, ( -y1Phi - cyPhi ) / ry );
-	float			theta	   = getAngle( Gdiplus::PointF( 1.0f, 0.0f ), u );
-	float			deltaTheta = getAngle( u, v );
+	float           theta      = getAngle( Gdiplus::PointF( 1.0f, 0.0f ), u );
+	float           deltaTheta = getAngle( u, v );
 
 	if ( sweepFlag == 0 && deltaTheta > 0.0f )
 		deltaTheta -= 360.0f;
@@ -894,7 +895,7 @@ void SVGElementPath::arcTo( float rx, float ry, float xAxisRotation, int largeAR
 
 	m_lastPos.X = x2;
 	m_lastPos.Y = y2;
-	m_lastC2	= m_lastPos;
+	m_lastC2    = m_lastPos;
 }
 
 void SVGElementPath::startPath()
@@ -953,12 +954,12 @@ void SVGElementPath::render( Gdiplus::Graphics& graphics, float, float )
 std::vector<SVGPolygon> SVGElementPath::getPolygons() const
 {
 	std::vector<SVGPolygon> polys;
-	SVGPolygon				poly;
-	auto					path = std::unique_ptr<Gdiplus::GraphicsPath>( m_path.Clone() );
+	SVGPolygon              poly;
+	auto                    path = std::unique_ptr<Gdiplus::GraphicsPath>( m_path.Clone() );
 	path->Flatten( nullptr, 1.0 );
-	auto count	= path->GetPointCount();
+	auto count  = path->GetPointCount();
 	auto points = std::make_unique<Gdiplus::PointF[]>( count );
-	auto types	= std::make_unique<BYTE[]>( count );
+	auto types  = std::make_unique<BYTE[]>( count );
 	path->GetPathTypes( types.get(), count );
 	path->GetPathPoints( points.get(), count );
 	m_matrix.TransformPoints( points.get(), count );
@@ -998,7 +999,7 @@ void SVGElementGroup::render( Gdiplus::Graphics& parentGraphics, float cX, float
 	float canvasY = cX * matElements[2] + cY * matElements[3];
 
 	m_svg.setCanvasSize( canvasX, canvasY );
-	UINT			  width = static_cast<UINT>( canvasX + 0.5 ), height = static_cast<UINT>( canvasY + 0.5 );
+	UINT              width = static_cast<UINT>( canvasX + 0.5 ), height = static_cast<UINT>( canvasY + 0.5 );
 	Gdiplus::Bitmap*  pBitmap = new Gdiplus::Bitmap( width, height );
 	Gdiplus::Graphics graphics( pBitmap );
 	graphics.SetTransform( &matTransform );
@@ -1008,11 +1009,11 @@ void SVGElementGroup::render( Gdiplus::Graphics& parentGraphics, float cX, float
 
 	// paste on parent graphics object
 	Gdiplus::ColorMatrix cmat = {
-		1.0f, 0.0f, 0.0f, 0.0f,		 0.0f,	// Red
-		0.0f, 1.0f, 0.0f, 0.0f,		 0.0f,	// Green
-		0.0f, 0.0f, 1.0f, 0.0f,		 0.0f,	// Blue
-		0.0f, 0.0f, 0.0f, m_opacity, 0.0f,	// Alpha
-		0.0f, 0.0f, 0.0f, 0.0f,		 1.0f	// must be 1
+		1.0f, 0.0f, 0.0f, 0.0f,      0.0f,  // Red
+		0.0f, 1.0f, 0.0f, 0.0f,      0.0f,  // Green
+		0.0f, 0.0f, 1.0f, 0.0f,      0.0f,  // Blue
+		0.0f, 0.0f, 0.0f, m_opacity, 0.0f,  // Alpha
+		0.0f, 0.0f, 0.0f, 0.0f,      1.0f   // must be 1
 	};
 	Gdiplus::ImageAttributes imgAttr;
 	imgAttr.SetColorMatrix( &cmat );
@@ -1061,7 +1062,7 @@ void domMakeAttributeDict( ComPtr<IXMLDOMElement> element, std::map<std::wstring
 _bstr_t domGetString( ComPtr<IXMLDOMElement> element, const std::wstring& key, const std::wstring& defaultValue = L"" )
 {
 	_variant_t value;
-	_bstr_t	   bKey = key.c_str();
+	_bstr_t    bKey = key.c_str();
 	if ( SUCCEEDED( element->getAttribute( bKey, &value ) ) )
 	{
 		if ( value.vt != VT_NULL && value.vt != VT_EMPTY )
@@ -1087,7 +1088,7 @@ float domGetFloat( ComPtr<IXMLDOMElement> element, const std::wstring& key, floa
 		value.ChangeType( VT_BSTR );
 		if ( value.bstrVal )
 		{
-			return toFloat( ( LPCWSTR )value.bstrVal );
+			return toFloat( (LPCWSTR)value.bstrVal );
 		}
 		else
 		{
@@ -1325,8 +1326,8 @@ std::unique_ptr<Gdiplus::Brush> parseStyleFill( ComPtr<IXMLDOMElement> /*element
 	else if ( strColor[0] == '#' )
 	{
 		// color code
-		auto		   lpOpacity = propDict[L"fill-opacity"].c_str();
-		Gdiplus::Color color	 = parseHexColor( strColor.c_str() + 1, lpOpacity );
+		auto           lpOpacity = propDict[L"fill-opacity"].c_str();
+		Gdiplus::Color color     = parseHexColor( strColor.c_str() + 1, lpOpacity );
 		return std::make_unique<Gdiplus::SolidBrush>( color );
 	}
 	else if ( strColor.find( L"url(" ) != std::wstring::npos )
@@ -1344,7 +1345,7 @@ std::unique_ptr<Gdiplus::Brush> parseStyleFill( ComPtr<IXMLDOMElement> /*element
 	{
 		// try to lookup color table
 		COLORREF refColor;
-		int		 ret = lookupColorTable( strColor.c_str(), refColor );
+		int      ret = lookupColorTable( strColor.c_str(), refColor );
 		if ( ret == -1 )
 		{
 			// Fallback to default color
@@ -1353,7 +1354,7 @@ std::unique_ptr<Gdiplus::Brush> parseStyleFill( ComPtr<IXMLDOMElement> /*element
 		else
 		{
 			auto lpOpacity = propDict[L"fill-opacity"].c_str();
-			BYTE a		   = 255;
+			BYTE a         = 255;
 			if ( lpOpacity && *lpOpacity )
 			{
 				a = static_cast<BYTE>(
@@ -1381,7 +1382,7 @@ std::unique_ptr<Gdiplus::Pen> parseStyleStroke( std::map<std::wstring, std::wstr
 	{
 		// color code
 		LPCTSTR lpOpacity = propDict[L"stroke-opacity"].c_str();
-		color			  = parseHexColor( strColor.c_str() + 1, lpOpacity );
+		color             = parseHexColor( strColor.c_str() + 1, lpOpacity );
 	}
 	else if ( strColor.find( L"url(" ) != std::wstring::npos )
 	{
@@ -1392,7 +1393,7 @@ std::unique_ptr<Gdiplus::Pen> parseStyleStroke( std::map<std::wstring, std::wstr
 	{
 		// try to lookup color table
 		COLORREF refColor;
-		int		 ret = lookupColorTable( strColor.c_str(), refColor );
+		int      ret = lookupColorTable( strColor.c_str(), refColor );
 		if ( ret == -1 )
 		{
 			return nullptr;
@@ -1400,7 +1401,7 @@ std::unique_ptr<Gdiplus::Pen> parseStyleStroke( std::map<std::wstring, std::wstr
 		else
 		{
 			LPCTSTR lpOpacity = propDict[L"stroke-opacity"].c_str();
-			BYTE	a		  = 255;
+			BYTE    a         = 255;
 			if ( lpOpacity && *lpOpacity )
 			{
 				a = static_cast<BYTE>(
@@ -1430,7 +1431,7 @@ std::unique_ptr<Gdiplus::Pen> parseStyleStroke( std::map<std::wstring, std::wstr
 		pStroke->SetDashOffset( dashOffset );
 
 		std::vector<std::wstring> dashStrArray;
-		auto					  str = propDict[L"stroke-dasharray"];
+		auto                      str = propDict[L"stroke-dasharray"];
 		searchReplace( str, L"\r", L"" );
 		searchReplace( str, L"\n", L"" );
 		stringtok( dashStrArray, str, true, L"," );
@@ -1510,10 +1511,10 @@ HRESULT parseRect( SVG& image, ComPtr<IXMLDOMNode>& node )
 	{
 		y = 0.0;
 	}
-	float width	 = domGetDistance( element, L"width" );
+	float width  = domGetDistance( element, L"width" );
 	float height = domGetDistance( element, L"height" );
-	float rx	 = 0.0;
-	float ry	 = 0.0;
+	float rx     = 0.0;
+	float ry     = 0.0;
 	try
 	{
 		rx = domGetDistance( element, L"rx" );
@@ -1539,12 +1540,12 @@ HRESULT parseCircle( SVG& image, ComPtr<IXMLDOMNode>& node )
 {
 	ComPtr<IXMLDOMElement> element;
 	node.As( &element );
-	float		 x = domGetDistance( element, L"cx" );
-	float		 y = domGetDistance( element, L"cy" );
-	float		 r = domGetDistance( element, L"r" );
+	float        x = domGetDistance( element, L"cx" );
+	float        y = domGetDistance( element, L"cy" );
+	float        r = domGetDistance( element, L"r" );
 
 	std::wstring family;
-	auto [pFill, pStroke]	  = parseStyle( element, family );
+	auto [pFill, pStroke]     = parseStyle( element, family );
 
 	SVGElementCircle* pCircle = image.addCircle( x, y, r );
 	pCircle->setFill( std::move( pFill ) );
@@ -1558,10 +1559,10 @@ HRESULT parseLine( SVG& image, ComPtr<IXMLDOMNode>& node )
 {
 	ComPtr<IXMLDOMElement> element;
 	node.As( &element );
-	float		 x1 = domGetDistance( element, L"x1" );
-	float		 y1 = domGetDistance( element, L"y1" );
-	float		 x2 = domGetDistance( element, L"x2" );
-	float		 y2 = domGetDistance( element, L"y2" );
+	float        x1 = domGetDistance( element, L"x1" );
+	float        y1 = domGetDistance( element, L"y1" );
+	float        x2 = domGetDistance( element, L"x2" );
+	float        y2 = domGetDistance( element, L"y2" );
 
 	std::wstring family;
 	auto [pFill, pStroke] = parseStyle( element, family );
@@ -1618,7 +1619,7 @@ HRESULT parsePolygon( SVG& image, ComPtr<IXMLDOMNode>& node )
 {
 	ComPtr<IXMLDOMElement> element;
 	node.As( &element );
-	std::wstring			  strPath = static_cast<LPCWSTR>( domGetString( element, L"points" ) );
+	std::wstring              strPath = static_cast<LPCWSTR>( domGetString( element, L"points" ) );
 	std::vector<std::wstring> pathData;
 	searchReplace( strPath, L"\r", L"" );
 	searchReplace( strPath, L"\n", L"" );
@@ -1712,10 +1713,10 @@ HRESULT parseText( SVG& image, ComPtr<IXMLDOMNode>& node, float* pLastLeft = nul
 						strText = var.bstrVal;
 
 						Gdiplus::FontStyle style;
-						float			   fontSize;
+						float              fontSize;
 						// Gdiplus::FontFamily::GenericSansSerif();
 						std::wstring strFontFamily;
-						auto [pFill, pStroke]			  = parseStyle( parent, strFontFamily, &style, &fontSize );
+						auto [pFill, pStroke]             = parseStyle( parent, strFontFamily, &style, &fontSize );
 
 						Gdiplus::FontFamily* lpFontFamily = nullptr;
 						if ( !strFontFamily.empty() )
@@ -1734,7 +1735,7 @@ HRESULT parseText( SVG& image, ComPtr<IXMLDOMNode>& node, float* pLastLeft = nul
 
 						// add text as a path
 						SVGElementPath* pPath = image.addPath();
-						float			dy =
+						float           dy =
 							( lpFontToUse->GetCellAscent( style ) ) * ( fontSize / lpFontToUse->GetEmHeight( style ) );
 
 						pPath->addString( strText.c_str(), lpFontToUse, style, fontSize, *pLastLeft, *pLastTop - dy );
@@ -1781,7 +1782,7 @@ HRESULT parsePath( SVG& image, ComPtr<IXMLDOMNode> node )
 	{
 		std::wstring oldValue = std::wstring( 1, *p );
 		std::wstring newValue = std::wstring( 1, *p );
-		newValue			  = L' ' + newValue + L' ';
+		newValue              = L' ' + newValue + L' ';
 		searchReplace( strPath, oldValue, newValue );
 	}
 
@@ -1791,7 +1792,7 @@ HRESULT parsePath( SVG& image, ComPtr<IXMLDOMNode> node )
 	{
 		SVGElementPath* pPath = image.addPath();
 
-		TCHAR			cmd	  = '\0';
+		TCHAR           cmd   = '\0';
 		for ( size_t i = 0; i < pathData.size(); )
 		{
 			TCHAR head = pathData[i][0];
@@ -1807,46 +1808,46 @@ HRESULT parsePath( SVG& image, ComPtr<IXMLDOMNode> node )
 
 			switch ( cmd )
 			{
-				case L'M':	// move to
+				case L'M':  // move to
 				case L'm':
 					if ( !pPath->isClosed() )
 					{
 						pPath->startPath();
 					}
 					pPath->moveTo( parseDistance( pathData[i] ), parseDistance( pathData[i + 1] ), cmd == L'M' );
-					i += 2;
-					cmd = ( cmd == 'M' ) ? 'L' : 'l';
+					i   += 2;
+					cmd  = ( cmd == 'M' ) ? 'L' : 'l';
 					break;
-				case L'L':	// line to
+				case L'L':  // line to
 				case L'l':
 					pPath->lineTo( parseDistance( pathData[i] ), parseDistance( pathData[i + 1] ), cmd == L'L' );
 					i += 2;
 					break;
-				case L'H':	// horizontal line to
+				case L'H':  // horizontal line to
 				case L'h':
 					pPath->horizontalLineTo( parseDistance( pathData[i] ), cmd == L'H' );
 					i += 1;
 					break;
-				case L'V':	// vertical line to
+				case L'V':  // vertical line to
 				case L'v':
 					pPath->verticalLineTo( parseDistance( pathData[i] ), cmd == L'V' );
 					i += 1;
 					break;
-				case L'C':	// cubic bezier curve to
+				case L'C':  // cubic bezier curve to
 				case L'c':
 					pPath->bezier( parseDistance( pathData[i] ), parseDistance( pathData[i + 1] ),
 								   parseDistance( pathData[i + 2] ), parseDistance( pathData[i + 3] ),
 								   parseDistance( pathData[i + 4] ), parseDistance( pathData[i + 5] ), cmd == L'C' );
 					i += 6;
 					break;
-				case L'S':	// smooth cubic bezier curve to
+				case L'S':  // smooth cubic bezier curve to
 				case L's':
 					pPath->smoothCubicBezier( parseDistance( pathData[i] ), parseDistance( pathData[i + 1] ),
 											  parseDistance( pathData[i + 2] ), parseDistance( pathData[i + 3] ),
 											  cmd == L'S' );
 					i += 4;
 					break;
-				case L'Z':	// close path
+				case L'Z':  // close path
 				case L'z':
 				{
 					pPath->closePath();
@@ -1860,20 +1861,20 @@ HRESULT parsePath( SVG& image, ComPtr<IXMLDOMNode> node )
 					// pPath->startPath();
 				}
 				break;
-				case L'Q':	// quadratic bezier
+				case L'Q':  // quadratic bezier
 				case L'q':
 					pPath->quadraticBezier( parseDistance( pathData[i] ), parseDistance( pathData[i + 1] ),
 											parseDistance( pathData[i + 2] ), parseDistance( pathData[i + 3] ),
 											cmd == L'Q' );
 					i += 4;
 					break;
-				case L'T':	// smooth quadratic bezier
+				case L'T':  // smooth quadratic bezier
 				case L't':
 					pPath->smoothQuadraticBezier( parseDistance( pathData[i] ), parseDistance( pathData[i + 1] ),
 												  cmd == L'T' );
 					i += 2;
 					break;
-				case L'A':	// arcto
+				case L'A':  // arcto
 				case L'a':
 					pPath->arcTo( parseDistance( pathData[i] ), parseDistance( pathData[i + 1] ),
 								  toFloat( pathData[i + 2] ), toInt( pathData[i + 3] ), toInt( pathData[i + 4] ),
@@ -1899,7 +1900,7 @@ HRESULT recursiveBuildVectorImage( SVG& image, ComPtr<IXMLDOMNode> node );
 HRESULT parseGroup( SVG& image, ComPtr<IXMLDOMNode> element )
 {
 	std::map<std::wstring, std::wstring> propDict;
-	ComPtr<IXMLDOMElement>				 elem;
+	ComPtr<IXMLDOMElement>               elem;
 	element.As( &elem );
 	recursiveMakePropDict( elem, propDict );
 
@@ -1907,7 +1908,7 @@ HRESULT parseGroup( SVG& image, ComPtr<IXMLDOMNode> element )
 
 	// opacity : this opacity works on rendered result of group children. This opacity is not inherited to children.
 	LPCTSTR lpOpacity = propDict[L"opacity"].c_str();
-	float	a		  = fminf( 1.0f, ( fmaxf( 0.0f, toFloat( lpOpacity, 1.0f ) ) ) );
+	float   a         = fminf( 1.0f, ( fmaxf( 0.0f, toFloat( lpOpacity, 1.0f ) ) ) );
 	pGroup->setOpacity( a );
 
 	recursiveBuildVectorImage( pGroup->getInternalSVG(), element );

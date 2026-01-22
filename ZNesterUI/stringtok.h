@@ -7,7 +7,7 @@ void stringtok( Container& container, const std::wstring& in, bool trim, const w
 				bool append = true )
 {
 	const std::wstring::size_type len = in.length();
-	std::wstring::size_type		  i	  = 0;
+	std::wstring::size_type       i   = 0;
 	if ( !append )
 		container.clear();
 
@@ -18,7 +18,7 @@ void stringtok( Container& container, const std::wstring& in, bool trim, const w
 			// eat leading whitespace
 			i = in.find_first_not_of( delimiters, i );
 			if ( i == std::wstring::npos )
-				return;	 // nothing left but white space
+				return;  // nothing left but white space
 		}
 
 		// find the end of the token
@@ -60,7 +60,7 @@ void stringtokset( Container& container, const std::wstring& in, bool trim, cons
 				   bool append = false )
 {
 	const std::wstring::size_type len = in.length();
-	std::wstring::size_type		  i	  = 0;
+	std::wstring::size_type       i   = 0;
 	if ( !append )
 		container.clear();
 
@@ -71,7 +71,7 @@ void stringtokset( Container& container, const std::wstring& in, bool trim, cons
 			// eat leading whitespace
 			i = in.find_first_not_of( delimiters, i );
 			if ( i == std::wstring::npos )
-				return;	 // nothing left but white space
+				return;  // nothing left but white space
 		}
 
 		// find the end of the token
@@ -114,7 +114,7 @@ void stringtok( Container& container, const std::string& in, bool trim, const ch
 				bool append = true )
 {
 	const std::string::size_type len = in.length();
-	std::string::size_type		 i	 = 0;
+	std::string::size_type       i   = 0;
 	if ( !append )
 		container.clear();
 
@@ -125,7 +125,7 @@ void stringtok( Container& container, const std::string& in, bool trim, const ch
 			// eat leading whitespace
 			i = in.find_first_not_of( delimiters, i );
 			if ( i == std::string::npos )
-				return;	 // nothing left but white space
+				return;  // nothing left but white space
 		}
 
 		// find the end of the token
@@ -167,7 +167,7 @@ void stringtokset( Container& container, const std::string& in, bool trim, const
 				   bool append = false )
 {
 	const std::string::size_type len = in.length();
-	std::string::size_type		 i	 = 0;
+	std::string::size_type       i   = 0;
 	if ( !append )
 		container.clear();
 
@@ -178,7 +178,7 @@ void stringtokset( Container& container, const std::string& in, bool trim, const
 			// eat leading whitespace
 			i = in.find_first_not_of( delimiters, i );
 			if ( i == std::string::npos )
-				return;	 // nothing left but white space
+				return;  // nothing left but white space
 		}
 
 		// find the end of the token

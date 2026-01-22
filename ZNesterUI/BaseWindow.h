@@ -28,15 +28,15 @@ public:
 	void SetRegistryPath( const std::wstring& sPath )
 	{
 		size_t slashPos = sPath.find_last_of( '\\' );
-		sRegistryPath	= sPath.substr( 0, slashPos );
-		sRegistryValue	= sPath.substr( slashPos + 1 );
+		sRegistryPath   = sPath.substr( 0, slashPos );
+		sRegistryValue  = sPath.substr( slashPos + 1 );
 	}
 
 	/**
 	 * Sets the transparency of the window.
 	 * \remark note that this also sets the WS_EX_LAYERED style!
 	 */
-	void		 SetTransparency( BYTE alpha, COLORREF color = 0xFF000000 );
+	void         SetTransparency( BYTE alpha, COLORREF color = 0xFF000000 );
 
 	virtual bool Create();
 	virtual bool Create( DWORD dwStyles, HWND hParent = nullptr, RECT* rect = nullptr );
@@ -53,23 +53,24 @@ public:
 	{
 		return m_hwnd;
 	}
+
 	operator HWND() const
 	{
 		return m_hwnd;
 	}
 
 protected:
-	HINSTANCE	 hResource;
-	HWND		 m_hwnd;
-	HWND		 m_hParent;
-	bool		 bWindowClosed;
+	HINSTANCE    hResource;
+	HWND         m_hwnd;
+	HWND         m_hParent;
+	bool         bWindowClosed;
 	std::wstring sClassName;
 	std::wstring sWindowTitle;
 	std::wstring sRegistryPath;
 	std::wstring sRegistryValue;
-	bool		 bWindowRestored;
-	bool		 bRegisterWindowCalled;
-	WNDPROC		 prevWndProc;
+	bool         bWindowRestored;
+	bool         bRegisterWindowCalled;
+	WNDPROC      prevWndProc;
 
 	// constructor
 	CWindow( HINSTANCE hInst, CONST WNDCLASSEX* wcx = nullptr )
@@ -85,6 +86,7 @@ protected:
 		if ( wcx != nullptr )
 			CWindow::RegisterWindow( wcx );
 	};
+
 	virtual ~CWindow() = default;
 
 	// the real message handler

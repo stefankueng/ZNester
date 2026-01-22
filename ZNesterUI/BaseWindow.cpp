@@ -15,18 +15,18 @@ bool CWindow::RegisterWindow( UINT style, HICON hIcon, HCURSOR hCursor, HBRUSH h
 
 	// Fill in the window class structure with default parameters
 
-	wcx.cbSize		  = sizeof( WNDCLASSEX );	   // size of structure
-	wcx.style		  = style;					   // redraw if size changes
-	wcx.lpfnWndProc	  = CWindow::stWinMsgHandler;  // points to window procedure
-	wcx.cbClsExtra	  = 0;						   // no extra class memory
-	wcx.cbWndExtra	  = 0;						   // no extra window memory
-	wcx.hInstance	  = hResource;				   // handle to instance
-	wcx.hIcon		  = hIcon;					   // predefined app. icon
-	wcx.hCursor		  = hCursor;				   // predefined arrow
-	wcx.hbrBackground = hbrBackground;			   // white background brush
-	wcx.lpszMenuName  = lpszMenuName;			   // name of menu resource
-	wcx.lpszClassName = lpszClassName;			   // name of window class
-	wcx.hIconSm		  = hIconSm;				   // small class icon
+	wcx.cbSize        = sizeof( WNDCLASSEX );      // size of structure
+	wcx.style         = style;                     // redraw if size changes
+	wcx.lpfnWndProc   = CWindow::stWinMsgHandler;  // points to window procedure
+	wcx.cbClsExtra    = 0;                         // no extra class memory
+	wcx.cbWndExtra    = 0;                         // no extra window memory
+	wcx.hInstance     = hResource;                 // handle to instance
+	wcx.hIcon         = hIcon;                     // predefined app. icon
+	wcx.hCursor       = hCursor;                   // predefined arrow
+	wcx.hbrBackground = hbrBackground;             // white background brush
+	wcx.lpszMenuName  = lpszMenuName;              // name of menu resource
+	wcx.lpszClassName = lpszClassName;             // name of window class
+	wcx.hIconSm       = hIconSm;                   // small class icon
 
 	// Register the window class.
 	return RegisterWindow( &wcx );
@@ -35,7 +35,7 @@ bool CWindow::RegisterWindow( UINT style, HICON hIcon, HCURSOR hCursor, HBRUSH h
 bool CWindow::RegisterWindow( CONST WNDCLASSEX* wcx )
 {
 	// Register the window class.
-	sClassName			  = std::wstring( wcx->lpszClassName );
+	sClassName            = std::wstring( wcx->lpszClassName );
 	bRegisterWindowCalled = true;
 	if ( RegisterClassEx( wcx ) == 0 )
 	{
@@ -68,8 +68,8 @@ LRESULT CALLBACK CWindow::stWinMsgHandler( HWND hwnd, UINT uMsg, WPARAM wParam, 
 			case WM_CREATE:
 				if ( ( !pWnd->bWindowRestored ) && ( !pWnd->sRegistryPath.empty() ) )
 				{
-					WINDOWPLACEMENT wpl	 = { 0 };
-					DWORD			size = sizeof( wpl );
+					WINDOWPLACEMENT wpl  = { 0 };
+					DWORD           size = sizeof( wpl );
 					if ( SHGetValue( HKEY_CURRENT_USER, pWnd->sRegistryPath.c_str(), pWnd->sRegistryValue.c_str(),
 									 REG_NONE, &wpl, &size ) == ERROR_SUCCESS )
 						SetWindowPlacement( hwnd, &wpl );
@@ -82,7 +82,7 @@ LRESULT CALLBACK CWindow::stWinMsgHandler( HWND hwnd, UINT uMsg, WPARAM wParam, 
 				if ( !pWnd->sRegistryPath.empty() )
 				{
 					WINDOWPLACEMENT wpl = { 0 };
-					wpl.length			= sizeof( WINDOWPLACEMENT );
+					wpl.length          = sizeof( WINDOWPLACEMENT );
 					GetWindowPlacement( hwnd, &wpl );
 					SHSetValue( HKEY_CURRENT_USER, pWnd->sRegistryPath.c_str(), pWnd->sRegistryValue.c_str(), REG_NONE,
 								&wpl, sizeof( wpl ) );
@@ -100,9 +100,9 @@ bool CWindow::Create()
 	// Create the window
 	RECT rect;
 
-	rect.top	= 0;
-	rect.left	= 0;
-	rect.right	= 600;
+	rect.top    = 0;
+	rect.left   = 0;
+	rect.right  = 600;
 	rect.bottom = 400;
 
 	return Create( WS_OVERLAPPEDWINDOW | WS_VISIBLE, nullptr, &rect );
@@ -143,21 +143,21 @@ void CWindow::SetTransparency( BYTE alpha, COLORREF color /* = 0xFF000000 */ )
 {
 	if ( alpha == 255 )
 	{
-		LONG_PTR exStyle = GetWindowLongPtr( *this, GWL_EXSTYLE );
-		exStyle &= ~WS_EX_LAYERED;
+		LONG_PTR exStyle  = GetWindowLongPtr( *this, GWL_EXSTYLE );
+		exStyle          &= ~WS_EX_LAYERED;
 		SetWindowLongPtr( *this, GWL_EXSTYLE, exStyle );
 	}
 	else
 	{
-		LONG_PTR exStyle = GetWindowLongPtr( *this, GWL_EXSTYLE );
-		exStyle |= WS_EX_LAYERED;
+		LONG_PTR exStyle  = GetWindowLongPtr( *this, GWL_EXSTYLE );
+		exStyle          |= WS_EX_LAYERED;
 		SetWindowLongPtr( *this, GWL_EXSTYLE, exStyle );
 	}
 	COLORREF col   = color;
-	DWORD	 flags = LWA_ALPHA;
+	DWORD    flags = LWA_ALPHA;
 	if ( col & 0xFF000000 )
 	{
-		col	  = RGB( 255, 255, 255 );
+		col   = RGB( 255, 255, 255 );
 		flags = LWA_ALPHA;
 	}
 	else

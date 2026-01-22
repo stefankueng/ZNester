@@ -19,21 +19,22 @@ public:
 		, m_hToolTips( nullptr )
 	{
 	}
+
 	virtual ~CDialog() = default;
 
-	INT_PTR		doModal( HINSTANCE hInstance, int resID, HWND hWndParent );
-	INT_PTR		doModal( HINSTANCE hInstance, LPCDLGTEMPLATE pDlgTemplate, HWND hWndParent );
-	INT_PTR		doModal( HINSTANCE hInstance, int resID, HWND hWndParent, UINT idAccel );
-	void		showModeless( HINSTANCE hInstance, int resID, HWND hWndParent, bool show = true );
-	void		showModeless( HINSTANCE hInstance, LPCDLGTEMPLATE pDlgTemplate, HWND hWndParent, bool show = true );
+	INT_PTR     doModal( HINSTANCE hInstance, int resID, HWND hWndParent );
+	INT_PTR     doModal( HINSTANCE hInstance, LPCDLGTEMPLATE pDlgTemplate, HWND hWndParent );
+	INT_PTR     doModal( HINSTANCE hInstance, int resID, HWND hWndParent, UINT idAccel );
+	void        showModeless( HINSTANCE hInstance, int resID, HWND hWndParent, bool show = true );
+	void        showModeless( HINSTANCE hInstance, LPCDLGTEMPLATE pDlgTemplate, HWND hWndParent, bool show = true );
 	static BOOL IsDialogMessage( LPMSG lpMsg );
-	HWND		create( HINSTANCE hInstance, int resID, HWND hWndParent );
-	BOOL		endDialog( HWND hDlg, INT_PTR nResult );
-	void		addToolTip( UINT ctrlID, LPCWSTR text );
-	void		addToolTip( HWND hWnd, LPCWSTR text ) const;
-	bool		isCursorOverWindowBorder();
+	HWND        create( HINSTANCE hInstance, int resID, HWND hWndParent );
+	BOOL        endDialog( HWND hDlg, INT_PTR nResult );
+	void        addToolTip( UINT ctrlID, LPCWSTR text );
+	void        addToolTip( HWND hWnd, LPCWSTR text ) const;
+	bool        isCursorOverWindowBorder();
 	static void RefreshCursor();
-	void		showEditBalloon( UINT nId, LPCWSTR title, LPCWSTR text, int icon = TTI_ERROR );
+	void        showEditBalloon( UINT nId, LPCWSTR title, LPCWSTR text, int icon = TTI_ERROR );
 	/**
 	 * Sets the transparency of the window.
 	 * \remark note that this also sets the WS_EX_LAYERED style!
@@ -45,17 +46,18 @@ public:
 	 * makes sure that a control that has the focus is not disabled
 	 * before the focus is passed on to the next control.
 	 */
-	bool					   dialogEnableWindow( UINT nID, bool bEnable );
-	int						   getDlgItemTextLength( UINT nId );
+	bool                       dialogEnableWindow( UINT nID, bool bEnable );
+	int                        getDlgItemTextLength( UINT nId );
 	std::unique_ptr<wchar_t[]> GetDlgItemText( UINT nId );
 
 	virtual LRESULT CALLBACK   dlgFunc( HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam ) = 0;
-	virtual bool			   preTranslateMessage( MSG* pMsg );
+	virtual bool               preTranslateMessage( MSG* pMsg );
 
-							   operator HWND()
+	operator HWND()
 	{
 		return m_hwnd;
 	}
+
 	operator HWND() const
 	{
 		return m_hwnd;
@@ -68,9 +70,9 @@ public:
 
 protected:
 	HINSTANCE m_hResource;
-	HWND	  m_hwnd;
+	HWND      m_hwnd;
 
-	void	  initDialog( HWND hwndDlg, UINT iconID, bool bPosition = true ) const;
+	void      initDialog( HWND hwndDlg, UINT iconID, bool bPosition = true ) const;
 	/**
 	 * Adjusts the size of a checkbox or radio button control.
 	 * Since we always make the size of those bigger than 'necessary'
@@ -90,8 +92,8 @@ protected:
 	}
 
 private:
-	bool	m_bPseudoModal;
-	bool	m_bPseudoEnded;
+	bool    m_bPseudoModal;
+	bool    m_bPseudoEnded;
 	INT_PTR m_iPseudoRet;
-	HWND	m_hToolTips;
+	HWND    m_hToolTips;
 };
