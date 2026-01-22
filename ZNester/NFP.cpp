@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 
 #include "NFP.h"
 
@@ -207,7 +207,58 @@ ZPoint searchStartPoint( ZPolygon &a, ZPolygon &b, bool inside, const std::deque
 	return {};
 }
 
-std::deque<ZPolygon> noFitPolygonRectangle( const ZPolygon &a, const ZPolygon &b )
+std::deque<ZPolygon> noFitPolygonRectangles(
+	const ZPolygon& a, const ZPolygon& b, bool inside,
+	const std::function<void( eZLogLevel, const std::string& msg )>& logCallback )
+{
+	if ( !a.isRectangle() || !b.isRectangle() )
+		return {};
+
+	const auto	boundsA = a.bounds();
+	const auto	boundsB = b.bounds();
+	const auto& b0		= b[0];
+
+	if ( inside )
+	{
+		if ( boundsB.width() > boundsA.width() || boundsB.height() > boundsA.height() )
+		{
+			if ( logCallback )
+			{
+				logCallback( Debug, std::format( "rectangle NFP empty: B({}) larger than A({}) for inside placement",
+												 b.id(), a.id() ) );
+			}
+			return {};
+		}
+
+		ZPolygon   poly;
+		const auto minX = boundsA.x() - boundsB.x() + b0.x();
+		const auto maxX = boundsA.x() + boundsA.width() - ( boundsB.x() + boundsB.width() ) + b0.x();
+		const auto minY = boundsA.y() - boundsB.y() + b0.y();
+		const auto maxY = boundsA.y() + boundsA.height() - ( boundsB.y() + boundsB.height() ) + b0.y();
+
+		poly.emplace_back( minX, minY );
+		poly.emplace_back( maxX, minY );
+		poly.emplace_back( maxX, maxY );
+		poly.emplace_back( minX, maxY );
+
+		return { poly };
+	}
+
+	ZPolygon   poly;
+	const auto minX = boundsA.x() - ( boundsB.x() + boundsB.width() ) + b0.x();
+	const auto maxX = boundsA.x() + boundsA.width() - boundsB.x() + b0.x();
+	const auto minY = boundsA.y() - ( boundsB.y() + boundsB.height() ) + b0.y();
+	const auto maxY = boundsA.y() + boundsA.height() - boundsB.y() + b0.y();
+
+	poly.emplace_back( minX, minY );
+	poly.emplace_back( maxX, minY );
+	poly.emplace_back( maxX, maxY );
+	poly.emplace_back( minX, maxY );
+
+	return { poly };
+}
+
+std::deque<ZPolygon> noFitPolygonRectangle( const ZPolygon& a, const ZPolygon& b )
 {
 	auto boundsA = a.bounds();
 	auto boundsB = b.bounds();
@@ -243,6 +294,13 @@ std::deque<ZPolygon> noFitPolygon( ZPolygon &a, ZPolygon &b, bool inside, bool s
 	}
 	a.setOffset( 0.0 );
 
+	if ( a.isRectangle() && b.isRectangle() )
+	{
+		if ( auto rectNfp = noFitPolygonRectangles( a, b, inside, logCallback ); !rectNfp.empty() )
+		{
+			return rectNfp;
+		}
+	}
 	auto   minA		 = DBL_MAX;
 	size_t minAIndex = 0;
 	auto   maxB		 = -DBL_MAX;

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "ZNester.h"
 
 struct NfpKey
@@ -43,6 +43,10 @@ ZPoint searchStartPoint( ZPolygon& a, ZPolygon& b, bool inside, const std::deque
 // returns an interior NFP for the special case where A is a rectangle
 // used if the bin is a rectangle
 std::deque<ZPolygon> noFitPolygonRectangle( const ZPolygon& a, const ZPolygon& b );
+
+// fast rectangle-only NFP (inside/outside) using a closed-form Minkowski rectangle
+std::deque<ZPolygon> noFitPolygonRectangles( const ZPolygon& a, const ZPolygon& b, bool inside,
+						const std::function<void( eZLogLevel, const std::string& msg )>& logCallback );
 
 // given a static polygon A and a movable polygon B, compute a no fit polygon by orbiting B around A
 // if the inside flag is set, B is orbited inside of A rather than outside
