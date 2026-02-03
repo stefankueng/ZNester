@@ -99,6 +99,7 @@ bool ZNester::doNest( const ZPolygon& binPoly, const std::deque<ZPolygon>& polyg
 	m_run = true;
 	runNesting( m_bin, m_tree, m_config );
 #else
+	m_run    = true;
 	m_thread = std::thread(
 		[&]()
 		{
@@ -107,7 +108,6 @@ bool ZNester::doNest( const ZPolygon& binPoly, const std::deque<ZPolygon>& polyg
 #	else
 			srand( 1234 );
 #	endif
-			m_run = true;
 			runNesting( m_bin, m_tree, m_config );
 		} );
 #endif
